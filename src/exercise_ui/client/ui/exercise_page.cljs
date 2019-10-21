@@ -23,7 +23,9 @@
          :ref (fn [el]
                 (when (not (nil? el))
                   (js/CodeMirror.runMode
-                    (format-code code)
+                    (if (vector? code)
+                      (string/join "\n\n" (map format-code code))
+                      (format-code code))
                     "clojure"
                     el)))}])
 
@@ -42,8 +44,7 @@
      (when (seq (exercise :tests))
        [:div.tests
         [:h2 "Tests"]
-        (for [node (exercise :tests)]
-          [code-view node "code"])])
+        [code-view (exercise :tests) "code"]])
 
      (when (exercise :solution)
        [:details
