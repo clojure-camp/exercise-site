@@ -6,6 +6,7 @@
                  [io.bloomventures/decant "3.0.0"]
                  [cljsjs/codemirror "5.24.0-1"]
                  [re-frame "0.10.9"]
+                 [rewrite-clj "0.6.1"]
                  [reagent "0.8.1"]
                  [garden "1.3.5"]
                  [zprint "0.4.10"]]
