@@ -1,4 +1,9 @@
-(ns exercise-ui.client.ui.app)
+(ns exercise-ui.client.ui.app
+  (:require
+    [re-frame.core :refer [subscribe]]))
 
 (defn app-view []
-  [:div "Hello World!"])
+  [:div
+   (for [exercise @(subscribe [:exercises])]
+     [:div
+      (exercise :id)])])

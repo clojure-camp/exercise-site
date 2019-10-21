@@ -2,5 +2,5 @@
 
 (defn app []
   [:body
-   {:background "red"}]
+   ]
   )
