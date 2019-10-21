@@ -35,11 +35,11 @@
      [:h1 (exercise :title)]
      [:div.instructions
       (for [node (exercise :instructions)]
-        (cond
-          (string? node)
-          [:p node]
-          (list? node)
-          [code-view node "code"]))]
+        (if (and
+              (string/starts-with? node "(")
+              (string/ends-with? node ")"))
+          [code-view node "code"]
+          [:p node]))]
 
      (when (seq (exercise :tests))
        [:div.tests
