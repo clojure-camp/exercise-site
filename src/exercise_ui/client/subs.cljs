@@ -9,3 +9,7 @@
 (reg-sub :exercise
   (fn [db [_ exercise-id]]
     (get-in db [:exercises exercise-id])))
+
+(reg-sub :pastebin
+  (fn [db _]
+    (db :pastebin)))

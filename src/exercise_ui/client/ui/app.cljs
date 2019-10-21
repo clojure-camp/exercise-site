@@ -7,4 +7,5 @@
 (defn app-view []
   [:div
    [:a {:href (path-for :home)} "Home"]
+   [:a {:href (path-for :pastebin)} "Pastebin"]
    [pages/current-page-view]])

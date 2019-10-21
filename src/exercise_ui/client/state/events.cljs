@@ -14,7 +14,8 @@
 (reg-event-fx :initialize!
   (fn [_ _]
     (bloom.commons.pages/initialize! pages)
-    {:db {:exercises {}}
+    {:db {:exercises {}
+          :pastebin ""}
      :dispatch [:-fetch-exercises!]}))
 
 (reg-event-fx :-fetch-exercises!
@@ -29,3 +30,25 @@
   (fn [{db :db} [_ data]]
     {:db (assoc db :exercises (key-by :id data))}))
 
+(reg-event-fx :set-pastebin!
+  (fn [{db :db} [_ value]]
+    {:db (assoc db :pastebin value)
+     :ajax {:uri "/api/pastebin"
+            :method :put
+            :params {:value value}
+            :on-success (fn [_])
+            :on-error (fn [_])}}))
+
+(reg-event-fx :-fetch-pastebin!
+  (fn [{db :db} _]
+    {:ajax {:uri "/api/pastebin"
+            :method :get
+            :on-success (fn [value]
+                          (dispatch [:-store-pastebin! (value :value)]))
+            :on-error (fn [_])}}))
+
+(reg-event-fx :-store-pastebin!
+  (fn [{db :db} [_ value]]
+    {:db (assoc db :pastebin value)}))
+
+(js/setInterval (fn [] (dispatch [:-fetch-pastebin!])) 1000)
