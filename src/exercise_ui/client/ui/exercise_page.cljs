@@ -1,6 +1,7 @@
 (ns exercise-ui.client.ui.exercise-page
   (:require
     [clojure.string :as string]
+    [bloom.commons.pages :refer [path-for]]
     [cljsjs.codemirror]
     [cljsjs.codemirror.mode.clojure]
     [re-frame.core :refer [subscribe]]
@@ -50,4 +51,9 @@
        [:details
         [:summary "Solution"]
         [:div.solution
-         [code-view (exercise :solution) "code"]]])]))
+         [code-view (exercise :solution) "code"]]])
+
+     (when (exercise :related)
+       [:div.related
+        (for [id (exercise :related)]
+          [:a {:href (path-for :exercise {:exercise-id id})} id])])]))
