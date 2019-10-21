@@ -7,15 +7,20 @@
 
 (def data-path "./data/exercises")
 
+(defn collapse-leading-whitespace [s]
+  (string/replace s #"\n[ ]+" "\n  "))
+
 (defn parse-node [v]
   (case (rw.node/tag v)
     (:token :set)
     (rw.node/sexpr v)
     :list
-    (rw.node/string v)
+    (collapse-leading-whitespace (rw.node/string v))
     :vector
     (->> (mapv parse-node (rw.node/children v))
          (filterv some?))
+    :multi-line
+    (collapse-leading-whitespace (rw.node/sexpr v))
     (:whitespace :newline)
     nil
     v))
