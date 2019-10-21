@@ -19,7 +19,7 @@
                                   "fn" :binding}})))
 
 (defn code-view [code class-name]
-  [:div {:class (string/join " "  ["CodeMirror" "cm-s-default" class-name])
+  [:div {:class (string/join " "  ["CodeMirror" "cm-s-railscasts" class-name])
          :ref (fn [el]
                 (when (not (nil? el))
                   (js/CodeMirror.runMode
