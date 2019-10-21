@@ -5,3 +5,7 @@
 (reg-sub :exercises
   (fn [db _]
     (vals (db :exercises))))
+
+(reg-sub :exercise
+  (fn [db [_ exercise-id]]
+    (get-in db [:exercises exercise-id])))

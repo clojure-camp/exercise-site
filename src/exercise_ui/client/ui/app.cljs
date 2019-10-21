@@ -1,9 +1,8 @@
 (ns exercise-ui.client.ui.app
   (:require
-    [re-frame.core :refer [subscribe]]))
+    [re-frame.core :refer [subscribe]]
+    [exercise-ui.client.pages :as pages]))
 
 (defn app-view []
   [:div
-   (for [exercise @(subscribe [:exercises])]
-     [:div
-      (exercise :id)])])
+   [pages/current-page-view]])

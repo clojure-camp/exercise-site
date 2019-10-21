@@ -1,7 +1,9 @@
 (ns exercise-ui.client.state.events
   (:require
     [re-frame.core :refer [reg-event-fx reg-fx dispatch]]
-    [bloom.omni.fx.ajax :as ajax]))
+    [bloom.omni.fx.ajax :as ajax]
+    [bloom.commons.pages]
+    [exercise-ui.client.pages :refer [pages]]))
 
 (defn key-by [k col]
   (reduce (fn [memo i]
@@ -11,6 +13,7 @@
 
 (reg-event-fx :initialize!
   (fn [_ _]
+    (bloom.commons.pages/initialize! pages)
     {:db {:exercises {}}
      :dispatch [:-fetch-exercises!]}))
 
