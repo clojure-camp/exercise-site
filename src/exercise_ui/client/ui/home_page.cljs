@@ -4,7 +4,7 @@
     [bloom.commons.pages :refer [path-for]]))
 
 (defn home-page-view [params]
-  [:div
+  [:div.page.home
    (for [exercise @(subscribe [:exercises])]
      ^{:key (exercise :id)}
      [:a {:href (path-for :exercise {:exercise-id (exercise :id)})}
