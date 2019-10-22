@@ -4,15 +4,51 @@
     [re-frame.core :refer [subscribe]]
     [bloom.commons.pages :refer [path-for]]))
 
+(defn docs-link
+  [fn-symbol]
+  (str "https://clojuredocs.org/"
+       (if-let [fn-ns (namespace fn-symbol)]
+         fn-ns
+         "clojure.core")
+       "/" (name fn-symbol)))
+
+(defn display-teachable
+  [teachable]
+  (cond
+    (keyword? teachable)
+    [:span.teachable.concept (name teachable)]
+    (symbol? teachable)
+    [:a.teachable.function {:href (docs-link teachable)} (str teachable)]
+    :else
+    [:span.teachable.function (str teachable)]))
+
+(defn exercises-view
+  [exercises]
+  [:table
+   [:thead
+    [:tr
+     [:th "Exercise"]
+     [:th "Teaches"]
+     [:th "Uses"]]]
+   [:tbody
+    (doall
+      (for [exercise (sort-by (comp count :uses) exercises)]
+        ^{:key (exercise :id)}
+        [:tr
+         [:td
+          [:a {:href (path-for :exercise {:exercise-id (exercise :id)})}
+           (exercise :id)]]
+         [:td
+          (interpose " " (map display-teachable (exercise :teaches)))]
+         [:td
+          (interpose " " (map display-teachable (exercise :uses)))]]))]])
+
 (defn home-page-view [params]
-  [:div.page.home
-   [:table
-    [:tbody
-     (for [exercise @(subscribe [:exercises])]
-       ^{:key (exercise :id)}
-       [:tr
-        [:td
-         [:a {:href (path-for :exercise {:exercise-id (exercise :id)})}
-          (exercise :id)]]
-        [:td
-         (string/join " " (sort (map str (exercise :uses))))]])]]])
+  (let [grouped-exercises (group-by :category @(subscribe [:exercises]))]
+    [:div.page.home
+     [:h2 "Learning Functions"]
+     [exercises-view (:learning-functions grouped-exercises)]
+     [:h2 "Starter Exercises"]
+     [exercises-view (:starter grouped-exercises)]
+     [:h2 "Synthesis"]
+     [exercises-view (:synthesis grouped-exercises)]]))
