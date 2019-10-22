@@ -1,0 +1,7 @@
+.*
+!.gitignore
+/target
+/resources/public/js
+/resources/public/css
+config.edn
+/data
