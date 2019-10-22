@@ -38,10 +38,12 @@
          [:td
           [:a {:href (path-for :exercise {:exercise-id (exercise :id)})}
            (exercise :id)]]
-         [:td
-          (interpose " " (map display-teachable (exercise :teaches)))]
-         [:td
-          (interpose " " (map display-teachable (exercise :uses)))]]))]])
+         (into
+           [:td]
+           (interpose " " (map display-teachable (exercise :teaches))))
+         (into
+           [:td]
+           (interpose " " (map display-teachable (exercise :uses))))]))]])
 
 (defn home-page-view [params]
   (let [grouped-exercises (group-by :category @(subscribe [:exercises]))]
