@@ -24,7 +24,7 @@
 
 (defn exercises-view
   [exercises]
-  [:table
+  [:table.exercises
    [:thead
     [:tr
      [:th "Exercise"]

@@ -26,4 +26,14 @@
     [:.page
      [:&.home
       [:>a
-       {:display "block"}]]]]])
+       {:display "block"}]
+
+      [:table.exercises
+       ["tr:nth-child(even)"
+        {:background-color "#eee"}]]]
+
+     [:.teachable
+      [:&.concept
+       {:font-style "italic"}]
+      [:&.function
+       {:font-family "monospace"}]]]]])
