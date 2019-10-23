@@ -40,7 +40,8 @@
 (defn get-exercises []
   (->> (file-seq (io/file exercise-data-path))
        (filter (fn [f]
-                 (.isFile f)))
+                 (and (.isFile f)
+                      (string/ends-with? (.getName f) ".edn"))))
        (map (juxt (memfn getName) slurp))
        (map (fn [[file-name s]]
               (-> (parse-exercise s)
