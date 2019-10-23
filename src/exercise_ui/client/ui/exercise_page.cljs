@@ -58,13 +58,13 @@
           :reviewed
           [:div "Reviewed"])]
 
-       [:div.instructions
-        (for [node (exercise :instructions)]
-          (if (and
-                (string/starts-with? node "(")
-                (string/ends-with? node ")"))
-            [code-view node "code"]
-            [:p node]))]
+       (into [:div.instructions]
+             (for [node (exercise :instructions)]
+               (if (and
+                     (string/starts-with? node "(")
+                     (string/ends-with? node ")"))
+                 [code-view node "code"]
+                 [:p node])))
 
        (when (seq (exercise :tests))
          [:div.tests
@@ -81,4 +81,5 @@
          [:div.related
           [:h2 "Related"]
           (for [id (exercise :related)]
+            ^{:key id}
             [:a {:href (path-for :exercise {:exercise-id id})} id])])])))
