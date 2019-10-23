@@ -23,22 +23,33 @@
     :else
     [:span.teachable.function (str teachable)]))
 
+(def difficulty->n {:low 1 :mid 2 :high 3})
+
+(defn sort-exercises
+  [exercises]
+  (->> exercises
+      (sort-by :title)
+      (sort-by (comp difficulty->n :difficulty))))
+
 (defn exercises-view
   [exercises]
   [:table.exercises
    [:thead
     [:tr
      [:th "Status"]
+     [:th]
      [:th "Exercise"]
      [:th "Teaches"]
      [:th "Uses"]]]
    [:tbody
     (doall
-      (for [exercise (sort-by (comp count :uses) exercises)]
+      (for [exercise (sort-exercises exercises)]
         ^{:key (exercise :id)}
-        [:tr
-         [:td
+        [:tr.exercise
+         [:td.status
           [exercise-status-view (exercise :id)]]
+         [:td.difficulty
+          (repeat (difficulty->n (exercise :difficulty)) "★")]
          [:td
           [:a {:href (path-for :exercise {:exercise-id (exercise :id)})}
            (exercise :title)]]
