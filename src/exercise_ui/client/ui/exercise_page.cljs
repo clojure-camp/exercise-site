@@ -55,5 +55,6 @@
 
      (when (exercise :related)
        [:div.related
+        [:h2 "Related"]
         (for [id (exercise :related)]
           [:a {:href (path-for :exercise {:exercise-id id})} id])])]))
