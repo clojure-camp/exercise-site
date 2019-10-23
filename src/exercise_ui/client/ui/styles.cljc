@@ -36,4 +36,11 @@
       [:&.concept
        {:font-style "italic"}]
       [:&.function
-       {:font-family "monospace"}]]]]])
+       {:font-family "monospace"}]]
+
+     [:&.exercise
+      [:details.solution
+       {:margin-top "1em"}
+       [:>summary
+        [:>h2
+         {:display "inline"}]]]]]]])

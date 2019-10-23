@@ -33,7 +33,7 @@
 (defn exercise-page-view [exercise-id]
   (when-let [exercise @(subscribe [:exercise exercise-id])]
     (let [exercise-status @(subscribe [:exercise-status exercise-id])]
-      [:div.page
+      [:div.page.exercise
        [:h1 (exercise :title)]
 
        [:div.status
@@ -72,8 +72,8 @@
           [code-view (exercise :tests) "code"]])
 
        (when (exercise :solution)
-         [:details
-          [:summary "Solution"]
+         [:details.solution
+          [:summary [:h2 "Solution"]]
           [:div.solution
            [code-view (exercise :solution) "code"]]])
 
