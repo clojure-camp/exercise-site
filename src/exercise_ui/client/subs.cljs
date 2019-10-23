@@ -13,3 +13,11 @@
 (reg-sub :pastebin
   (fn [db _]
     (db :pastebin)))
+
+(reg-sub :logged-in?
+  (fn [db _]
+    (some? (db :user))))
+
+(reg-sub :user-name
+  (fn [db _]
+    (get-in db [:user :name])))

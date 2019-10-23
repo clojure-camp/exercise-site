@@ -1,6 +1,7 @@
 (ns exercise-ui.server.routes
   (:require
-    [exercise-ui.server.db :as db]))
+    [exercise-ui.server.db :as db]
+    [exercise-ui.utils :as utils]))
 
 (defonce pastebin (atom ""))
 
@@ -9,6 +10,26 @@
     (fn [request]
       {:status 200
        :body (db/get-exercises)})]
+
+   [[:get "/api/session"]
+    (fn [request]
+      (if-let [name (get-in request [:session :user-name])]
+        {:status 200
+         :body {:user (db/get-user name)}}
+        {:status 401}))]
+
+   [[:put "/api/session"]
+    (fn [request]
+      (let [name (-> (get-in request [:params :name])
+                     (utils/sanitize-name))]
+        {:status 200
+         :session {:user-name name}
+         :body {:user (db/get-user name)}}))]
+
+   [[:delete "/api/session"]
+    (fn [request]
+      {:status 200
+       :session nil})]
 
    [[:get "/api/pastebin"]
     (fn [request]

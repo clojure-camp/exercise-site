@@ -5,7 +5,8 @@
     [rewrite-clj.parser :as rw.parser]
     [rewrite-clj.node :as rw.node]))
 
-(def data-path "./data/exercises")
+(def user-data-path "./data/users")
+(def exercise-data-path "./data/exercises")
 
 (defn collapse-leading-whitespace [s]
   (string/replace s #"\n[ ]+" "\n  "))
@@ -37,7 +38,7 @@
        (into {})))
 
 (defn get-exercises []
-  (->> (file-seq (io/file data-path))
+  (->> (file-seq (io/file exercise-data-path))
        (filter (fn [f]
                  (.isFile f)))
        (map (juxt (memfn getName) slurp))
@@ -45,3 +46,9 @@
               (-> (parse-exercise s)
                   (assoc :id (string/replace file-name #"\.edn$" "")))))))
 
+(defn get-user [name]
+  (let [f (io/file user-data-path (str name ".edn"))]
+    (when-not (.exists f)
+      (spit f (pr-str {:name name
+                       :progress {}})))
+    (read-string (slurp f))))

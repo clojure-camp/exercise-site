@@ -15,8 +15,18 @@
   (fn [_ _]
     (bloom.commons.pages/initialize! pages)
     {:db {:exercises {}
+          :user nil
           :pastebin ""}
-     :dispatch [:-fetch-exercises!]}))
+     :dispatch-n [[:-check-session!]
+                  [:-fetch-exercises!]]}))
+
+(reg-event-fx :-check-session!
+  (fn [_ _]
+    {:ajax {:uri "/api/session"
+            :method :get
+            :on-success (fn [data]
+                          (dispatch [:-store-user! (data :user)]))
+            :on-error (fn [_])}}))
 
 (reg-event-fx :-fetch-exercises!
   (fn [_ _]
@@ -29,6 +39,27 @@
 (reg-event-fx :-store-exercises!
   (fn [{db :db} [_ data]]
     {:db (assoc db :exercises (key-by :id data))}))
+
+(reg-event-fx :log-in!
+  (fn [{db :db} [_ name]]
+    {:ajax {:uri "/api/session"
+            :method :put
+            :params {:name name}
+            :on-success (fn [data]
+                          (dispatch [:-store-user! (data :user)]))
+            :on-error (fn [_])}}))
+
+(reg-event-fx :log-out!
+  (fn [{db :db} [_ name]]
+    {:db (assoc db :user nil)
+     :ajax {:uri "/api/session"
+            :method :delete
+            :on-success (fn [_])
+            :on-error (fn [_])}}))
+
+(reg-event-fx :-store-user!
+  (fn [{db :db} [_ user]]
+    {:db (assoc db :user user)}))
 
 (reg-event-fx :set-pastebin!
   (fn [{db :db} [_ value]]
