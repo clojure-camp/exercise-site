@@ -4,7 +4,7 @@
     [bloom.commons.pages :refer [path-for]]
     [cljsjs.codemirror]
     [cljsjs.codemirror.mode.clojure]
-    [re-frame.core :refer [subscribe]]
+    [re-frame.core :refer [subscribe dispatch]]
     [zprint.core :refer [zprint zprint-str]]))
 
 (defn format-code [code]
@@ -32,29 +32,53 @@
 
 (defn exercise-page-view [exercise-id]
   (when-let [exercise @(subscribe [:exercise exercise-id])]
-    [:div.page
-     [:h1 (exercise :title)]
-     [:div.instructions
-      (for [node (exercise :instructions)]
-        (if (and
-              (string/starts-with? node "(")
-              (string/ends-with? node ")"))
-          [code-view node "code"]
-          [:p node]))]
+    (let [exercise-status @(subscribe [:exercise-status exercise-id])]
+      [:div.page
+       [:h1 (exercise :title)]
 
-     (when (seq (exercise :tests))
-       [:div.tests
-        [:h2 "Tests"]
-        [code-view (exercise :tests) "code"]])
+       [:div.status
+        (case exercise-status
+          nil
+          [:div
+           [:button
+            {:on-click
+             (fn [_]
+               (dispatch [:set-exercise-status! exercise-id :started]))}
+            "Start"]]
+          :started
+          [:div
+           "In Progress"
+           [:button
+            {:on-click
+             (fn [_]
+               (dispatch [:set-exercise-status! exercise-id :completed]))}
+            "Complete"]]
+          :completed
+          [:div "Complete"]
+          :reviewed
+          [:div "Reviewed"])]
 
-     (when (exercise :solution)
-       [:details
-        [:summary "Solution"]
-        [:div.solution
-         [code-view (exercise :solution) "code"]]])
+       [:div.instructions
+        (for [node (exercise :instructions)]
+          (if (and
+                (string/starts-with? node "(")
+                (string/ends-with? node ")"))
+            [code-view node "code"]
+            [:p node]))]
 
-     (when (exercise :related)
-       [:div.related
-        [:h2 "Related"]
-        (for [id (exercise :related)]
-          [:a {:href (path-for :exercise {:exercise-id id})} id])])]))
+       (when (seq (exercise :tests))
+         [:div.tests
+          [:h2 "Tests"]
+          [code-view (exercise :tests) "code"]])
+
+       (when (exercise :solution)
+         [:details
+          [:summary "Solution"]
+          [:div.solution
+           [code-view (exercise :solution) "code"]]])
+
+       (when (exercise :related)
+         [:div.related
+          [:h2 "Related"]
+          (for [id (exercise :related)]
+            [:a {:href (path-for :exercise {:exercise-id id})} id])])])))

@@ -11,6 +11,16 @@
       {:status 200
        :body (db/get-exercises)})]
 
+   [[:put "/api/progress"]
+    (fn [request]
+      (if (get-in request [:session :user-name])
+        (do
+          (db/set-exercise-status! (get-in request [:session :user-name])
+                                   (get-in request [:params :exercise-id])
+                                   (get-in request [:params :status]))
+          {:status 200})
+        {:status 401}))]
+
    [[:get "/api/session"]
     (fn [request]
       (if-let [name (get-in request [:session :user-name])]

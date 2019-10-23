@@ -46,9 +46,18 @@
               (-> (parse-exercise s)
                   (assoc :id (string/replace file-name #"\.edn$" "")))))))
 
+(defn user-file [name]
+  (io/file user-data-path (str name ".edn")))
+
 (defn get-user [name]
-  (let [f (io/file user-data-path (str name ".edn"))]
+  (let [f (user-file name)]
     (when-not (.exists f)
       (spit f (pr-str {:name name
                        :progress {}})))
     (read-string (slurp f))))
+
+(defn set-exercise-status!
+  [user-name exercise-id status]
+  (spit (user-file user-name)
+        (-> (get-user user-name)
+            (assoc-in [:progress exercise-id] status))))

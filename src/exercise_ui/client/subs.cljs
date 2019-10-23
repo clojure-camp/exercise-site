@@ -21,3 +21,7 @@
 (reg-sub :user-name
   (fn [db _]
     (get-in db [:user :name])))
+
+(reg-sub :exercise-status
+  (fn [db [_ exercise-id]]
+    (get-in db [:user :progress exercise-id])))

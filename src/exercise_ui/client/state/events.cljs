@@ -61,6 +61,14 @@
   (fn [{db :db} [_ user]]
     {:db (assoc db :user user)}))
 
+(reg-event-fx :set-exercise-status!
+  (fn [{db :db} [_ exercise-id status]]
+    {:db (assoc-in db [:user :progress exercise-id] status)
+     :ajax {:uri "/api/progress"
+            :method :put
+            :params {:exercise-id exercise-id
+                     :status status}}}))
+
 (reg-event-fx :set-pastebin!
   (fn [{db :db} [_ value]]
     {:db (assoc db :pastebin value)
