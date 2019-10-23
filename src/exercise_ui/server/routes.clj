@@ -13,9 +13,9 @@
 
    [[:put "/api/progress"]
     (fn [request]
-      (if (get-in request [:session :user-name])
+      (if (get-in request [:session :user-id])
         (do
-          (db/set-exercise-status! (get-in request [:session :user-name])
+          (db/set-exercise-status! (get-in request [:session :user-id])
                                    (get-in request [:params :exercise-id])
                                    (get-in request [:params :status]))
           {:status 200})
@@ -23,18 +23,18 @@
 
    [[:get "/api/session"]
     (fn [request]
-      (if-let [name (get-in request [:session :user-name])]
+      (if-let [user-id (get-in request [:session :user-id])]
         {:status 200
-         :body {:user (db/get-user name)}}
+         :body {:user (db/get-user user-id)}}
         {:status 401}))]
 
    [[:put "/api/session"]
     (fn [request]
-      (let [name (-> (get-in request [:params :name])
-                     (utils/sanitize-name))]
+      (let [user-id (-> (get-in request [:params :user-id])
+                        (utils/sanitize-user-id))]
         {:status 200
-         :session {:user-name name}
-         :body {:user (db/get-user name)}}))]
+         :session {:user-id user-id}
+         :body {:user (db/get-user user-id)}}))]
 
    [[:delete "/api/session"]
     (fn [request]

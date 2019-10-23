@@ -2,5 +2,5 @@
   (:require
     [clojure.string :as string]))
 
-(defn sanitize-name [name]
-  (string/replace name #"[^a-zA-Z0-9]" ""))
+(defn sanitize-user-id [id]
+  (string/replace id #"[^a-zA-Z0-9]" ""))

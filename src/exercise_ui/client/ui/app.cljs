@@ -11,25 +11,24 @@
    [:a {:href (path-for :home)} "Home"]
    [:a {:href (path-for :pastebin)} "Pastebin"]
    [:div
-    @(subscribe [:user-name])
+    @(subscribe [:user-id])
     [:button {:on-click (fn [e]
                           (dispatch [:log-out!]))}
      "Log Out"]]
    [pages/current-page-view]])
 
 (defn login-view []
-  (let [name (r/atom "")]
+  (let [user-id (r/atom "")]
     (fn []
       [:form {:on-submit
               (fn [e]
                 (.preventDefault e)
-                (dispatch [:log-in! @name]))}
+                (dispatch [:log-in! @user-id]))}
        [:input {:type "text"
-                :name "name"
                 :on-change (fn [e]
-                             (reset! name (-> (.. e -target -value)
-                                              (utils/sanitize-name))))
-                :value @name}]
+                             (reset! user-id (-> (.. e -target -value)
+                                                 (utils/sanitize-user-id))))
+                :value @user-id}]
        [:button "Enter"]])))
 
 (defn app-view []

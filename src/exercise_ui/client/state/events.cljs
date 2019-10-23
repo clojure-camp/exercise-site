@@ -41,16 +41,16 @@
     {:db (assoc db :exercises (key-by :id data))}))
 
 (reg-event-fx :log-in!
-  (fn [{db :db} [_ name]]
+  (fn [{db :db} [_ id]]
     {:ajax {:uri "/api/session"
             :method :put
-            :params {:name name}
+            :params {:user-id id}
             :on-success (fn [data]
                           (dispatch [:-store-user! (data :user)]))
             :on-error (fn [_])}}))
 
 (reg-event-fx :log-out!
-  (fn [{db :db} [_ name]]
+  (fn [{db :db} _]
     {:db (assoc db :user nil)
      :ajax {:uri "/api/session"
             :method :delete

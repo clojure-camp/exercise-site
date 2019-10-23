@@ -18,9 +18,9 @@
   (fn [db _]
     (some? (db :user))))
 
-(reg-sub :user-name
+(reg-sub :user-id
   (fn [db _]
-    (get-in db [:user :name])))
+    (get-in db [:user :id])))
 
 (reg-sub :exercise-status
   (fn [db [_ exercise-id]]
