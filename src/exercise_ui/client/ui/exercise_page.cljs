@@ -60,9 +60,10 @@
 
        (into [:div.instructions]
              (for [node (exercise :instructions)]
-               (if (and
-                     (string/starts-with? node "(")
-                     (string/ends-with? node ")"))
+               (if (or (not (string? node))
+                       (and
+                         (string/starts-with? node "(")
+                         (string/ends-with? node ")")))
                  [code-view node "code"]
                  [:p node])))
 
