@@ -19,16 +19,18 @@
                                   "when" :arg1-force-nl
                                   "fn" :binding}})))
 
-(defn code-view [code class-name]
-  [:div {:class (string/join " "  ["CodeMirror" "cm-s-railscasts" class-name])
-         :ref (fn [el]
-                (when (not (nil? el))
-                  (js/CodeMirror.runMode
-                    (if (vector? code)
-                      (string/join "\n\n" (map format-code code))
-                      (format-code code))
-                    "clojure"
-                    el)))}])
+(defn code-view
+  ([code class-name] (code-view code class-name false))
+  ([code class-name fragment?]
+   [:div {:class (string/join " "  ["CodeMirror" "cm-s-railscasts" class-name])
+          :ref (fn [el]
+                 (when (not (nil? el))
+                   (js/CodeMirror.runMode
+                     (if (and (not fragment?) (vector? code))
+                       (string/join "\n\n" (map format-code code))
+                       (format-code code))
+                     "clojure"
+                     el)))}]))
 
 (defn exercise-page-view [exercise-id]
   (when-let [exercise @(subscribe [:exercise exercise-id])]
@@ -64,7 +66,7 @@
                        (and
                          (string/starts-with? node "(")
                          (string/ends-with? node ")")))
-                 [code-view node "code"]
+                 [code-view node "code" true]
                  [:p node])))
 
        (when (seq (exercise :tests))
