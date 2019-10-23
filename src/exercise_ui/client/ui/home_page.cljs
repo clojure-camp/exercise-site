@@ -2,7 +2,8 @@
   (:require
     [clojure.string :as string]
     [re-frame.core :refer [subscribe]]
-    [bloom.commons.pages :refer [path-for]]))
+    [bloom.commons.pages :refer [path-for]]
+    [exercise-ui.client.ui.exercise-status :refer [exercise-status-view]]))
 
 (defn docs-link
   [fn-symbol]
@@ -27,6 +28,7 @@
   [:table.exercises
    [:thead
     [:tr
+     [:th "Status"]
      [:th "Exercise"]
      [:th "Teaches"]
      [:th "Uses"]]]
@@ -35,6 +37,8 @@
       (for [exercise (sort-by (comp count :uses) exercises)]
         ^{:key (exercise :id)}
         [:tr
+         [:td
+          [exercise-status-view (exercise :id)]]
          [:td
           [:a {:href (path-for :exercise {:exercise-id (exercise :id)})}
            (exercise :id)]]
