@@ -41,7 +41,7 @@
           [exercise-status-view (exercise :id)]]
          [:td
           [:a {:href (path-for :exercise {:exercise-id (exercise :id)})}
-           (exercise :id)]]
+           (exercise :title)]]
          (into
            [:td]
            (interpose " " (map display-teachable (exercise :teaches))))
