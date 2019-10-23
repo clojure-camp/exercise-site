@@ -39,7 +39,7 @@
             :on-success (fn [_])
             :on-error (fn [_])}}))
 
-(reg-event-fx :-fetch-pastebin!
+(reg-event-fx :fetch-pastebin!
   (fn [{db :db} _]
     {:ajax {:uri "/api/pastebin"
             :method :get
@@ -51,4 +51,3 @@
   (fn [{db :db} [_ value]]
     {:db (assoc db :pastebin value)}))
 
-(js/setInterval (fn [] (dispatch [:-fetch-pastebin!])) 1000)
