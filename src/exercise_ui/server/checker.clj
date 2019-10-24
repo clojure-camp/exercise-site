@@ -19,15 +19,15 @@
                                       :other string?))))
 
 (s/def ::exercise
-  (s/keys :req-un [::title ::category ::instructions ::teaches ::uses]
-          :opt-un [::tests ::solution]))
+  (s/keys :req-un [::title ::category ::instructions ::uses]
+          :opt-un [::tests ::solution ::teaches]))
 
 (defn print-problem
   [{:keys [pred path val]}]
   (println
     (if (empty? path)
       "overall"
-      (get-in val path))
+      path)
     (if (coll? pred)
       (let [[f parms [contains-call arg k]] pred]
         (if (and (= f 'clojure.core/fn)
