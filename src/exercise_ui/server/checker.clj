@@ -5,6 +5,7 @@
 
 (s/def ::title string?)
 (s/def ::category #{:starter :learning-functions :synthesis})
+(s/def ::difficulty #{:high :mid :low})
 (s/def ::instructions (s/or :simple string?
                             :complex vector?))
 (s/def ::tests (s/or :single string? :complex (s/coll-of string?)))
@@ -19,7 +20,7 @@
                                       :other string?))))
 
 (s/def ::exercise
-  (s/keys :req-un [::title ::category ::instructions ::uses]
+  (s/keys :req-un [::title ::category ::instructions ::uses ::difficulty]
           :opt-un [::tests ::solution ::teaches]))
 
 (defn print-problem
