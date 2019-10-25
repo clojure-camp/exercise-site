@@ -10,6 +10,10 @@
   [:div
    [:a {:href (path-for :home)} "Home"]
    [:a {:href (path-for :pastebin)} "Pastebin"]
+   [:a {:href "https://www.clojuredocs.org"
+        :target "_blank"
+        :rel "noopener noreferrer"}
+    "clojuredocs"]
    [:div
     @(subscribe [:user-id])
     [:button {:on-click (fn [e]
