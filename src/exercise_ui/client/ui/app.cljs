@@ -14,6 +14,10 @@
         :target "_blank"
         :rel "noopener noreferrer"}
     "clojuredocs"]
+   [:a {:href "https://cognitory.github.io/clojure-cheatsheet/"
+        :target "_blank"
+        :rel "noopener noreferrer"}
+    "clj-cheatsheet"]
    [:div
     @(subscribe [:user-id])
     [:button {:on-click (fn [e]
