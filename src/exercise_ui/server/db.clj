@@ -20,6 +20,8 @@
     :vector
     (->> (mapv parse-node (rw.node/children v))
          (filterv some?))
+    :map
+    (rw.node/sexpr v)
     :multi-line
     (collapse-leading-whitespace (rw.node/sexpr v))
     (:whitespace :newline)
