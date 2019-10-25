@@ -8,21 +8,24 @@
 
 (defn main-view []
   [:div
-   [:a {:href (path-for :exercises)} "exercises"]
-   [:a {:href (path-for :pastebin)} "pastebin"]
-   [:a {:href "https://www.clojuredocs.org"
-        :target "_blank"
-        :rel "noopener noreferrer"}
-    "clojuredocs"]
-   [:a {:href "https://cognitory.github.io/clojure-cheatsheet/"
-        :target "_blank"
-        :rel "noopener noreferrer"}
-    "clj-cheatsheet"]
-   [:div
-    @(subscribe [:user-id])
-    [:button {:on-click (fn [e]
-                          (dispatch [:log-out!]))}
-     "Log Out"]]
+   [:div.header
+    [:nav
+     [:a {:href (path-for :exercises)} "exercises"]
+     [:a {:href (path-for :pastebin)} "pastebin"]
+     [:a {:href "https://www.clojuredocs.org"
+          :target "_blank"
+          :rel "noopener noreferrer"}
+      "clojuredocs"]
+     [:a {:href "https://cognitory.github.io/clojure-cheatsheet/"
+          :target "_blank"
+          :rel "noopener noreferrer"}
+      "clj-cheatsheet"]]
+
+    [:div.user
+     @(subscribe [:user-id])
+     [:button {:on-click (fn [e]
+                           (dispatch [:log-out!]))}
+      "Log Out"]]]
    [pages/current-page-view]])
 
 (defn login-view []

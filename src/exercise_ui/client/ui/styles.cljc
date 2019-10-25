@@ -32,6 +32,22 @@
     (codemirror)]
 
    [:body
+    {:margin 0
+     :padding 0}
+
+    [:.header
+     {:display "flex"
+      :justify-content "space-between"}
+
+     [:nav
+
+      [:a
+       {:display "inline-block"
+        :padding "0.25em 0"
+        :margin "0 0.25em"}
+
+       ["&[target]"
+        {:font-style "italic"}]]]]
 
     [:.page
 
