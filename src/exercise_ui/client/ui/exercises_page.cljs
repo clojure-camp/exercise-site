@@ -1,4 +1,4 @@
-(ns exercise-ui.client.ui.home-page
+(ns exercise-ui.client.ui.exercises-page
   (:require
     [clojure.string :as string]
     [re-frame.core :refer [subscribe]]
@@ -60,9 +60,9 @@
            [:td]
            (interpose " " (map display-teachable (exercise :uses))))]))]])
 
-(defn home-page-view [params]
+(defn exercises-page-view [params]
   (let [grouped-exercises (group-by :category @(subscribe [:exercises]))]
-    [:div.page.home
+    [:div.page.exercises
      [:h2 "Learning Functions"]
      [exercises-view (:learning-functions grouped-exercises)]
      [:h2 "Starter Exercises"]

@@ -8,8 +8,8 @@
 
 (defn main-view []
   [:div
-   [:a {:href (path-for :home)} "Home"]
-   [:a {:href (path-for :pastebin)} "Pastebin"]
+   [:a {:href (path-for :exercises)} "exercises"]
+   [:a {:href (path-for :pastebin)} "pastebin"]
    [:a {:href "https://www.clojuredocs.org"
         :target "_blank"
         :rel "noopener noreferrer"}

@@ -1,13 +1,13 @@
 (ns exercise-ui.client.pages
   (:require
     [bloom.commons.pages]
-    [exercise-ui.client.ui.home-page :refer [home-page-view]]
+    [exercise-ui.client.ui.exercises-page :refer [exercises-page-view]]
     [exercise-ui.client.ui.pastebin-page :refer [pastebin-page-view]]
     [exercise-ui.client.ui.exercise-page :refer [exercise-page-view]]))
 
 (def pages
-  [{:id :home
-    :view (fn [data] [home-page-view])
+  [{:id :exercises
+    :view (fn [data] [exercises-page-view])
     :path "/"}
 
    {:id :exercise

@@ -24,7 +24,7 @@
 
    [:body
     [:.page
-     [:&.home
+     [:&.exercises
       [:>a
        {:display "block"}]
 
