@@ -11,6 +11,15 @@
    :box-sizing "border-box"
    :padding "0.5em"})
 
+(defn >teachable []
+  [:>.teachable
+
+   [:&.concept
+    {:font-style "italic"}]
+
+   [:&.function
+    {:font-family "monospace"}]])
+
 (defn app []
   [
 
@@ -23,24 +32,49 @@
     (codemirror)]
 
    [:body
+
     [:.page
+
      [:&.exercises
+
       [:>a
        {:display "block"}]
 
-      [:table.exercises
-       ["tr:nth-child(even)"
-        {:background-color "#eee"}]]]
+      [:>table.exercises
 
-     [:.teachable
-      [:&.concept
-       {:font-style "italic"}]
-      [:&.function
-       {:font-family "monospace"}]]
+       [:>tbody
+
+        [:>tr
+
+         ["&:nth-child(even)"
+          {:background-color "#eee"}]
+
+         [:>td
+
+          (>teachable)]]]]]
 
      [:&.exercise
-      [:details.solution
+
+      [:>.functions
+
+       (>teachable)
+
+       [:>.function
+        {:display "block"}
+
+        [:&.taught
+         {:font-weight "bold"}]
+
+        [:&.used]]]
+
+      [:>.related
+       [:>a
+        {:display "block"}]]
+
+      [:>details.solution
        {:margin-top "1em"}
+
        [:>summary
+
         [:>h2
          {:display "inline"}]]]]]]])

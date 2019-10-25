@@ -3,25 +3,8 @@
     [clojure.string :as string]
     [re-frame.core :refer [subscribe]]
     [bloom.commons.pages :refer [path-for]]
-    [exercise-ui.client.ui.exercise-status :refer [exercise-status-view]]))
-
-(defn docs-link
-  [fn-symbol]
-  (str "https://clojuredocs.org/"
-       (if-let [fn-ns (namespace fn-symbol)]
-         fn-ns
-         "clojure.core")
-       "/" (name fn-symbol)))
-
-(defn display-teachable
-  [teachable]
-  (cond
-    (keyword? teachable)
-    [:span.teachable.concept (name teachable)]
-    (symbol? teachable)
-    [:a.teachable.function {:href (docs-link teachable)} (str teachable)]
-    :else
-    [:span.teachable.function (str teachable)]))
+    [exercise-ui.client.ui.exercise-status :refer [exercise-status-view]]
+    [exercise-ui.client.ui.teachable :refer [teachable-view]]))
 
 (def difficulty->n {:low 1 :mid 2 :high 3})
 
@@ -39,8 +22,7 @@
      [:th "Status"]
      [:th]
      [:th "Exercise"]
-     [:th "Teaches"]
-     [:th "Uses"]]]
+     [:th "Teaches"]]]
    [:tbody
     (doall
       (for [exercise (sort-exercises exercises)]
@@ -55,10 +37,7 @@
            (exercise :title)]]
          (into
            [:td]
-           (interpose " " (map display-teachable (exercise :teaches))))
-         (into
-           [:td]
-           (interpose " " (map display-teachable (exercise :uses))))]))]])
+           (interpose " " (map teachable-view (exercise :teaches))))]))]])
 
 (defn exercises-page-view [params]
   (let [grouped-exercises (group-by :category @(subscribe [:exercises]))]

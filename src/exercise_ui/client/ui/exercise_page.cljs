@@ -5,7 +5,8 @@
     [cljsjs.codemirror]
     [cljsjs.codemirror.mode.clojure]
     [re-frame.core :refer [subscribe dispatch]]
-    [zprint.core :refer [zprint zprint-str]]))
+    [zprint.core :refer [zprint zprint-str]]
+    [exercise-ui.client.ui.teachable :refer [teachable-view]]))
 
 (defn format-code [code]
   (if (nil? code)
@@ -60,19 +61,28 @@
           :reviewed
           [:div "Reviewed"])]
 
-       (into [:div.instructions]
-             (for [node (exercise :instructions)]
-               (if (or (not (string? node))
-                       (and
-                         (string/starts-with? node "(")
-                         (string/ends-with? node ")")))
-                 [code-view node "code" true]
-                 [:p node])))
+       [:div.instructions
+        (into [:<>]
+              (for [node (exercise :instructions)]
+                (if (or (not (string? node))
+                        (and
+                          (string/starts-with? node "(")
+                          (string/ends-with? node ")")))
+                  [code-view node "code" true]
+                  [:p node])))]
 
        (when (seq (exercise :tests))
          [:div.tests
           [:h2 "Tests"]
           [code-view (exercise :tests) "code"]])
+
+       [:div.functions
+        (into [:<>]
+              (for [f (filter symbol? (exercise :teaches))]
+                [teachable-view f "taught"]))
+        (into [:<>]
+              (for [f (filter symbol? (exercise :uses))]
+                [teachable-view f "used"]))]
 
        (when (exercise :solution)
          [:details.solution
