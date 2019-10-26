@@ -29,7 +29,7 @@
     (if (empty? path)
       "overall"
       path)
-    (if (coll? pred)
+    (if (seq? pred)
       (let [[f parms [contains-call arg k]] pred]
         (if (and (= f 'clojure.core/fn)
                  (= parms '[%])
