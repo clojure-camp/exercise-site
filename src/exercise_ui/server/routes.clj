@@ -1,12 +1,23 @@
 (ns exercise-ui.server.routes
   (:require
+    [clojure.java.io :as io]
     [exercise-ui.server.db :as db]
     [exercise-ui.utils :as utils]))
 
 (defonce pastebin (atom ""))
 
 (def routes
-  [[[:get "/api/exercises"]
+  [[[:get "/css/codemirror.css"]
+    (fn [request]
+      {:headers {"Content-Type" "text/css"}
+       :body (slurp (io/resource "cljsjs/codemirror/production/codemirror.min.css"))})]
+
+   [[:get "/css/railscasts.css"]
+    (fn [request]
+      {:headers {"Content-Type" "text/css"}
+       :body (slurp (io/resource "cljsjs/codemirror/common/theme/railscasts.css"))})]
+
+   [[:get "/api/exercises"]
     (fn [request]
       {:status 200
        :body (db/get-exercises)})]

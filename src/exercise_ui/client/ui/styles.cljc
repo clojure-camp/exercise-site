@@ -24,9 +24,8 @@
   [
 
    (at-import "https://fonts.googleapis.com/css?family=Source+Code+Pro")
-   (at-import
-     "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.44.0/codemirror.min.css")
-   (at-import "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.44.0/theme/railscasts.min.css")
+   (at-import "/css/codemirror.css")
+   (at-import "/css/railscasts.css")
 
    [:.CodeMirror
     (codemirror)]
