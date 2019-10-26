@@ -4,7 +4,7 @@
                  [io.bloomventures/omni "0.21.6"]
                  [io.bloomventures/commons "0.5.1"]
                  [io.bloomventures/decant "3.0.0"]
-                 [cljsjs/codemirror "5.24.0-1"]
+                 [cljsjs/codemirror "5.44.0-1"]
                  [re-frame "0.10.9"]
                  [rewrite-clj "0.6.1"]
                  [reagent "0.8.1"]

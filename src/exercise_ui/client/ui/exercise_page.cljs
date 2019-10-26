@@ -2,8 +2,8 @@
   (:require
     [clojure.string :as string]
     [bloom.commons.pages :refer [path-for]]
-    [cljsjs.codemirror]
     [cljsjs.codemirror.mode.clojure]
+    [cljsjs.codemirror.addon.runmode.runmode-standalone]
     [re-frame.core :refer [subscribe dispatch]]
     [zprint.core :refer [zprint zprint-str]]
     [exercise-ui.client.ui.teachable :refer [teachable-view]]))
