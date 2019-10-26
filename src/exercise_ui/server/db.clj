@@ -2,11 +2,9 @@
   (:require
     [clojure.java.io :as io]
     [clojure.string :as string]
+    [bloom.commons.env :as env]
     [rewrite-clj.parser :as rw.parser]
     [rewrite-clj.node :as rw.node]))
-
-(def user-data-path "./data/users")
-(def exercise-data-path "./data/exercises")
 
 (defn collapse-leading-whitespace [s]
   (string/replace s #"\n[ ]+" "\n  "))
@@ -40,7 +38,7 @@
        (into {})))
 
 (defn get-exercises []
-  (->> (file-seq (io/file exercise-data-path))
+  (->> (file-seq (io/file (env/get :exercise-data-path)))
        (filter (fn [f]
                  (and (.isFile f)
                       (string/ends-with? (.getName f) ".edn"))))
@@ -50,7 +48,7 @@
                   (assoc :id (string/replace file-name #"\.edn$" "")))))))
 
 (defn user-file [user-id]
-  (io/file user-data-path (str user-id ".edn")))
+  (io/file (env/get :user-data-path) (str user-id ".edn")))
 
 (defn get-user [user-id]
   (let [f (user-file user-id)]
