@@ -61,7 +61,12 @@
   [user-id exercise-id status]
   (spit (user-file user-id)
         (-> (get-user user-id)
-            (assoc-in [:progress exercise-id] status))))
+            (assoc-in [:progress exercise-id :status] status)
+            (cond->
+              (= :started status)
+              (assoc-in [:progress exercise-id :started-at] (java.util.Date.))
+              (= :completed status)
+              (assoc-in [:progress exercise-id :completed-at] (java.util.Date.))))))
 
 (defn users-progress
   []

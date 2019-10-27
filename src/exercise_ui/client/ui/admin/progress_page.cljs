@@ -1,5 +1,6 @@
 (ns exercise-ui.client.ui.admin.progress-page
   (:require
+   [clojure.string :as string]
    [re-frame.core :refer [dispatch subscribe]]
    [bloom.commons.pages :refer [path-for]]
    [exercise-ui.client.ui.exercises-page :refer [sort-exercises]]))
@@ -13,6 +14,36 @@
                    :learning-functions 0
                    :starter 1
                    :synthesis 2)))))
+
+(defn nice-date
+  [date]
+  (let [now (js/Date.)]
+    (if (= (.toDateString date) (.toDateString now))
+      (->> (.toTimeString date)
+          (re-matches #"^(\d{1,2}:\d{2}).*$")
+          second)
+      (.toLocaleString date))))
+
+(defn nice-interval
+  [start finish]
+  (let [diff (- (.getTime finish) (.getTime start))
+        time (cond
+               (< diff (* 60 1000)) (str (Math/round (/ diff 1000)) " second")
+               (< diff (* 60 60 1000)) (str (Math/round (/ diff (* 1000 60))) " minute")
+               :else (str (/ (Math/round (/ (* 10 diff) (* 1000 60 60))) 10) " hour"))]
+    (if (string/starts-with? time "1 ")
+      time
+      (str time "s"))))
+
+(defn status-view
+  [progress]
+  (when progress
+    (let [{:keys [status started-at completed-at]} progress]
+      (case status
+        :started
+        [:span "started at " (nice-date started-at)]
+        :completed
+        [:span "completed in " (nice-interval started-at completed-at)]))))
 
 (defn progress-page-view
   []
@@ -41,4 +72,4 @@
               (for [user users]
                 ^{:key (user :user-id)}
                 [:td.status
-                 (get-in user [:progress id])])]))]])]))
+                 [status-view (get-in user [:progress id])]])]))]])]))

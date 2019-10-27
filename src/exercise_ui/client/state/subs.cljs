@@ -24,7 +24,7 @@
 
 (reg-sub :exercise-status
   (fn [db [_ exercise-id]]
-    (get-in db [:user :progress exercise-id])))
+    (get-in db [:user :progress exercise-id :status])))
 
 (reg-sub :example
   (fn [db _]

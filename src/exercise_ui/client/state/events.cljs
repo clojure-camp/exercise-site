@@ -79,7 +79,7 @@
 
 (reg-event-fx :set-exercise-status!
   (fn [{db :db} [_ exercise-id status]]
-    {:db (assoc-in db [:user :progress exercise-id] status)
+    {:db (assoc-in db [:user :progress exercise-id :status] status)
      :ajax {:uri "/api/progress"
             :method :put
             :params {:exercise-id exercise-id
