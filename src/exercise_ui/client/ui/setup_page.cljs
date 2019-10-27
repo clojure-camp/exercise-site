@@ -59,5 +59,6 @@ Set Up a New Project
   Somewhere in `core.clj` write `(+ 1 2)` then evaluate it by Ctrl+Alt+C V")
 
 (defn setup-page-view []
-  (into [:div {:style {:white-space "pre"}}]
-        (parse-backticks instructions)))
+  [:div.setup.page {:style {:white-space "pre"}}
+   (into [:<>
+          (parse-backticks instructions)])])
