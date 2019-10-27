@@ -58,7 +58,7 @@
               (for [f (filter symbol? (exercise :uses))]
                 [teachable-view f "used"]))]
 
-       (when (exercise :solution)
+       (when (and (exercise :solution) (= exercise-status :completed))
          [:details.solution
           [:summary [:h2 "Solution"]]
           [:div.solution
