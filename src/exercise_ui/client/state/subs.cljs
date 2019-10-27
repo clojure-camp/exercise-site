@@ -20,7 +20,7 @@
 
 (reg-sub :user-id
   (fn [db _]
-    (get-in db [:user :id])))
+    (get-in db [:user :user-id])))
 
 (reg-sub :exercise-status
   (fn [db [_ exercise-id]]
