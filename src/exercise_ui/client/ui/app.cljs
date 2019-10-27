@@ -1,9 +1,10 @@
 (ns exercise-ui.client.ui.app
   (:require
-    [reagent.core :as r]
+    [clojure.string :as string]
     [bloom.commons.pages :refer [path-for]]
     [bloom.commons.fontawesome :as fa]
     [re-frame.core :refer [dispatch subscribe]]
+    [reagent.core :as r]
     [exercise-ui.client.pages :as pages]
     [exercise-ui.utils :as utils]))
 
@@ -67,7 +68,8 @@
         {:on-submit
          (fn [e]
            (.preventDefault e)
-           (dispatch [:log-in! @user-id]))}
+           (when (not (string/blank? @user-id))
+             (dispatch [:log-in! @user-id])))}
         [:input {:type "text"
                  :on-change (fn [e]
                               (reset! user-id (-> (.. e -target -value)
