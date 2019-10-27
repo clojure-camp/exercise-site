@@ -13,7 +13,8 @@
    :font-size "0.8em"
    :width "100%"
    :box-sizing "border-box"
-   :padding "1em"})
+   :padding "1em"
+   :overflow "auto"})
 
 (defn >status []
   [:>.status
@@ -160,7 +161,11 @@
 
      [:&.exercise
 
+      {:max-width "40em"}
+
       [:>header
+       {:display "flex"
+        :align-items "center"}
 
        (>status)
 
@@ -169,7 +174,22 @@
          :margin-right "0.25em"}]
 
        [:>h1
-        {:display "inline-block"}]]
+        {:margin 0}]]
+
+      [:>.tests
+
+       ]
+
+      [:>.tests>header
+       :>.solution>header
+       {:background color-accent
+        :color color-text-light
+        :padding "0.75em 1em"}
+
+       [:>h2
+        {:margin 0
+         :font-family "Montserrat"
+         :font-size "1em"}]]
 
       [:>.functions
 
@@ -192,8 +212,17 @@
          {:vertical-align "middle"
           :margin-right "0.25em"}]]]
 
-      [:>details.solution
+      [:>.solution
        {:margin-top "1em"}
+
+       [:>header
+        {:display "flex"
+         :align-items "center"
+         :cursor "pointer"}
+
+        [:>svg
+         {:margin-left "0.25em"
+          :height "1.25em"}]]
 
        [:>summary
 

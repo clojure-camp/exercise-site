@@ -1,12 +1,27 @@
 (ns exercise-ui.client.ui.exercise-page
   (:require
     [clojure.string :as string]
+    [bloom.commons.fontawesome :as fa]
     [bloom.commons.pages :refer [path-for]]
+    [reagent.core :as r]
     [re-frame.core :refer [subscribe dispatch]]
     [exercise-ui.utils :refer [parse-backticks]]
     [exercise-ui.client.ui.code-view :refer [code-view]]
     [exercise-ui.client.ui.exercise-status :refer [exercise-status-view]]
     [exercise-ui.client.ui.teachable :refer [teachable-view]]))
+
+(defn solution-view [exercise]
+  (let [open? (r/atom false)]
+    (fn []
+      [:div.solution
+       [:header {:on-click (fn []
+                             (swap! open? not))}
+        [:h2 "example solution"]
+        (if @open?
+          [fa/fa-chevron-down-solid]
+          [fa/fa-chevron-right-solid])]
+       (when @open?
+         [code-view (exercise :solution) "code"])])))
 
 (defn exercise-page-view [exercise-id]
   (when-let [exercise @(subscribe [:exercise exercise-id])]
@@ -50,7 +65,7 @@
 
        (when (seq (exercise :tests))
          [:div.tests
-          [:h2 "Tests"]
+          [:header [:h2 "example tests"]]
           [code-view (exercise :tests) "code"]])
 
        [:div.functions
@@ -62,10 +77,7 @@
                 [teachable-view f "used"]))]
 
        (when (and (exercise :solution) (= exercise-status :completed))
-         [:details.solution
-          [:summary [:h2 "Solution"]]
-          [:div.solution
-           [code-view (exercise :solution) "code"]]])
+         [solution-view exercise])
 
        (when (exercise :related)
          [:div.related
