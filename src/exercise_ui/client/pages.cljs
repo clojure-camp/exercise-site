@@ -5,7 +5,8 @@
     [exercise-ui.client.ui.pastebin-page :refer [pastebin-page-view]]
     [exercise-ui.client.ui.exercise-page :refer [exercise-page-view]]
     [exercise-ui.client.ui.setup-page :refer [setup-page-view]]
-    [exercise-ui.client.ui.shortcuts-page :refer [shortcuts-page-view]]))
+    [exercise-ui.client.ui.shortcuts-page :refer [shortcuts-page-view]]
+    [exercise-ui.client.ui.reference-example-page :refer [reference-example-page-view]]))
 
 (def pages
   [{:id :exercises
@@ -31,6 +32,11 @@
    {:id :shortcuts
     :view (fn [data]
             [shortcuts-page-view])
-    :path "/instructions/shortcuts"}])
+    :path "/instructions/shortcuts"}
+
+   {:id :reference-example
+    :view (fn [data]
+            [reference-example-page-view])
+    :path "/reference-example"}])
 
 (def current-page-view bloom.commons.pages/current-page-view)

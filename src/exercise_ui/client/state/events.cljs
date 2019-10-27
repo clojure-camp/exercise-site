@@ -1,5 +1,6 @@
 (ns exercise-ui.client.state.events
   (:require
+    [ajax.core]
     [re-frame.core :refer [reg-event-fx reg-fx dispatch]]
     [bloom.omni.fx.ajax :as ajax]
     [bloom.commons.pages]
@@ -16,9 +17,11 @@
     (bloom.commons.pages/initialize! pages)
     {:db {:exercises {}
           :user nil
+          :example ""
           :pastebin ""}
      :dispatch-n [[:-check-session!]
-                  [:-fetch-exercises!]]}))
+                  [:-fetch-exercises!]
+                  [:-fetch-example!]]}))
 
 (reg-event-fx :-check-session!
   (fn [_ _]
@@ -27,6 +30,19 @@
             :on-success (fn [data]
                           (dispatch [:-store-user! (data :user)]))
             :on-error (fn [_])}}))
+
+(reg-event-fx :-fetch-example!
+  (fn [_ _]
+    {:ajax {:uri "https://raw.githubusercontent.com/cognitory/clojure-exercises/master/examples/example_app_state.clj"
+            :method :get
+            :response-format (ajax.core/text-response-format)
+            :on-success (fn [data]
+                          (dispatch [:-store-example! data]))
+            :on-error (fn [_])}}))
+
+(reg-event-fx :-store-example!
+  (fn [{db :db} [_ example]]
+    {:db (assoc db :example example)}))
 
 (reg-event-fx :-fetch-exercises!
   (fn [_ _]

@@ -14,6 +14,7 @@
      [:a {:href (path-for :setup)} "setup"]
      [:a {:href (path-for :shortcuts)} "shortcuts"]
      [:a {:href (path-for :pastebin)} "pastebin"]
+     [:a {:href (path-for :reference-example)} "reference example"]
      [:a {:href "https://www.clojuredocs.org"
           :target "_blank"
           :rel "noopener noreferrer"}
