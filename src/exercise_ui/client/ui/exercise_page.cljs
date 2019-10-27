@@ -2,36 +2,9 @@
   (:require
     [clojure.string :as string]
     [bloom.commons.pages :refer [path-for]]
-    [cljsjs.codemirror.mode.clojure]
-    [cljsjs.codemirror.addon.runmode.runmode-standalone]
     [re-frame.core :refer [subscribe dispatch]]
-    [zprint.core :refer [zprint zprint-str]]
+    [exercise-ui.client.ui.code-view :refer [code-view]]
     [exercise-ui.client.ui.teachable :refer [teachable-view]]))
-
-(defn format-code [code]
-  (if (nil? code)
-    "nil"
-    (zprint-str code 50 {:style :community
-                         :binding {:force-nl? true}
-                         :parse-string? (string? code)
-                         :map {:comma? false
-                               :force-nl? true}
-                         :fn-map {"if" :arg1-force-nl
-                                  "when" :arg1-force-nl
-                                  "fn" :binding}})))
-
-(defn code-view
-  ([code class-name] (code-view code class-name false))
-  ([code class-name fragment?]
-   [:div {:class (string/join " "  ["CodeMirror" "cm-s-railscasts" class-name])
-          :ref (fn [el]
-                 (when (not (nil? el))
-                   (js/CodeMirror.runMode
-                     (if (and (not fragment?) (vector? code))
-                       (string/join "\n\n" (map format-code code))
-                       (format-code code))
-                     "clojure"
-                     el)))}]))
 
 (defn exercise-page-view [exercise-id]
   (when-let [exercise @(subscribe [:exercise exercise-id])]
