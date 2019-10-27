@@ -55,7 +55,7 @@
      [:h1 "Progress"]
      [:button {:on-click (fn [_] (dispatch [:admin/load-progress!]))} "Refresh"]
      (let [exercises (admin-sort-exercises @(subscribe [:exercises]))
-           users @(subscribe [:admin/progress])]
+           users (sort-by :user-id @(subscribe [:admin/progress]))]
        [:table.user-progress
         [:thead
          [:tr
@@ -74,4 +74,12 @@
               (for [user users]
                 ^{:key (user :user-id)}
                 [:td.status
-                 [status-view (get-in user [:progress id])]])]))]])]))
+                 [status-view (get-in user [:progress id])]
+                 (when (= :completed (get-in user [:progress id :status]))
+                   [:button.review
+                    {:title "Mark reviewed"
+                     :on-click (fn [_]
+                                 (dispatch [:admin/mark-reviewed!
+                                            (user :user-id)
+                                            id]))}
+                    "📋"] )])]))]])]))

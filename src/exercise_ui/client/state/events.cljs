@@ -119,3 +119,14 @@
   :admin/-store-progress!
   (fn [{db :db} [_ data]]
     {:db (assoc-in db [:admin :progress] data)}))
+
+(reg-event-fx
+  :admin/mark-reviewed!
+  (fn [_ [_ user-id exercise-id]]
+    {:ajax {:uri "/api/admin/progress"
+            :method :post
+            :params {:user-id user-id
+                     :exercise-id exercise-id}
+            :on-success (fn [new-data]
+                           (dispatch [:admin/-store-progress! new-data]))
+            :on-error (fn [_])}}))

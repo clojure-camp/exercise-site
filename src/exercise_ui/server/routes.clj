@@ -65,4 +65,11 @@
    [[:get "/api/admin/progress"]
     (fn [request]
       {:status 200
-       :body (db/users-progress)})]])
+       :body (db/users-progress)})]
+
+   [[:post "/api/admin/progress"]
+    (fn [{{:keys [user-id exercise-id]} :params :as request}]
+      (db/set-exercise-status! user-id exercise-id :reviewed)
+      {:status 200
+       :body (db/users-progress)})]
+   ])
