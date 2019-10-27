@@ -5,13 +5,16 @@
     [re-frame.core :refer [subscribe dispatch]]
     [exercise-ui.utils :refer [parse-backticks]]
     [exercise-ui.client.ui.code-view :refer [code-view]]
+    [exercise-ui.client.ui.exercise-status :refer [exercise-status-view]]
     [exercise-ui.client.ui.teachable :refer [teachable-view]]))
 
 (defn exercise-page-view [exercise-id]
   (when-let [exercise @(subscribe [:exercise exercise-id])]
     (let [exercise-status @(subscribe [:exercise-status exercise-id])]
       [:div.page.exercise
-       [:h1 (exercise :title)]
+       [:header
+        [exercise-status-view (exercise :id)]
+        [:h1 (exercise :title)]]
 
        [:div.status
         (case exercise-status
@@ -69,4 +72,6 @@
           [:h2 "Related"]
           (for [id (exercise :related)]
             ^{:key id}
-            [:a {:href (path-for :exercise {:exercise-id id})} id])])])))
+            [:div.exercise
+             [exercise-status-view id]
+             [:a {:href (path-for :exercise {:exercise-id id})} id]])])])))

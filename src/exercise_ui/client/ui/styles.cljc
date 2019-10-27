@@ -13,11 +13,12 @@
    :font-size "0.8em"
    :width "100%"
    :box-sizing "border-box"
-   :padding "0.5em"})
+   :padding "1em"})
 
 (defn >status []
   [:>.status
-   {:width "1em"
+   {:display "inline-block"
+    :width "1em"
     :color color-accent}
 
    [:&.started]
@@ -159,6 +160,17 @@
 
      [:&.exercise
 
+      [:>header
+
+       (>status)
+
+       [:>.status
+        {:font-size "1.5em"
+         :margin-right "0.25em"}]
+
+       [:>h1
+        {:display "inline-block"}]]
+
       [:>.functions
 
        (>teachable)
@@ -172,8 +184,13 @@
         [:&.used]]]
 
       [:>.related
-       [:>a
-        {:display "block"}]]
+
+       [:>.exercise
+
+        (>status)
+        [:>.status
+         {:vertical-align "middle"
+          :margin-right "0.25em"}]]]
 
       [:>details.solution
        {:margin-top "1em"}
