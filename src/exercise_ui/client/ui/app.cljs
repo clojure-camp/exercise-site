@@ -11,6 +11,7 @@
    [:div.header
     [:nav
      [:a {:href (path-for :exercises)} "exercises"]
+     [:a {:href (path-for :setup)} "setup"]
      [:a {:href (path-for :pastebin)} "pastebin"]
      [:a {:href "https://www.clojuredocs.org"
           :target "_blank"

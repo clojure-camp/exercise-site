@@ -3,7 +3,8 @@
     [bloom.commons.pages]
     [exercise-ui.client.ui.exercises-page :refer [exercises-page-view]]
     [exercise-ui.client.ui.pastebin-page :refer [pastebin-page-view]]
-    [exercise-ui.client.ui.exercise-page :refer [exercise-page-view]]))
+    [exercise-ui.client.ui.exercise-page :refer [exercise-page-view]]
+    [exercise-ui.client.ui.setup-page :refer [setup-page-view]]))
 
 (def pages
   [{:id :exercises
@@ -19,6 +20,11 @@
    {:id :pastebin
     :view (fn [data]
             [pastebin-page-view])
-    :path "/pastebin"}])
+    :path "/pastebin"}
+
+   {:id :setup
+    :view (fn [data]
+            [setup-page-view])
+    :path "/instructions/setup"}])
 
 (def current-page-view bloom.commons.pages/current-page-view)
