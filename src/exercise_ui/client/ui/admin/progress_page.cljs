@@ -1,6 +1,18 @@
 (ns exercise-ui.client.ui.admin.progress-page
   (:require
-   [re-frame.core :refer [dispatch subscribe]]))
+   [re-frame.core :refer [dispatch subscribe]]
+   [bloom.commons.pages :refer [path-for]]
+   [exercise-ui.client.ui.exercises-page :refer [sort-exercises]]))
+
+(defn admin-sort-exercises
+  [exercises]
+  (->> exercises
+      sort-exercises
+      (sort-by (fn [ex]
+                 (case (:category ex)
+                   :learning-functions 0
+                   :starter 1
+                   :synthesis 2)))))
 
 (defn progress-page-view
   []
@@ -9,7 +21,7 @@
     [:div.page.admin-progress
      [:h1 "Progress"]
      [:button {:on-click (fn [_] (dispatch [:admin/load-progress!]))} "Refresh"]
-     (let [exercises @(subscribe [:exercises])
+     (let [exercises (admin-sort-exercises @(subscribe [:exercises]))
            users @(subscribe [:admin/progress])]
        [:table.user-progress
         [:thead
@@ -20,11 +32,13 @@
                    [:th (user :user-id)]))]]
         [:tbody
          (doall
-           (for [exercise exercises]
-             ^{:key (exercise :id)}
+           (for [{:keys [id] :as exercise} exercises]
+             ^{:key id}
              [:tr
-              [:td.exercise (exercise :id)]
+              [:td.exercise
+               [:a {:href (path-for :exercise {:exercise-id id})}
+                (exercise :title)]]
               (for [user users]
                 ^{:key (user :user-id)}
                 [:td.status
-                 (get-in user [:progress (exercise :id)])])]))]])]))
+                 (get-in user [:progress id])])]))]])]))
