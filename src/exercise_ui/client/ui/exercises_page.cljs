@@ -1,6 +1,7 @@
 (ns exercise-ui.client.ui.exercises-page
   (:require
     [clojure.string :as string]
+    [clojure.set :as set]
     [bloom.commons.pages :refer [path-for]]
     [re-frame.core :refer [subscribe]]
     [exercise-ui.client.ui.exercise-status :refer [exercise-status-view]]
@@ -8,11 +9,63 @@
 
 (def difficulty->n {:low 1 :mid 2 :high 3})
 
+(defn intersects?
+  [a b]
+  (some? (seq (set/intersection a b))))
+
+(defn depends?
+  "Does exercise `a` depend on exercise `b` being learnt first? If
+  both exercises use things the other teaches, don't count that as a
+  dependency."
+  [a b]
+  (and (intersects? (:uses a) (:teaches b))
+       (not (intersects? (:teaches a) (:uses b)))))
+
+(defn group-dependencies
+  [exercises]
+  (map
+    (fn [exercise]
+      (assoc exercise
+             :dependencies (set (map :id (filter (partial depends? exercise) exercises)))))
+    exercises))
+
+(defn first-index-where
+  [f v]
+  (loop [i 0]
+    (cond
+      (= i (count v)) nil
+      (f (get v i)) i
+      :else (recur (inc i)))))
+
+(defn sort-by-deps
+  [exercises]
+  (loop [exercises (vec exercises)
+         i 0]
+    (cond
+      (= i (count exercises))
+      exercises
+
+      (empty? (:dependencies (get exercises i)))
+      (recur exercises (inc i))
+
+      :else
+      (let [exercise (get exercises i)
+            prev (subvec exercises 0 i)]
+        (if-let [idx (first-index-where (fn [ex] (contains? (:dependencies ex) (:id exercise))) prev)]
+          (recur (into (conj (subvec exercises 0 idx) exercise)
+                       (into (subvec exercises idx i)
+                             (subvec exercises (inc i))))
+                 (inc idx))
+          (recur exercises (inc i)))))))
+
 (defn sort-exercises
   [exercises]
   (->> exercises
       (sort-by :title)
-      (sort-by (comp difficulty->n :difficulty))))
+      (sort-by (comp difficulty->n :difficulty))
+      group-dependencies
+      (sort-by (comp count :dependencies))
+      sort-by-deps))
 
 (defn exercises-view
   [exercises]
