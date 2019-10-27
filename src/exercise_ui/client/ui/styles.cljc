@@ -2,6 +2,10 @@
   (:require
     [garden.stylesheet :refer [at-import at-media]]))
 
+(def color-accent "#2E4057")
+(def color-accent-light "#048BA8")
+(def color-text-light "#FFF")
+
 (defn codemirror []
   {:white-space "pre"
    :height "inherit"
@@ -11,6 +15,15 @@
    :box-sizing "border-box"
    :padding "0.5em"})
 
+(defn >status []
+  [:>.status
+   {:width "1em"
+    :color color-accent}
+
+   [:&.started]
+   [:&.completed]
+   [:&.reviewed]])
+
 (defn >teachable []
   [:>.teachable
 
@@ -19,10 +32,6 @@
 
    [:&.function
     {:font-family "monospace"}]])
-
-(def color-accent "#2E4057")
-(def color-accent-light "#048BA8")
-(def color-text-light "#FFF")
 
 (defn app []
   [
@@ -142,7 +151,9 @@
           [:>td
            {:padding "0.25em"}
 
-           (>teachable)]]]]]]
+           (>teachable)
+
+           (>status)]]]]]]
 
      ;; exercise
 

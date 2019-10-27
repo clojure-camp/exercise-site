@@ -1,8 +1,8 @@
 (ns exercise-ui.client.ui.exercises-page
   (:require
     [clojure.string :as string]
-    [re-frame.core :refer [subscribe]]
     [bloom.commons.pages :refer [path-for]]
+    [re-frame.core :refer [subscribe]]
     [exercise-ui.client.ui.exercise-status :refer [exercise-status-view]]
     [exercise-ui.client.ui.teachable :refer [teachable-view]]))
 
@@ -19,10 +19,10 @@
   [:table.exercises
    [:thead
     [:tr
-     [:th "Status"]
      [:th]
      [:th "Exercise"]
-     [:th "Teaches"]]]
+     [:th "Teaches"]
+     [:th]]]
    [:tbody
     (doall
       (for [exercise (sort-exercises exercises)]
@@ -30,14 +30,14 @@
         [:tr.exercise
          [:td.status
           [exercise-status-view (exercise :id)]]
-         [:td.difficulty
-          (repeat (difficulty->n (exercise :difficulty)) "★")]
          [:td
           [:a {:href (path-for :exercise {:exercise-id (exercise :id)})}
            (exercise :title)]]
-         (into
-           [:td]
-           (interpose " " (map teachable-view (exercise :teaches))))]))]])
+         [:td
+          (into [:<>]
+                (interpose " " (map teachable-view (exercise :teaches))))]
+         [:td.difficulty
+          (repeat (difficulty->n (exercise :difficulty)) "★")]]))]])
 
 (defn exercises-page-view [params]
   (let [grouped-exercises (group-by :category @(subscribe [:exercises]))]
