@@ -175,7 +175,7 @@
        {:display "flex"
         :align-items "center"
         :justify-content "space-between"
-        :margin-bottom "1em"}
+        :margin "2em 0 1em"}
 
        (>status)
 
