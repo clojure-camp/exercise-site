@@ -33,7 +33,15 @@
     {:font-style "italic"}]
 
    [:&.function
-    {:font-family "monospace"}]])
+    {:font-family "monospace"}]
+
+   {:color "black"}
+
+   ["&[href]"
+    {:text-decoration "none"}
+
+    [:&:hover
+     {:text-decoration "underline"}]]])
 
 (defn app []
   [
@@ -165,7 +173,9 @@
 
       [:>header
        {:display "flex"
-        :align-items "center"}
+        :align-items "center"
+        :justify-content "space-between"
+        :margin-bottom "1em"}
 
        (>status)
 
@@ -174,59 +184,105 @@
          :margin-right "0.25em"}]
 
        [:>h1
-        {:margin 0}]]
+        {:margin 0}]
+
+       [:>.gap
+        {:flex-grow 2}]
+
+       [:>button.action
+        {:background "#3cd1e3"
+         :font-size "1em"
+         :border-radius "0.2em"
+         :padding "0.35em 0.5em"
+         :font-family "Montserrat"
+         :display "flex"
+         :cursor "pointer"
+         :align-items "center"
+         :border-top "none"
+         :border-left "none"
+         :border-bottom "2px solid #106670"
+         :border-right "2px solid #106670"}
+
+        [:>svg
+         {:width "1em"
+          :height "1em"
+          :margin-left "0.25em"}]]]
 
       [:>section
-       {:margin "0 0 2em"}]
+       {:margin "0 0 2em"
+        :box-shadow "1px 1px 2px #b5b5b5"}
 
+       [:>header
+        {:background color-accent
+         :color color-text-light
+         :padding "0.75em 1em"}
 
-      [:>.tests>header
-       :>.solution>header
-       {:background color-accent
-        :color color-text-light
-        :padding "0.75em 1em"}
+        [:>h2
+         {:margin 0
+          :font-family "Montserrat"
+          :font-size "1em"}]]]
 
-       [:>h2
-        {:margin 0
-         :font-family "Montserrat"
-         :font-size "1em"}]]
+      [:>section.instructions
+       {:background "#eee"
+        :padding "1em"
+        :border-left [["0.5em" "solid" color-accent]]}
 
-      [:>.functions
+       [:p
+        {:margin "0 0 1em"}]
 
-       (>teachable)
-
-       [:>.function
-        {:display "block"}
-
-        [:&.taught
-         {:font-weight "bold"}]
-
-        [:&.used]]]
+       ["p:last-child"
+        {:margin-bottom 0}]]
 
       [:>.related
+       {:display "flex"
+        :justify-content "flex-start"
+        :align-items "top"}
 
-       [:>.exercise
+       [:>h2
+        {:display "inline"
+         :font-size "1em"
+         :font-family "Montserrat"
+         :margin "0"}]
 
-        (>status)
-        [:>.status
-         {:vertical-align "middle"
-          :margin-right "0.25em"}]]]
+       [:>.exercises
+        {:display "inline-block"
+         :margin-left "0.5em"}
 
-      [:>.solution
+        [:>.exercise
+         (>status)
+         [:>.status
+          {:vertical-align "middle"
+           :margin-right "0.25em"}]]]]
+
+      [:>section.functions
+
+       [:>.body
+        {:padding "1em"
+         :background "#2b2b2b"}
+
+        (>teachable)
+
+        [:>.teachable
+         {:color "white"}]
+
+        [:>.function
+
+         [:&.teaches
+          {:font-weight "bold"}]
+
+         [:&.uses
+          {:color "#CCC"}]]]]
+
+      [:>section.solution
 
        [:>header
         {:display "flex"
          :align-items "center"
+         :justify-content "space-between"
          :cursor "pointer"}
 
         [:>svg
-         {:margin-left "0.25em"
-          :height "1.25em"}]]
-
-       [:>summary
-
-        [:>h2
-         {:display "inline"}]]]]
+         {:height "1.25em"}]]]]
 
      ;; shortcuts
 

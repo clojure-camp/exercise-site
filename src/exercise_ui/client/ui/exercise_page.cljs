@@ -29,29 +29,24 @@
       [:div.page.exercise
        [:header
         [exercise-status-view (exercise :id)]
-        [:h1 (exercise :title)]]
-
-       [:div.status
+        [:h1 (exercise :title)]
+        [:div.gap]
         (case exercise-status
           nil
-          [:div
-           [:button
-            {:on-click
-             (fn [_]
-               (dispatch [:set-exercise-status! exercise-id :started]))}
-            "Start"]]
+          [:button.action
+           {:on-click
+            (fn [_]
+              (dispatch [:set-exercise-status! exercise-id :started]))}
+           "Start"
+           [fa/fa-play-solid]]
           :started
-          [:div
-           "In Progress"
-           [:button
-            {:on-click
-             (fn [_]
-               (dispatch [:set-exercise-status! exercise-id :completed]))}
-            "Complete"]]
-          :completed
-          [:div "Complete"]
-          :reviewed
-          [:div "Reviewed"])]
+          [:button.action
+           {:on-click
+            (fn [_]
+              (dispatch [:set-exercise-status! exercise-id :completed]))}
+           "Mark as Finished"
+           [fa/fa-flag-checkered-solid]]
+          nil)]
 
        [:section.instructions
         (into [:<>]
@@ -63,27 +58,33 @@
                   [code-view node "code" true]
                   (into [:p] (parse-backticks node)))))]
 
+       (when (or (seq (exercise :teaches))
+                 (seq (exercise :uses)))
+         [:section.functions
+          [:header
+           [:h2 "related functions"]]
+          [:div.body
+           (into [:<>]
+                 (->> (concat (map (fn [x] [x :teaches]) (exercise :teaches))
+                              (map (fn [x] [x :uses]) (exercise :uses)))
+                      (filter (fn [[f _]] (symbol? f)))
+                      (map (fn [[f category]] [teachable-view f (name category)]))
+                      (interpose " ")))]])
+
        (when (seq (exercise :tests))
          [:section.tests
-          [:header [:h2 "example tests"]]
+          [:header [:h2 "sample tests"]]
           [code-view (exercise :tests) "code"]])
-
-       [:section.functions
-        (into [:<>]
-              (for [f (filter symbol? (exercise :teaches))]
-                [teachable-view f "taught"]))
-        (into [:<>]
-              (for [f (filter symbol? (exercise :uses))]
-                [teachable-view f "used"]))]
 
        (when (and (exercise :solution) (= exercise-status :completed))
          [solution-view exercise])
 
        (when (exercise :related)
          [:div.related
-          [:h2 "Related"]
-          (for [id (exercise :related)]
-            ^{:key id}
-            [:div.exercise
-             [exercise-status-view id]
-             [:a {:href (path-for :exercise {:exercise-id id})} id]])])])))
+          [:h2 "See also:"]
+          [:div.exercises
+           (for [id (exercise :related)]
+             ^{:key id}
+             [:div.exercise
+              [exercise-status-view id]
+              [:a {:href (path-for :exercise {:exercise-id id})} id]])]])])))
