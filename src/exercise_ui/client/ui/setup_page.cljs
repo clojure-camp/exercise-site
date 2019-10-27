@@ -1,6 +1,7 @@
 (ns exercise-ui.client.ui.setup-page
   (:require
-    [clojure.string :as string]))
+   [clojure.string :as string]
+   [exercise-ui.utils :refer [parse-backticks]]))
 
 (def instructions
   "
@@ -58,7 +59,5 @@ Set Up a New Project
   Somewhere in `core.clj` write `(+ 1 2)` then evaluate it by Ctrl+Alt+C V")
 
 (defn setup-page-view []
-  [:div {:style {:white-space "pre"}}
-   instructions])
-
-
+  (into [:div {:style {:white-space "pre"}}]
+        (parse-backticks instructions)))

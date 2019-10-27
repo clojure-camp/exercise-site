@@ -3,6 +3,7 @@
     [clojure.string :as string]
     [bloom.commons.pages :refer [path-for]]
     [re-frame.core :refer [subscribe dispatch]]
+    [exercise-ui.utils :refer [parse-backticks]]
     [exercise-ui.client.ui.code-view :refer [code-view]]
     [exercise-ui.client.ui.teachable :refer [teachable-view]]))
 
@@ -42,7 +43,7 @@
                           (string/starts-with? node "(")
                           (string/ends-with? node ")")))
                   [code-view node "code" true]
-                  [:p node])))]
+                  (into [:p] (parse-backticks node)))))]
 
        (when (seq (exercise :tests))
          [:div.tests
