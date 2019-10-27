@@ -108,6 +108,10 @@
      {:flex-grow 2}]
 
     [:.page
+     {:padding "1em 2em"}
+
+     [:h1
+      {:font-family "Montserrat"}]
 
      ;; exercises
 
@@ -116,18 +120,29 @@
       [:>a
        {:display "block"}]
 
-      [:>table.exercises
+      [:>section
 
-       [:>tbody
+       [:>table.exercises
+        {:border-collapse "collapse"}
 
-        [:>tr
+        [:>thead
 
-         ["&:nth-child(even)"
-          {:background-color "#eee"}]
+         [:>tr
 
-         [:>td
+          [:>th
+           {:text-align "left"}]]]
 
-          (>teachable)]]]]]
+        [:>tbody
+
+         [:>tr
+
+          ["&:nth-child(even)"
+           {:background-color "#eee"}]
+
+          [:>td
+           {:padding "0.25em"}
+
+           (>teachable)]]]]]]
 
      ;; exercise
 

@@ -42,9 +42,12 @@
 (defn exercises-page-view [params]
   (let [grouped-exercises (group-by :category @(subscribe [:exercises]))]
     [:div.page.exercises
-     [:h2 "Learning Functions"]
-     [exercises-view (:learning-functions grouped-exercises)]
-     [:h2 "Starter Exercises"]
-     [exercises-view (:starter grouped-exercises)]
-     [:h2 "Synthesis"]
-     [exercises-view (:synthesis grouped-exercises)]]))
+     [:section
+      [:h1 "Learning Functions"]
+      [exercises-view (:learning-functions grouped-exercises)]]
+     [:section
+      [:h1 "Starter Exercises"]
+      [exercises-view (:starter grouped-exercises)]]
+     [:section
+      [:h1 "Synthesis"]
+      [exercises-view (:synthesis grouped-exercises)]]]))
