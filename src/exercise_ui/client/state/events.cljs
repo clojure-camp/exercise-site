@@ -106,3 +106,16 @@
   (fn [{db :db} [_ value]]
     {:db (assoc db :pastebin value)}))
 
+(reg-event-fx
+  :admin/load-progress!
+  (fn [_ _]
+    {:ajax {:uri "/api/admin/progress"
+            :method :get
+            :on-success (fn [data]
+                          (dispatch [:admin/-store-progress! data]))
+            :on-error (fn [_])}}))
+
+(reg-event-fx
+  :admin/-store-progress!
+  (fn [{db :db} [_ data]]
+    {:db (assoc-in db [:admin :progress] data)}))

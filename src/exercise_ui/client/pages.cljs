@@ -1,6 +1,7 @@
 (ns exercise-ui.client.pages
   (:require
     [bloom.commons.pages]
+    [exercise-ui.client.ui.admin.progress-page :refer [progress-page-view]]
     [exercise-ui.client.ui.exercises-page :refer [exercises-page-view]]
     [exercise-ui.client.ui.pastebin-page :refer [pastebin-page-view]]
     [exercise-ui.client.ui.exercise-page :refer [exercise-page-view]]
@@ -37,6 +38,11 @@
    {:id :reference-example
     :view (fn [data]
             [reference-example-page-view])
-    :path "/reference-example"}])
+    :path "/reference-example"}
+
+   {:id :admin/progress
+    :view (fn [data]
+            [progress-page-view])
+    :path "/b21bc121-6525-4b99-beb7-b29943ac7973"}])
 
 (def current-page-view bloom.commons.pages/current-page-view)

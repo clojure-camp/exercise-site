@@ -29,3 +29,8 @@
 (reg-sub :example
   (fn [db _]
     (db :example)))
+
+(reg-sub
+  :admin/progress
+  (fn [db _]
+    (get-in db [:admin :progress])))

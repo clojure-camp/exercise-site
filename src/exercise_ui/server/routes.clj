@@ -60,4 +60,9 @@
    [[:put "/api/pastebin"]
     (fn [request]
       (reset! pastebin (get-in request [:params :value]))
-      {:status 200})]])
+      {:status 200})]
+
+   [[:get "/api/admin/progress"]
+    (fn [request]
+      {:status 200
+       :body (db/users-progress)})]])

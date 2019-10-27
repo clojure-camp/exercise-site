@@ -62,3 +62,10 @@
   (spit (user-file user-id)
         (-> (get-user user-id)
             (assoc-in [:progress exercise-id] status))))
+
+(defn users-progress
+  []
+  (->> (file-seq (io/file (env/get :user-data-path)))
+      (filter (fn [f] (and (.isFile f)
+                          (string/ends-with? (.getName f) ".edn"))))
+      (map (comp read-string slurp))))
