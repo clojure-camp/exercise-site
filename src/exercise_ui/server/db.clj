@@ -66,7 +66,9 @@
               (= :started status)
               (assoc-in [:progress exercise-id :started-at] (java.util.Date.))
               (= :completed status)
-              (assoc-in [:progress exercise-id :completed-at] (java.util.Date.))))))
+              (assoc-in [:progress exercise-id :completed-at] (java.util.Date.))
+              (= :reviewed status)
+              (assoc-in [:progress exercise-id :reviewed-at] (java.util.Date.))))))
 
 (defn users-progress
   []
