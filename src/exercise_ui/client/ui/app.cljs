@@ -61,16 +61,19 @@
 (defn login-view []
   (let [user-id (r/atom "")]
     (fn []
-      [:form {:on-submit
-              (fn [e]
-                (.preventDefault e)
-                (dispatch [:log-in! @user-id]))}
-       [:input {:type "text"
-                :on-change (fn [e]
-                             (reset! user-id (-> (.. e -target -value)
-                                                 (utils/sanitize-user-id))))
-                :value @user-id}]
-       [:button "Enter"]])))
+      [:div.log-in
+       [:h1 "Bell Media Clojure Training"]
+       [:form
+        {:on-submit
+         (fn [e]
+           (.preventDefault e)
+           (dispatch [:log-in! @user-id]))}
+        [:input {:type "text"
+                 :on-change (fn [e]
+                              (reset! user-id (-> (.. e -target -value)
+                                                  (utils/sanitize-user-id))))
+                 :value @user-id}]
+        [:button "Log In"]]])))
 
 (defn app-view []
   [:div

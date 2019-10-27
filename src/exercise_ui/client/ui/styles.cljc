@@ -77,6 +77,24 @@
      :padding 0
      :font-family "Arial"}
 
+    [:.log-in
+     {:display "flex"
+      :flex-direction "column"
+      :width "100%"
+      :height "100vh"
+      :align-items "center"
+      :justify-content "center"}
+
+     [:>h1
+      {:font-family "Montserrat"}]
+
+     [:>form
+
+      [:>input
+       :>button
+       {:font-size "1.5em"
+        :padding "0.5em"}]]]
+
     [:.header
      {:display "flex"
       :justify-content "space-between"
