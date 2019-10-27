@@ -13,7 +13,7 @@
 (defn solution-view [exercise]
   (let [open? (r/atom false)]
     (fn []
-      [:div.solution
+      [:section.solution
        [:header {:on-click (fn []
                              (swap! open? not))}
         [:h2 "example solution"]
@@ -53,7 +53,7 @@
           :reviewed
           [:div "Reviewed"])]
 
-       [:div.instructions
+       [:section.instructions
         (into [:<>]
               (for [node (exercise :instructions)]
                 (if (or (not (string? node))
@@ -64,11 +64,11 @@
                   (into [:p] (parse-backticks node)))))]
 
        (when (seq (exercise :tests))
-         [:div.tests
+         [:section.tests
           [:header [:h2 "example tests"]]
           [code-view (exercise :tests) "code"]])
 
-       [:div.functions
+       [:section.functions
         (into [:<>]
               (for [f (filter symbol? (exercise :teaches))]
                 [teachable-view f "taught"]))

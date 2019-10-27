@@ -176,9 +176,9 @@
        [:>h1
         {:margin 0}]]
 
-      [:>.tests
+      [:>section
+       {:margin "0 0 2em"}]
 
-       ]
 
       [:>.tests>header
        :>.solution>header
@@ -213,7 +213,6 @@
           :margin-right "0.25em"}]]]
 
       [:>.solution
-       {:margin-top "1em"}
 
        [:>header
         {:display "flex"
