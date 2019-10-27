@@ -125,4 +125,13 @@
         {:display "inline-block"}]
        [:>a>svg
         {:margin-left "0.5em"
-         :width "1em"}]]]]]])
+         :width "1em"}]]]
+
+     ;; admin progress page
+
+     [:&.admin-progress
+      [:table.user-progress
+       [:>tbody
+        [:>tr
+         ["&:nth-child(even)"
+          {:background-color "#eee"}]]]]]]]])
