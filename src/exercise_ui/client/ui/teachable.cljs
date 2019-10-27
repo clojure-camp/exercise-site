@@ -28,5 +28,3 @@
     [:span.teachable.function
      {:class class}
      (str teachable)]))
-
-
