@@ -27,6 +27,25 @@
    (at-import "/css/codemirror.css")
    (at-import "/css/railscasts.css")
 
+   [:kbd.chord
+    {:margin "0 0.5em"}
+
+    [:kbd.key
+     {:display "inline-block"
+      :border-top "1px solid black"
+      :border-right "2px solid black"
+      :border-bottom "2px solid black"
+      :border-left "1px solid black"
+      :border-radius "3px"
+      :padding "0.15em 0.25em"
+      :box-sizing "border-box"
+      :min-width "1.25em"
+      :text-align "center"}]
+
+    [:.plus
+     {:display "inline-block"
+      :padding "0 0.15em"}]]
+
    [:.CodeMirror
     (codemirror)]
 
@@ -50,6 +69,8 @@
 
     [:.page
 
+     ;; exercises
+
      [:&.exercises
 
       [:>a
@@ -67,6 +88,8 @@
          [:>td
 
           (>teachable)]]]]]
+
+     ;; exercise
 
      [:&.exercise
 
@@ -92,4 +115,14 @@
        [:>summary
 
         [:>h2
-         {:display "inline"}]]]]]]])
+         {:display "inline"}]]]]
+
+     ;; shortcuts
+
+     [:&.shortcuts
+      [:header
+       [:>h1
+        {:display "inline-block"}]
+       [:>a>svg
+        {:margin-left "0.5em"
+         :width "1em"}]]]]]])
