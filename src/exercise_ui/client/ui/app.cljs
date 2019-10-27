@@ -12,10 +12,10 @@
   [:div.header
    [:h1 "{}"]
    [:nav
-    [:a {:href (path-for :exercises)
-         :class (when (= @pages/current-page-id
-                         :exercises)
-                  "active")}
+    [:a.main {:href (path-for :exercises)
+              :class (when (= @pages/current-page-id
+                              :exercises)
+                       "active")}
      "exercises"]
     [:a {:href (path-for :setup)
          :class (when (= @pages/current-page-id
@@ -27,16 +27,11 @@
                          :shortcuts)
                   "active")}
      "shortcuts"]
-    [:a {:href (path-for :pastebin)
-         :class (when (= @pages/current-page-id
-                         :pastebin)
-                  "active")}
-     "pastebin"]
     [:a {:href (path-for :reference-example)
          :class (when (= @pages/current-page-id
                          :reference-example)
                   "active")}
-     "reference example"]
+     "code sample"]
     [:a {:href "https://www.clojuredocs.org"
          :target "_blank"
          :rel "noopener noreferrer"}
@@ -44,7 +39,12 @@
     [:a {:href "https://cognitory.github.io/clojure-cheatsheet/"
          :target "_blank"
          :rel "noopener noreferrer"}
-     "clj-cheatsheet"]]
+     "clj-cheatsheet"]
+    [:a {:href (path-for :pastebin)
+         :class (when (= @pages/current-page-id
+                         :pastebin)
+                  "active")}
+     "share"]]
 
    [:div.gap]
 

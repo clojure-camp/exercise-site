@@ -118,6 +118,11 @@
         :color color-text-light
         :text-decoration "none"}
 
+       {:opacity "0.7"}
+
+       [:&.main
+        {:opacity 1}]
+
        [:&:hover
         :&.active
         {:background-color color-accent-light}]
@@ -305,12 +310,33 @@
      ;; shortcuts
 
      [:&.shortcuts
+
       [:header
+
        [:>h1
         {:display "inline-block"}]
+
        [:>a>svg
         {:margin-left "0.5em"
          :width "1em"}]]]
+
+     ;; pastebin
+
+     [:&.pastebin
+
+      [:>textarea
+       {:width "50%"
+        :height "50vh"
+        :padding "1em"
+        :color "#fff"
+        :background "#2b2b2b"}]
+
+      [:>button
+       {:display "block"}
+
+       [:>svg
+        {:width "2em"
+         :height "2em"}]]]
 
      ;; admin progress page
 
