@@ -20,10 +20,14 @@
    [:&.function
     {:font-family "monospace"}]])
 
+(def color-accent "#2E4057")
+(def color-accent-light "#048BA8")
+(def color-text-light "#FFF")
+
 (defn app []
   [
 
-   (at-import "https://fonts.googleapis.com/css?family=Source+Code+Pro")
+   (at-import "https://fonts.googleapis.com/css?family=Montserrat:600|Source+Code+Pro&display=swap")
    (at-import "/css/codemirror.css")
    (at-import "/css/railscasts.css")
 
@@ -51,21 +55,57 @@
 
    [:body
     {:margin 0
-     :padding 0}
+     :padding 0
+     :font-family "Arial"}
 
     [:.header
      {:display "flex"
-      :justify-content "space-between"}
+      :justify-content "space-between"
+      :align-items "center"
+      :background color-accent
+      :font-family "Montserrat"}
 
-     [:nav
+     [:>h1
+      {:color color-text-light
+       :font-family "Source Code Pro"
+       :font-size "1em"
+       :padding "0.5em"
+       :margin 0}]
 
-      [:a
+     [:>nav
+
+      [:>a
        {:display "inline-block"
-        :padding "0.25em 0"
-        :margin "0 0.25em"}
+        :padding "0.5em"
+        :margin "0 0.25em"
+        :color color-text-light
+        :text-decoration "none"}
+
+       [:&:hover
+        :&.active
+        {:background-color color-accent-light}]
 
        ["&[target]"
-        {:font-style "italic"}]]]]
+        {:font-style "italic"}]]]
+
+     [:>.user
+      {:color color-text-light}
+
+      [:>button
+       {:background "none"
+        :border "none"
+        :color color-text-light
+        :padding "0.5em"}
+
+       [:&:hover
+        {:background-color color-accent-light
+         :cursor "pointer"}]
+
+       [:>svg
+        {:width "1em"}]]]]
+
+    [:.gap
+     {:flex-grow 2}]
 
     [:.page
 

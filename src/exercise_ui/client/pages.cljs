@@ -1,5 +1,6 @@
 (ns exercise-ui.client.pages
   (:require
+    [reagent.core :as r]
     [bloom.commons.pages]
     [exercise-ui.client.ui.admin.progress-page :refer [progress-page-view]]
     [exercise-ui.client.ui.exercises-page :refer [exercises-page-view]]
@@ -46,3 +47,6 @@
     :path "/b21bc121-6525-4b99-beb7-b29943ac7973"}])
 
 (def current-page-view bloom.commons.pages/current-page-view)
+
+(def current-page-id
+  (r/cursor bloom.commons.pages/state [:page-id]))
