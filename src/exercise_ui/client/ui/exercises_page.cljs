@@ -75,7 +75,7 @@
      [:th]
      [:th "Exercise"]
      [:th "Teaches"]
-     [:th]]]
+     #_[:th]]]
    [:tbody
     (doall
       (for [exercise (sort-exercises exercises)]
@@ -89,7 +89,7 @@
          [:td
           (into [:<>]
                 (interpose " " (map teachable-view (exercise :teaches))))]
-         [:td.difficulty
+         #_[:td.difficulty
           (repeat (difficulty->n (exercise :difficulty)) "★")]]))]])
 
 (defn exercises-page-view [params]
