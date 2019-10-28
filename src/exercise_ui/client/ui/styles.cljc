@@ -28,6 +28,7 @@
 
 (defn >teachable []
   [:>.teachable
+   {:white-space "nowrap"}
 
    [:&.concept
     {:font-style "italic"}]
