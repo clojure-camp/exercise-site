@@ -58,18 +58,18 @@
                   [code-view node "code" true]
                   (into [:p] (parse-backticks node)))))]
 
-       (when (or (seq (exercise :teaches))
-                 (seq (exercise :uses)))
-         [:section.functions
-          [:header
-           [:h2 "related functions"]]
-          [:div.body
-           (into [:<>]
-                 (->> (concat (map (fn [x] [x :teaches]) (exercise :teaches))
+       (let [fns (->> (concat (map (fn [x] [x :teaches]) (exercise :teaches))
                               (map (fn [x] [x :uses]) (exercise :uses)))
-                      (filter (fn [[f _]] (symbol? f)))
-                      (map (fn [[f category]] [teachable-view f (name category)]))
-                      (interpose " ")))]])
+                      (filter (fn [[f _]] (symbol? f))))]
+         (when (seq fns)
+           [:section.functions
+            [:header
+             [:h2 "related functions"]]
+            [:div.body
+             (into [:<>]
+                   (->> fns
+                        (map (fn [[f category]] [teachable-view f (name category)]))
+                        (interpose " ")))]]))
 
        (when (seq (exercise :tests))
          [:section.tests
