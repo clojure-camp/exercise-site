@@ -54,7 +54,9 @@
     [:div.page.admin-progress
      [:h1 "Progress"]
      [:button {:on-click (fn [_] (dispatch [:admin/load-progress!]))} "Refresh"]
-     (let [exercises (admin-sort-exercises @(subscribe [:exercises]))
+     (let [exercises (concat
+                       @(subscribe [:ordered-exercises])
+                       (admin-sort-exercises @(subscribe [:unordered-exercises])))
            users (sort-by :user-id @(subscribe [:admin/progress]))]
        [:table.user-progress
         [:thead
