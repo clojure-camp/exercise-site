@@ -38,10 +38,11 @@
 (defn status-view
   [progress]
   (when progress
-    (let [{:keys [status started-at completed-at reviewed-at]} progress]
+    (let [{:keys [status started-at completed-at reviewed-at]
+           :or {started-at (js/Date.) completed-at (js/Date.) reviewed-at (js/Date.)}} progress]
       (case status
         :started
-        [:span "started at " (nice-date started-at)]
+        [:span "started at " (nice-date (or started-at (js/Date.)))]
         :completed
         [:span "completed in " (nice-interval started-at completed-at)]
         :reviewed
