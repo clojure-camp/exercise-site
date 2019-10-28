@@ -79,6 +79,10 @@
 
 (defn app-view []
   [:div
-   (if @(subscribe [:logged-in?])
+   (cond
+     @(subscribe [:loading?])
+     [:div.loading "Loading..."]
+     @(subscribe [:logged-in?])
      [main-view]
+     :else
      [login-view])])

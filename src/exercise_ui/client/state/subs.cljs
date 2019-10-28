@@ -2,6 +2,13 @@
   (:require
     [re-frame.core :refer [reg-sub]]))
 
+(reg-sub :loading?
+  (fn [db _]
+    (not (and
+           (or (db :user)
+               (db :user-checked?))
+           (seq (db :exercises))))))
+
 (reg-sub :exercises
   (fn [db _]
     (vals (db :exercises))))

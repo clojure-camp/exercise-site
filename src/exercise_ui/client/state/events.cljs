@@ -15,7 +15,8 @@
 (reg-event-fx :initialize!
   (fn [_ _]
     (bloom.commons.pages/initialize! pages)
-    {:db {:exercises {}
+    {:db {:user-checked? false
+          :exercises {}
           :ordered-exercise-ids []
           :user nil
           :example ""
@@ -30,7 +31,8 @@
             :method :get
             :on-success (fn [data]
                           (dispatch [:-store-user! (data :user)]))
-            :on-error (fn [_])}}))
+            :on-error (fn [_]
+                        (dispatch [:-set-user-checked!]))}}))
 
 (reg-event-fx :-fetch-example!
   (fn [_ _]
@@ -79,6 +81,10 @@
 (reg-event-fx :-store-user!
   (fn [{db :db} [_ user]]
     {:db (assoc db :user user)}))
+
+(reg-event-fx :-set-user-checked!
+  (fn [{db :db} [_ user]]
+    {:db (assoc db :user-checked? true)}))
 
 (reg-event-fx :set-exercise-status!
   (fn [{db :db} [_ exercise-id status]]
