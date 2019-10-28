@@ -296,7 +296,8 @@
         (>teachable)
 
         [:>.teachable
-         {:color "white"}]
+         {:color "white"
+          :margin-right "0.75em"}]
 
         [:>.function
 
