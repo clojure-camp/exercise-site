@@ -62,22 +62,36 @@
                        :progress {}})))
     (read-string (slurp f))))
 
+(def file-agent (memoize -file-agent))
+
+(defn -file-agent
+  [file-name]
+  (add-watch
+    (agent nil) :file-writer
+    (fn [key agent old new]
+      (spit file-name new))))
+
+(defn async-spit
+  [file-name content]
+  (send (file-agent file-name) (constantly content)))
+
 (defn set-exercise-status!
   [user-id exercise-id status]
   (let [now (java.util.Date.)]
-    (spit (user-file user-id)
-          (-> (get-user user-id)
-              (assoc-in [:progress exercise-id :status] status)
-              (cond->
-                (= :started status)
-                (assoc-in [:progress exercise-id :started-at] now)
-                (= :completed status)
-                (-> (assoc-in [:progress exercise-id :completed-at] now)
-                    (update-in [:progress exercise-id :started-at] (fnil identity now)))
-                (= :reviewed status)
-                (-> (assoc-in [:progress exercise-id :reviewed-at] now)
-                    (update-in [:progress exercise-id :completed-at] (fnil identity now))
-                    (update-in [:progress exercise-id :started-at] (fnil identity now))))))))
+    (async-spit
+      (user-file user-id)
+      (-> (get-user user-id)
+          (assoc-in [:progress exercise-id :status] status)
+          (cond->
+            (= :started status)
+            (assoc-in [:progress exercise-id :started-at] now)
+            (= :completed status)
+            (-> (assoc-in [:progress exercise-id :completed-at] now)
+                (update-in [:progress exercise-id :started-at] (fnil identity now)))
+            (= :reviewed status)
+            (-> (assoc-in [:progress exercise-id :reviewed-at] now)
+                (update-in [:progress exercise-id :completed-at] (fnil identity now))
+                (update-in [:progress exercise-id :started-at] (fnil identity now))))))))
 
 (defn users-progress
   []
