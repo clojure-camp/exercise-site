@@ -330,7 +330,20 @@
 
        [:>a>svg
         {:margin-left "0.5em"
-         :width "1em"}]]]
+         :width "1em"}
+
+        (at-media {:print true}
+          [:&
+           {:display "none"}])]]
+
+      [:table
+       {:border-collapse "collapse"}
+       [:>tbody
+        [:>tr
+         ["&:nth-child(even)"
+          {:background-color "#eee"}]
+         [:>td
+          {:padding "0.5em 0.25em"}]]]]]
 
      ;; pastebin
 
