@@ -2,7 +2,8 @@
   (:require
     [clojure.java.io :as io]
     [exercise-ui.server.db :as db]
-    [exercise-ui.utils :as utils]))
+    [exercise-ui.utils :as utils]
+    [org.httpkit.client :as http]))
 
 (defonce pastebin (atom ""))
 
@@ -22,6 +23,11 @@
       {:status 200
        :body {:exercises (db/get-exercises)
               :order (db/get-exercise-order)}})]
+
+   [[:get "/api/example"]
+    (fn [request]
+      {:status 200
+       :body {:example (:body @(http/get "https://raw.githubusercontent.com/cognitory/clojure-exercises/master/examples/example_app_state.clj"))}})]
 
    [[:put "/api/progress"]
     (fn [request]

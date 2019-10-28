@@ -36,11 +36,10 @@
 
 (reg-event-fx :-fetch-example!
   (fn [_ _]
-    {:ajax {:uri "https://raw.githubusercontent.com/cognitory/clojure-exercises/master/examples/example_app_state.clj"
+    {:ajax {:uri "/api/example"
             :method :get
-            :response-format (ajax.core/text-response-format)
             :on-success (fn [data]
-                          (dispatch [:-store-example! data]))
+                          (dispatch [:-store-example! (:example data)]))
             :on-error (fn [_])}}))
 
 (reg-event-fx :-store-example!
