@@ -47,6 +47,11 @@
               (-> (parse-exercise s)
                   (assoc :id (string/replace file-name #"\.edn$" "")))))))
 
+(defn get-exercise-order []
+  (->> (io/file (env/get :exercise-data-path) "../order.edn")
+       slurp
+       read-string))
+
 (defn user-file [user-id]
   (io/file (env/get :user-data-path) (str user-id ".edn")))
 

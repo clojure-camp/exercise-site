@@ -6,6 +6,20 @@
   (fn [db _]
     (vals (db :exercises))))
 
+(reg-sub :ordered-exercises
+  (fn [db _]
+    (->> (db :ordered-exercise-ids)
+         (map (fn [id]
+                (get-in db [:exercises id]))))))
+
+(reg-sub :unordered-exercises
+  (fn [db _]
+    (let [ordered-ids (set (db :ordered-exercise-ids))]
+      (->> (db :exercises)
+           vals
+           (remove (fn [exercise]
+                     (contains? ordered-ids (exercise :id))))))))
+
 (reg-sub :exercise
   (fn [db [_ exercise-id]]
     (get-in db [:exercises exercise-id])))

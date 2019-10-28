@@ -16,6 +16,7 @@
   (fn [_ _]
     (bloom.commons.pages/initialize! pages)
     {:db {:exercises {}
+          :ordered-exercise-ids []
           :user nil
           :example ""
           :pastebin ""}
@@ -48,13 +49,15 @@
   (fn [_ _]
     {:ajax {:uri "/api/exercises"
             :method :get
-            :on-success (fn [data]
-                          (dispatch [:-store-exercises! data]))
+            :on-success (fn [{:keys [exercises order]}]
+                          (dispatch [:-store-exercises! exercises order]))
             :on-error (fn [_])}}))
 
 (reg-event-fx :-store-exercises!
-  (fn [{db :db} [_ data]]
-    {:db (assoc db :exercises (key-by :id data))}))
+  (fn [{db :db} [_ exercises order]]
+    {:db (-> db
+             (assoc :exercises (key-by :id exercises))
+             (assoc :ordered-exercise-ids order))}))
 
 (reg-event-fx :log-in!
   (fn [{db :db} [_ id]]

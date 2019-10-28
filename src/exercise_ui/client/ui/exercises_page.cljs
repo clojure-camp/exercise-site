@@ -74,11 +74,11 @@
     [:tr
      [:th]
      [:th "Exercise"]
-     [:th "Teaches"]
+     [:th "Concepts"]
      #_[:th]]]
    [:tbody
     (doall
-      (for [exercise (sort-exercises exercises)]
+      (for [exercise exercises]
         ^{:key (exercise :id)}
         [:tr.exercise
          [:td.status
@@ -93,14 +93,17 @@
           (repeat (difficulty->n (exercise :difficulty)) "★")]]))]])
 
 (defn exercises-page-view [params]
-  (let [grouped-exercises (group-by :category @(subscribe [:exercises]))]
+  (let [grouped-exercises (group-by :category @(subscribe [:unordered-exercises]))]
     [:div.page.exercises
      [:section
-      [:h1 "Learning Functions"]
-      [exercises-view (:learning-functions grouped-exercises)]]
+      [:h1 "First Steps"]
+      [exercises-view @(subscribe [:ordered-exercises])]]
      [:section
-      [:h1 "Starter Exercises"]
-      [exercises-view (:starter grouped-exercises)]]
+      [:h1 "Exploring Functions"]
+      [exercises-view (sort-exercises (:learning-functions grouped-exercises))]]
      [:section
-      [:h1 "Synthesis"]
-      [exercises-view (:synthesis grouped-exercises)]]]))
+      [:h1 "More Practice"]
+      [exercises-view (sort-exercises (:starter grouped-exercises))]]
+     [:section
+      [:h1 "Putting Things Together"]
+      [exercises-view (sort-exercises (:synthesis grouped-exercises))]]]))
