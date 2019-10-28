@@ -50,6 +50,12 @@
    (at-import "/css/codemirror.css")
    (at-import "/css/railscasts.css")
 
+   [:p>code
+    {:background "#2b2b2b"
+     :padding "0.15em 0.2em"
+     :color "white"
+     :border-radius "0.2em"}]
+
    [:kbd.chord
     {:margin "0 0.5em"}
 
@@ -251,7 +257,11 @@
         :border-left [["0.5em" "solid" color-accent]]}
 
        [:p
+        :.code
         {:margin "0 0 1em"}]
+
+       [:p
+        {:line-height "1.4em"}]
 
        ["p:last-child"
         {:margin-bottom 0}]]
