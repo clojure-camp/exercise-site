@@ -62,14 +62,14 @@
                        :progress {}})))
     (read-string (slurp f))))
 
-(def file-agent (memoize -file-agent))
-
 (defn -file-agent
   [file-name]
   (add-watch
     (agent nil) :file-writer
     (fn [key agent old new]
       (spit file-name new))))
+
+(def file-agent (memoize -file-agent))
 
 (defn async-spit
   [file-name content]
