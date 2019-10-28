@@ -109,6 +109,10 @@
       :background color-accent
       :font-family "Montserrat"}
 
+     (at-media {:print true}
+       [:&
+        {:display "none"}])
+
      [:>h1
       {:color color-text-light
        :font-family "Source Code Pro"
