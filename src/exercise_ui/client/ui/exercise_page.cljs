@@ -48,43 +48,45 @@
            [fa/fa-flag-checkered-solid]]
           nil)]
 
-       [:section.instructions
-        (into [:<>]
-              (for [node (exercise :instructions)]
-                (if (or (not (string? node))
-                        (and
-                          (string/starts-with? node "(")
-                          (string/ends-with? node ")")))
-                  [code-view node "code" true]
-                  (into [:p] (parse-backticks node)))))]
+       (when (some? exercise-status)
+         [:<>
+          [:section.instructions
+           (into [:<>]
+                 (for [node (exercise :instructions)]
+                   (if (or (not (string? node))
+                           (and
+                             (string/starts-with? node "(")
+                             (string/ends-with? node ")")))
+                     [code-view node "code" true]
+                     (into [:p] (parse-backticks node)))))]
 
-       (let [fns (->> (concat (map (fn [x] [x :teaches]) (exercise :teaches))
-                              (map (fn [x] [x :uses]) (exercise :uses)))
-                      (filter (fn [[f _]] (symbol? f))))]
-         (when (seq fns)
-           [:section.functions
-            [:header
-             [:h2 "related functions"]]
-            [:div.body
-             (into [:<>]
-                   (->> fns
-                        (map (fn [[f category]] [teachable-view f (name category)]))
-                        (interpose " ")))]]))
+          (let [fns (->> (concat (map (fn [x] [x :teaches]) (exercise :teaches))
+                                (map (fn [x] [x :uses]) (exercise :uses)))
+                        (filter (fn [[f _]] (symbol? f))))]
+            (when (seq fns)
+              [:section.functions
+               [:header
+                [:h2 "related functions"]]
+               [:div.body
+                (into [:<>]
+                      (->> fns
+                          (map (fn [[f category]] [teachable-view f (name category)]))
+                          (interpose " ")))]]))
 
-       (when (seq (exercise :tests))
-         [:section.tests
-          [:header [:h2 "sample tests"]]
-          [code-view (exercise :tests) "code"]])
+          (when (seq (exercise :tests))
+            [:section.tests
+             [:header [:h2 "sample tests"]]
+             [code-view (exercise :tests) "code"]])
 
-       (when (and (exercise :solution) (= exercise-status :completed))
-         [solution-view exercise])
+          (when (and (exercise :solution) (= exercise-status :completed))
+            [solution-view exercise])
 
-       (when (exercise :related)
-         [:div.related
-          [:h2 "See also:"]
-          [:div.exercises
-           (for [id (exercise :related)]
-             ^{:key id}
-             [:div.exercise
-              [exercise-status-view id]
-              [:a {:href (path-for :exercise {:exercise-id id})} id]])]])])))
+          (when (exercise :related)
+            [:div.related
+             [:h2 "See also:"]
+             [:div.exercises
+              (for [id (exercise :related)]
+                ^{:key id}
+                [:div.exercise
+                 [exercise-status-view id]
+                 [:a {:href (path-for :exercise {:exercise-id id})} id]])]])])])))
