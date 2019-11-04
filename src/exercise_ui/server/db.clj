@@ -13,6 +13,8 @@
   (case (rw.node/tag v)
     (:token :set)
     (rw.node/sexpr v)
+    :comment
+    (rw.node/string v)
     :list
     (collapse-leading-whitespace (rw.node/string v))
     :vector
