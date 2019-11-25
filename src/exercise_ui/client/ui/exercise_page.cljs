@@ -23,6 +23,39 @@
        (when @open?
          [code-view (exercise :solution) "code"])])))
 
+(defn test-case-view [exercise]
+  (let [table-view? (r/atom true)]
+    (fn []
+      [:section.test-cases
+       [:header [:h2 "sample tests"]
+        [:button {:on-click (fn [_] (swap! table-view? not))}
+         (if @table-view?
+          [fa/fa-code-solid]
+          [fa/fa-table-solid])]]
+
+       (if @table-view?
+         [:table {:cellpadding 0}
+          #_[:thead
+           [:tr
+            [:td "Input"]
+            [:td]
+            [:td "Output"]]]
+          [:tbody
+           (into [:<>]
+                 (for [{:keys [input output]} (exercise :test-cases)]
+                   [:tr
+                    [:td
+                     [code-view [input] "code"]]
+                    [:td
+                     [:code "=>"]]
+                    [:td
+                     [code-view [output] "code"]]]))]]
+
+         (into [:<>]
+               (for [{:keys [input output]} (exercise :test-cases)]
+                 [:div
+                  [code-view [(list 'is (list '= output input))] "code"]])))])))
+
 (defn exercise-page-view [exercise-id]
   (when-let [exercise @(subscribe [:exercise exercise-id])]
     (let [exercise-status @(subscribe [:exercise-status exercise-id])]
@@ -77,6 +110,9 @@
             [:section.tests
              [:header [:h2 "sample tests"]]
              [code-view (exercise :tests) "code"]])
+
+          (when (seq (exercise :test-cases))
+            [test-case-view exercise])
 
           (when (and (exercise :solution) (= exercise-status :completed))
             [solution-view exercise])

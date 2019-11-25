@@ -250,11 +250,24 @@
         {:background color-accent
          :color color-text-light
          :padding "0.75em 1em"}
+        {:display "flex"
+         :align-items "center"
+         :justify-content "space-between"}
 
         [:>h2
          {:margin 0
           :font-family "Montserrat"
-          :font-size "1em"}]]]
+          :font-size "1em"}]
+
+        [:>button
+         {:background "none"
+          :border "none"
+          :cursor "pointer"}
+
+         [:>svg
+          {:height "1em"
+           :width "1em"
+           :color "#fff"}]]]]
 
       [:>section.instructions
        {:background "#eee"
@@ -291,6 +304,18 @@
          [:>.status
           {:vertical-align "middle"
            :margin-right "0.25em"}]]]]
+
+      [:>section.test-cases
+
+       [:>table
+        {:width "100%"
+         :background "#2b2b2b"
+         :border-collapse "collapse"}]
+
+       [:code
+        {:font-family "Source Code Pro"
+         :color "white"
+         :font-size "0.8em"}]]
 
       [:>section.functions
 
@@ -342,6 +367,7 @@
 
       [:table
        {:border-collapse "collapse"}
+
        [:>tbody
         [:>tr
          ["&:nth-child(even)"
