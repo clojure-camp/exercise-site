@@ -60,22 +60,41 @@
    [pages/current-page-view]])
 
 (defn login-view []
-  (let [user-id (r/atom "")]
+  (let [user-email (r/atom "")
+        code (r/atom "")
+        state (r/atom :log-in)]
     (fn []
-      [:div.log-in
-       [:h1 "Bell Media Clojure Training"]
-       [:form
-        {:on-submit
-         (fn [e]
-           (.preventDefault e)
-           (when (not (string/blank? @user-id))
-             (dispatch [:log-in! @user-id])))}
-        [:input {:type "text"
-                 :on-change (fn [e]
-                              (reset! user-id (-> (.. e -target -value)
-                                                  (utils/sanitize-user-id))))
-                 :value @user-id}]
-        [:button "Log In"]]])))
+      (case @state
+        :waiting
+        [:div.log-in
+         "Check your email for a log-in link"
+         [:button {:on-click (fn [] (reset! state :log-in))}
+          "Try Again"]]
+
+        :log-in
+        [:div.log-in
+         [:h1 "Cognitory Clojure Training"]
+         [:form
+          {:on-submit
+           (fn [e]
+             (.preventDefault e)
+             ;; [TODO] check "code"
+             (when (not (string/blank? @user-email))
+               (dispatch [:request-email! @user-email @code])
+               (reset! state :waiting)))}
+          [:input {:type "email"
+                   :placeholder "foo@example.com"
+                   :on-change (fn [e]
+                                (->> (.. e -target -value)
+                                    (reset! user-email)))
+                   :value @user-email}]
+          [:input {:type "text"
+                   :placeholder "secret code"
+                   :value @code
+                   :on-change (fn [e]
+                                (->> (.. e -target -value)
+                                    (reset! code)))}]
+          [:button "Log In"]]]))))
 
 (defn app-view []
   [:div

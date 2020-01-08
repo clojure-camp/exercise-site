@@ -60,15 +60,6 @@
              (assoc :exercises (key-by :id exercises))
              (assoc :ordered-exercise-ids order))}))
 
-(reg-event-fx :log-in!
-  (fn [{db :db} [_ id]]
-    {:ajax {:uri "/api/session"
-            :method :put
-            :params {:user-id id}
-            :on-success (fn [data]
-                          (dispatch [:-store-user! (data :user)]))
-            :on-error (fn [_])}}))
-
 (reg-event-fx :log-out!
   (fn [{db :db} _]
     {:db (assoc db :user nil)
@@ -138,3 +129,15 @@
             :on-success (fn [new-data]
                            (dispatch [:admin/-store-progress! new-data]))
             :on-error (fn [_])}}))
+
+(reg-event-fx
+  :request-email!
+  (fn [_ [_ email code]]
+    {:ajax {:uri "/api/request-email"
+            :method :post
+            :params {:email email
+                     :code code}
+            :on-success (fn [resp]
+                          )
+            :on-error (fn [err]
+                        )}}))

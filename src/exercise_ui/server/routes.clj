@@ -46,14 +46,6 @@
          :body {:user (db/get-user user-id)}}
         {:status 401}))]
 
-   [[:put "/api/session"]
-    (fn [request]
-      (let [user-id (-> (get-in request [:params :user-id])
-                        (utils/sanitize-user-id))]
-        {:status 200
-         :session {:user-id user-id}
-         :body {:user (db/get-user user-id)}}))]
-
    [[:delete "/api/session"]
     (fn [request]
       {:status 200
@@ -79,4 +71,12 @@
       (db/set-exercise-status! user-id exercise-id :reviewed)
       {:status 200
        :body (db/users-progress)})]
+
+   [[:post "/api/request-email"]
+    (fn [{{:keys [email code]} :params :as request}]
+      ;; generate a mapping of email -> user-id
+      ;; make token from bloom.omni.auth.token/login-query-string
+      ;; middleware will add :user-id to session
+      {:status 200
+       :body {:ok true}})]
    ])
