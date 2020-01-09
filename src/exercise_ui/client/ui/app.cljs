@@ -49,7 +49,6 @@
    [:div.gap]
 
    [:div.user
-    @(subscribe [:user-id])
     [:button {:on-click (fn [e]
                           (dispatch [:log-out!]))}
      [fa/fa-sign-out-alt-solid]]]])
