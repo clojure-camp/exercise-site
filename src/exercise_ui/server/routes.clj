@@ -1,9 +1,12 @@
 (ns exercise-ui.server.routes
   (:require
-    [clojure.java.io :as io]
-    [exercise-ui.server.db :as db]
-    [exercise-ui.utils :as utils]
-    [org.httpkit.client :as http]))
+   [bloom.commons.env :as env]
+   [bloom.omni.auth.token :as token]
+   [clojure.java.io :as io]
+   [exercise-ui.server.db :as db]
+   [exercise-ui.utils :as utils]
+   [org.httpkit.client :as http]
+   [clojure.string :as string]))
 
 (defonce pastebin (atom ""))
 
@@ -74,9 +77,17 @@
 
    [[:post "/api/request-email"]
     (fn [{{:keys [email code]} :params :as request}]
-      ;; generate a mapping of email -> user-id
-      ;; make token from bloom.omni.auth.token/login-query-string
-      ;; middleware will add :user-id to session
-      {:status 200
-       :body {:ok true}})]
+      (if (and (not (string/blank? email))
+               (= code (env/get :login-code)))
+        (let [user-id (java.util.UUID/nameUUIDFromBytes (.getBytes email "UTF-8"))
+              secret (get-in (env/get :omni/auth) [:token :secret])
+              query (token/login-query-string user-id secret)]
+          ;; send email
+          (prn "QUERY" query)
+
+          ;; middleware will add :user-id to session
+          {:status 200
+           :body {:ok true}})
+        {:status 400
+         :body {:error "Invalid parameters"}}))]
    ])

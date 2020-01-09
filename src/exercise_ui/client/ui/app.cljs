@@ -62,10 +62,14 @@
 (defn login-view []
   (let [user-email (r/atom "")
         code (r/atom "")
+        error (r/atom nil)
         state (r/atom :log-in)]
     (fn []
       (case @state
         :waiting
+        [:div.log-in "Requesting..."]
+
+        :sent
         [:div.log-in
          "Check your email for a log-in link"
          [:button {:on-click (fn [] (reset! state :log-in))}
@@ -74,13 +78,19 @@
         :log-in
         [:div.log-in
          [:h1 "Cognitory Clojure Training"]
+         (when @error
+           [:div.error "Invalid Email or Code"])
          [:form
           {:on-submit
            (fn [e]
              (.preventDefault e)
-             ;; [TODO] check "code"
+             (reset! error nil)
              (when (not (string/blank? @user-email))
-               (dispatch [:request-email! @user-email @code])
+               (dispatch [:request-email! @user-email @code
+                          (fn [] (reset! state :sent))
+                          (fn []
+                            (reset! state :log-in)
+                            (reset! error true))])
                (reset! state :waiting)))}
           [:input {:type "email"
                    :placeholder "foo@example.com"

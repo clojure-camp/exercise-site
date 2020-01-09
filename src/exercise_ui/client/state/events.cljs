@@ -132,12 +132,10 @@
 
 (reg-event-fx
   :request-email!
-  (fn [_ [_ email code]]
+  (fn [_ [_ email code on-success on-failure]]
     {:ajax {:uri "/api/request-email"
             :method :post
             :params {:email email
                      :code code}
-            :on-success (fn [resp]
-                          )
-            :on-error (fn [err]
-                        )}}))
+            :on-success (fn [_] (on-success))
+            :on-error (fn [] (on-failure))}}))
