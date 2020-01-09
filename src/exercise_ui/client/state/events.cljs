@@ -62,7 +62,7 @@
 
 (reg-event-fx :log-out!
   (fn [{db :db} _]
-    {:db (assoc db :user nil)
+    {:db (assoc db :user nil :user-checked? false)
      :ajax {:uri "/api/session"
             :method :delete
             :on-success (fn [_])
