@@ -4,6 +4,7 @@
    [bloom.omni.auth.token :as token]
    [clojure.java.io :as io]
    [exercise-ui.server.db :as db]
+   [exercise-ui.server.email :as email]
    [exercise-ui.utils :as utils]
    [org.httpkit.client :as http]
    [clojure.string :as string]))
@@ -81,10 +82,12 @@
                (= code (env/get :login-code)))
         (let [user-id (java.util.UUID/nameUUIDFromBytes (.getBytes email "UTF-8"))
               secret (get-in (env/get :omni/auth) [:token :secret])
-              query (token/login-query-string user-id secret)]
+              link (str (env/get :site-base-url)
+                        "?"
+                        (token/login-query-string user-id secret))]
           ;; send email
-          (prn "QUERY" query)
-
+          (email/send-login-email! {:to email
+                                    :login-link link})
           ;; middleware will add :user-id to session
           {:status 200
            :body {:ok true}})

@@ -9,6 +9,7 @@
                  [rewrite-clj "0.6.1"]
                  [reagent "0.8.1"]
                  [garden "1.3.5"]
+                 [com.draines/postal "2.0.2"]
                  [zprint "0.4.10"]]
 
   :main exercise-ui.core
