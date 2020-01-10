@@ -5,8 +5,7 @@
 (reg-sub :loading?
   (fn [db _]
     (not (and
-           (or (db :user)
-               (db :user-checked?))
+           (or (db :user) (db :user-checked?))
            (seq (db :exercises))))))
 
 (reg-sub :exercises
