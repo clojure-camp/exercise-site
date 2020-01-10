@@ -85,9 +85,12 @@
               link (str (env/get :site-base-url)
                         "?"
                         (token/login-query-string user-id secret))]
-          ;; send email
-          (email/send-login-email! {:to email
-                                    :login-link link})
+          (future
+            (try
+              (email/send-login-email! {:to email
+                                        :login-link link})
+              (catch Throwable e
+                (prn "ERROR SENDING EMAIL" e))))
           ;; middleware will add :user-id to session
           {:status 200
            :body {:ok true}})
