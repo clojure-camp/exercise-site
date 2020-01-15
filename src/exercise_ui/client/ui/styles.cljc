@@ -400,4 +400,10 @@
        [:>tbody
         [:>tr
          ["&:nth-child(even)"
-          {:background-color "#eee"}]]]]]]]])
+          {:background-color "#eee"}]]]]]
+
+     [:&.setup
+      [:code
+       {:background "black"
+        :color "white"
+        :padding "0.25em"}]]]]])
