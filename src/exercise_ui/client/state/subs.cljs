@@ -44,8 +44,7 @@
 
 (reg-sub :exercise-status
   (fn [db [_ exercise-id]]
-    :completed
-    #_(get-in db [:user :progress exercise-id :status])))
+    (get-in db [:user :progress exercise-id :status])))
 
 (reg-sub :example
   (fn [db _]
