@@ -157,7 +157,7 @@
       this should open up a sidebar on the right with the REPL
       (which we won't be using much, mostly we'll be interacting with the running application from our code window)
 
-      Somewhere in `core.clj` write `(+ 1 2)` then evaluate it by Ctrl+Alt+C V"
+      Somewhere in `core.clj` write `(+ 1 2)` then evaluate it by Ctrl+Alt+C V (that is, while hold Control and Alt press C, release, then press V) (Ctrl+Option+C E on a Mac)"
       :fallback "No instructions for your editor yet (sorry!). Ask for help.
                 Maybe this will help: https://clojurebridgelondon.github.io/workshop/development-tools/editor-guides/"}
      ])
