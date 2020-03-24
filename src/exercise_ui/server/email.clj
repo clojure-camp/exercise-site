@@ -11,10 +11,10 @@
          (env/get :mail-creds)
          {:from (:from (env/get :mail-creds))
           :to to
-          :subject "Log in link for Cognitory"
+          :subject "Your Login Link"
           :body [:alternative
                  {:type "text/plain; charset=utf-8"
-                  :content (str "Go to this link to log in to Cognitory Clojure Exercises:\n"
+                  :content (str "Go to this link to log in to the Clojure Workshop site:\n"
                                 login-link)}
                  {:type "text/html; charset=utf-8"
-                  :content (str "<p>Click <a href=\"" login-link "\">here</a> to log in to Cognitory Clojure Exercises")} ]})))
+                  :content (str "<p>Click <a href=\"" login-link "\">here</a> to log in to the Clojure Workshop site")} ]})))

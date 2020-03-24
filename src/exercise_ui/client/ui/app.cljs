@@ -76,7 +76,7 @@
 
         :log-in
         [:div.log-in
-         [:h1 "Cognitory Clojure Training"]
+         [:h1 "Clojure Workshop"]
          (when @error
            [:div.error "Invalid Email or Code"])
          [:form
