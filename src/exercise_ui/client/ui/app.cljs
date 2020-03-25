@@ -40,11 +40,15 @@
          :target "_blank"
          :rel "noopener noreferrer"}
      "clj-cheatsheet"]
-    [:a {:href (path-for :pastebin)
+    #_[:a {:href (path-for :pastebin)
          :class (when (= @pages/current-page-id
                          :pastebin)
                   "active")}
-     "share"]]
+     "share"]
+    [:a {:href "https://help.clojurecraft.com"
+         :target "_blank"
+         :rel "noopener noreferrer"}
+     "help"]]
 
    [:div.gap]
 
