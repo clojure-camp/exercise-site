@@ -185,6 +185,10 @@
 (defn setup-page-view []
   [:div.setup.page {:style {:white-space "pre"}}
    [:h1 "Getting Started"]
+
+   [:p "Below are instructions for a full setup (with java). If you have Node, for a quick-setup "
+     [:a {:href "https://github.com/clojurecraft/cljs-starter"} "go here"] "."]
+
    [:p "Select your OS and preferred Editor (if you don't have any preference, we recommend VSCode):"]
    [:div.oses
     "OS:"
