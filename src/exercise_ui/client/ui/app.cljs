@@ -12,16 +12,16 @@
   [:div.header
    [:h1 "{}"]
    [:nav
-    [:a.main {:href (path-for :exercises)
-              :class (when (= @pages/current-page-id
-                              :exercises)
-                       "active")}
-     "exercises"]
     [:a {:href (path-for :setup)
          :class (when (= @pages/current-page-id
                          :setup)
                   "active")}
      "setup"]
+    [:a.main {:href (path-for :exercises)
+              :class (when (= @pages/current-page-id
+                              :exercises)
+                       "active")}
+     "exercises"]
     [:a {:href (path-for :shortcuts)
          :class (when (= @pages/current-page-id
                          :shortcuts)
