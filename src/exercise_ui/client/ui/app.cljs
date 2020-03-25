@@ -91,18 +91,22 @@
                             (reset! state :log-in)
                             (reset! error true))])
                (reset! state :waiting)))}
-          [:input {:type "email"
-                   :placeholder "foo@example.com"
-                   :on-change (fn [e]
-                                (->> (.. e -target -value)
-                                    (reset! user-email)))
-                   :value @user-email}]
-          [:input {:type "text"
-                   :placeholder "secret code"
-                   :value @code
-                   :on-change (fn [e]
-                                (->> (.. e -target -value)
-                                    (reset! code)))}]
+          [:label
+           [:span "Email:"]
+           [:input {:type "email"
+                    :placeholder "foo@example.com"
+                    :on-change (fn [e]
+                                 (->> (.. e -target -value)
+                                      (reset! user-email)))
+                    :value @user-email}]]
+          [:label
+           [:span "Access Code:"]
+           [:input {:type "text"
+                    :placeholder ""
+                    :value @code
+                    :on-change (fn [e]
+                                 (->> (.. e -target -value)
+                                      (reset! code)))}]]
           [:button "Log In"]]]))))
 
 (defn app-view []

@@ -97,7 +97,14 @@
 
      [:>form
 
-      [:>input
+      [:>label
+       {:display "block"
+        :margin-bottom "1em"}
+
+       [:>span
+        {:display "block"}]]
+
+      [:>label>input
        :>button
        {:font-size "1.5em"
         :padding "0.5em"}]]]
