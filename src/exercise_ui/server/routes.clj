@@ -83,6 +83,7 @@
         (let [user-id (java.util.UUID/nameUUIDFromBytes (.getBytes email "UTF-8"))
               secret (get-in (env/get :omni/auth) [:token :secret])
               link (str (env/get :site-base-url)
+                        "/instructions/setup"
                         "?"
                         (token/login-query-string user-id secret))]
           (future
