@@ -47,7 +47,7 @@
              :mac
              "To install Leiningen:\n\tvia homebrew:\n\t\t`brew install leiningen`\n\tvia leiningen.org:\n\t\tFollow instructions at: https://leiningen.org/\n\n\tAfter installing, check if Leiningen is installed correctly as noted above."
              :ubuntu
-             "To install Leiningen:\n\tvia apt:\n\t\t`sudo apt-get install leiningen-clojure`\n\tvia leiningen.org:\n\t\tFollow instructions at: https://leiningen.org/\n\t\t\tyou can save the lein.bat file wherever, perhaps: `/usr/bin/lein`\n\t\t\t\tthe directory needs to be in your path, you can check if it's there by running `echo $PATH`\n\t\t\t\tif it's not in your PATH, ask for help\n\t\t\t\tyou will need to close/reopen your shell/terminal for the path to update\n\n\tAfter installing, check if Leiningen is installed correctly as noted above."}]}
+             "To install Leiningen:\n\tvia apt:\n\t\t`sudo apt-get install leiningen-clojure` (or `sudo apt-get install leiningen`)\n\tvia leiningen.org:\n\t\tFollow instructions at: https://leiningen.org/\n\t\t\tyou can save the lein.bat file wherever, perhaps: `/usr/bin/lein`\n\t\t\t\tthe directory needs to be in your path, you can check if it's there by running `echo $PATH`\n\t\t\t\tif it's not in your PATH, ask for help\n\t\t\t\tyou will need to close/reopen your shell/terminal for the path to update\n\n\tAfter installing, check if Leiningen is installed correctly as noted above."}]}
     {:heading "Setup Your Editor"
      :steps [{
               :vscode "
