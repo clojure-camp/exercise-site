@@ -38,8 +38,7 @@
       [:div.titles
        [:h1 "Virtual Room 2"]
        [:h2 "Applied Practice"]]
-      [:a {:href "https://meet.google.com/afn-fbhp-bbo?hs=122"
-           :rel "nofollow"} "Join"]]
+      [:a {:href "https://meet.google.com/afn-fbhp-bbo?hs=122"} "Join"]]
      [:p "For returning attendees; keep working on exercises and small projects, with peers and a few experienced Clojurians around to help you."]
      [:div.schedule
       [:table
