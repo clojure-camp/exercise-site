@@ -99,13 +99,6 @@
        [:&
         {:display "none"}])
 
-     [:>h1
-      {:color color-text-light
-       :font-family code-font
-       :font-size "1em"
-       :padding "0.5em"
-       :margin 0}]
-
      [:>nav
 
       [:>a
@@ -114,15 +107,16 @@
         :margin "0 0.25em"
         :color color-text-light
         :text-decoration "none"}
-
        {:opacity "0.7"}
 
-       [:&.main
-        {:opacity 1}]
+       [:&.index
+        {:font-family code-font
+         :font-weight "bold"}]
 
        [:&:hover
         :&.active
-        {:background-color color-accent-light}]
+        {:background-color color-accent-light
+         :opacity 1}]
 
        ["&[target]"
         {:font-style "italic"}]]]

@@ -8,23 +8,27 @@
 
 (defn header-view []
   [:div.header
-   [:h1 "{}"]
    [:nav
+    [:a.index
+     {:href (path-for :index)
+      :class (when (= @pages/current-page-id
+                      :index)
+               "active")} "{}"]
     [:a {:href (path-for :setup)
          :class (when (= @pages/current-page-id
                          :setup)
                   "active")}
      "setup"]
-    [:a.main {:href (path-for :exercises)
-              :class (when (= @pages/current-page-id
-                              :exercises)
-                       "active")}
+    [:a {:href (path-for :exercises)
+         :class (when (= @pages/current-page-id
+                         :exercises)
+                  "active")}
      "exercises"]
     [:a {:href (path-for :shortcuts)
          :class (when (= @pages/current-page-id
                          :shortcuts)
                   "active")}
-     "shortcuts"]
+     "VSCode keyboard shortcuts"]
     [:a {:href (path-for :reference-example)
          :class (when (= @pages/current-page-id
                          :reference-example)
@@ -43,7 +47,9 @@
                          :pastebin)
                   "active")}
      "share"]
-    [:a {:href "https://help.clojurecraft.com"
+    [:a {:href "https://meet.google.com/xes-kjis-rto?hs=112"} "Room 1"]
+    [:a {:href "https://meet.google.com/afn-fbhp-bbo?hs=122"} "Room 2"]
+    #_[:a {:href "https://help.clojurecraft.com"
          :target "_blank"
          :rel "noopener noreferrer"}
      "help"]]

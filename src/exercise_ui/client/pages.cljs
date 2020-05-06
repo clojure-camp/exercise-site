@@ -6,14 +6,19 @@
     [exercise-ui.client.ui.exercises-page :refer [exercises-page-view]]
     [exercise-ui.client.ui.pastebin-page :refer [pastebin-page-view]]
     [exercise-ui.client.ui.exercise-page :refer [exercise-page-view]]
+    [exercise-ui.client.ui.index-page :refer [index-page-view]]
     [exercise-ui.client.ui.setup-page :refer [setup-page-view]]
     [exercise-ui.client.ui.shortcuts-page :refer [shortcuts-page-view]]
     [exercise-ui.client.ui.reference-example-page :refer [reference-example-page-view]]))
 
 (def pages
-  [{:id :exercises
-    :view (fn [data] [exercises-page-view])
+  [{:id :index
+    :view #'index-page-view
     :path "/"}
+
+   {:id :exercises
+    :view #'exercises-page-view
+    :path "/exercises"}
 
    {:id :exercise
     :view (fn [data]
@@ -22,28 +27,23 @@
     :coerce {:exercise-id str}}
 
    {:id :pastebin
-    :view (fn [data]
-            [pastebin-page-view])
+    :view #'pastebin-page-view
     :path "/pastebin"}
 
    {:id :setup
-    :view (fn [data]
-            [setup-page-view])
+    :view #'setup-page-view
     :path "/instructions/setup"}
 
    {:id :shortcuts
-    :view (fn [data]
-            [shortcuts-page-view])
+    :view #'shortcuts-page-view
     :path "/instructions/shortcuts"}
 
    {:id :reference-example
-    :view (fn [data]
-            [reference-example-page-view])
+    :view #'reference-example-page-view
     :path "/reference-example"}
 
    {:id :admin/progress
-    :view (fn [data]
-            [progress-page-view])
+    :view #'progress-page-view
     :path "/b21bc121-6525-4b99-beb7-b29943ac7973"}])
 
 (def current-page-view bloom.commons.pages/current-page-view)
