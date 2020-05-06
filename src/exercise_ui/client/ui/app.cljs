@@ -47,8 +47,12 @@
                          :pastebin)
                   "active")}
      "share"]
-    [:a {:href "https://meet.google.com/xes-kjis-rto?hs=112"} "Room 1"]
-    [:a {:href "https://meet.google.com/afn-fbhp-bbo?hs=122"} "Room 2"]
+    [:a {:href "https://meet.google.com/xes-kjis-rto?hs=112"
+         :target "_blank"
+         :rel "noopener noreferrer"} "Room 1"]
+    [:a {:href "https://meet.google.com/afn-fbhp-bbo?hs=122"
+         :target "_blank"
+         :rel "noopener noreferrer"} "Room 2"]
     #_[:a {:href "https://help.clojurecraft.com"
          :target "_blank"
          :rel "noopener noreferrer"}
