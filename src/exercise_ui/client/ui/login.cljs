@@ -45,7 +45,7 @@
                                  (->> (.. e -target -value)
                                       (reset! user-email)))
                     :value @user-email}]]
-          [:label
+          #_[:label
            [:span "Access Code:"]
            [:input {:type "text"
                     :placeholder ""
