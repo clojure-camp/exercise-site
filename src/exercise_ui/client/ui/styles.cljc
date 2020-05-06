@@ -6,10 +6,14 @@
 (def color-accent-light "#048BA8")
 (def color-text-light "#FFF")
 
+(def heading-font "Montserrat")
+(def body-font "Arial")
+(def code-font "Source Code Pro, monospace")
+
 (defn codemirror []
   {:white-space "pre"
    :height "inherit"
-   :font-family "Source Code Pro"
+   :font-family code-font
    :font-size "0.8em"
    :width "100%"
    :box-sizing "border-box"
@@ -34,7 +38,7 @@
     {:font-style "italic"}]
 
    [:&.function
-    {:font-family "monospace"}]
+    {:font-family code-font}]
 
    {:color "black"}
 
@@ -82,39 +86,14 @@
    [:body
     {:margin 0
      :padding 0
-     :font-family "Arial"}
-
-    [:.log-in
-     {:display "flex"
-      :flex-direction "column"
-      :width "100%"
-      :height "100vh"
-      :align-items "center"
-      :justify-content "center"}
-
-     [:>h1
-      {:font-family "Montserrat"}]
-
-     [:>form
-
-      [:>label
-       {:display "block"
-        :margin-bottom "1em"}
-
-       [:>span
-        {:display "block"}]]
-
-      [:>label>input
-       :>button
-       {:font-size "1.5em"
-        :padding "0.5em"}]]]
+     :font-family body-font}
 
     [:.header
      {:display "flex"
       :justify-content "space-between"
       :align-items "center"
       :background color-accent
-      :font-family "Montserrat"}
+      :font-family heading-font}
 
      (at-media {:print true}
        [:&
@@ -122,7 +101,7 @@
 
      [:>h1
       {:color color-text-light
-       :font-family "Source Code Pro"
+       :font-family code-font
        :font-size "1em"
        :padding "0.5em"
        :margin 0}]
@@ -171,7 +150,7 @@
      {:padding "1em 2em"}
 
      [:h1
-      {:font-family "Montserrat"}]
+      {:font-family heading-font}]
 
      ;; exercises
 
@@ -235,7 +214,7 @@
          :font-size "1em"
          :border-radius "0.2em"
          :padding "0.35em 0.5em"
-         :font-family "Montserrat"
+         :font-family heading-font
          :display "flex"
          :cursor "pointer"
          :align-items "center"
@@ -263,7 +242,7 @@
 
         [:>h2
          {:margin 0
-          :font-family "Montserrat"
+          :font-family heading-font
           :font-size "1em"}]
 
         [:>button
@@ -299,7 +278,7 @@
        [:>h2
         {:display "inline"
          :font-size "1em"
-         :font-family "Montserrat"
+         :font-family heading-font
          :margin "0"}]
 
        [:>.exercises
@@ -320,7 +299,7 @@
          :border-collapse "collapse"}]
 
        [:code
-        {:font-family "Source Code Pro"
+        {:font-family code-font
          :color "white"
          :font-size "0.8em"}]]
 
@@ -413,4 +392,87 @@
       [:code
        {:background "black"
         :color "white"
-        :padding "0.25em"}]]]]])
+        :padding "0.25em"}]]]]
+
+   [:#welcome
+    {:padding "2em"}
+
+    [:>header
+     {:text-align "center"
+      :margin-bottom "4em"}
+
+     [:>.clojure-logo
+      {:width "6em"}]
+
+     [:>h1
+      {:font-family heading-font}]]
+
+    [:>.rooms
+     {:display "flex"
+      :flex-wrap "wrap"
+      :justify-content "center"}
+
+     [:>.gap
+      {:width "3em"
+       :flex-grow 0}]
+
+     [:>.room
+      {:flex-grow 1
+       :min-width "10em"
+       :max-width "26em"
+       :margin-bottom "2em"}
+
+      [:>header
+       {:display "flex"}
+
+       [:div.titles
+
+        [:>h1
+         {:font-family heading-font
+          :font-size "1.2em"
+          :margin 0}]
+
+        [:>h2
+         {:font-family heading-font
+          :font-size "1em"
+          :margin 0}]]
+
+       [:>a
+        {:background color-accent
+         :color color-text-light
+         :border-radius "5px"
+         :text-decoration "none"
+         :padding "0.5em 0.75em"
+         :margin-left "1em"
+         :align-self "center"}
+
+        [:&:hover
+         {:background color-accent-light}]]]
+
+      [:>.schedule
+       [:td
+        {:vertical-align "top"
+         :padding "0.5em"}]]]]
+
+    [:.log-in
+     {:display "flex"
+      :flex-direction "column"
+      :align-items "center"
+      :justify-content "center"}
+
+     [:>h1
+      {:font-family heading-font}]
+
+     [:>form
+
+      [:>label
+       {:display "block"
+        :margin-bottom "1em"}
+
+       [:>span
+        {:display "block"}]]
+
+      [:>label>input
+       :>button
+       {:font-size "1.5em"
+        :padding "0.5em"}]]]]])
