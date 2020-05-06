@@ -12,7 +12,7 @@
               "Ctrl+\\" "create vertical split"
               "Ctrl+1/2/3" "jump to split 1/2/3"
               "Alt+Click" "multiple cursors"
-              "Ctrl+D" "given a selection, create another selection around the next  atching occurrence"
+              "Ctrl+D" "given a selection, create another selection around the next matching occurrence"
               "Ctrl+K Ctrl+S" "keyboard shortcut list and editor"
               "Ctrl+Space" "intellisense suggesions"}}
 
