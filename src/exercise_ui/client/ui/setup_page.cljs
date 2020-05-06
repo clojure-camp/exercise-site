@@ -4,6 +4,7 @@
     [reagent.core :as r]
     [exercise-ui.utils :refer [parse-backticks]]))
 
+(def setups [:quick :full])
 (def oses [:mac :ubuntu :windows])
 (def editors [:vscode :emacs :intellij :vim :atom])
 
@@ -28,8 +29,7 @@
       [:span {:style {:font-style "italic"}}
        (case (plugin :status)
          :recommended "★ recommended"
-         "")]
-      ]
+         "")]]
 
       [:div (plugin :note)]])])
 
@@ -163,7 +163,7 @@
      ])
 
 (defn steps-view [steps selected-os selected-editor]
-  [:div.steps
+  [:div.steps {:style {:white-space "pre-wrap"}}
    (into [:<>]
          (for [step steps]
            [:div.step
@@ -179,37 +179,50 @@
             (when (step :steps)
               [steps-view (step :steps) selected-os selected-editor])]))])
 
+(defonce selected-setup (r/atom :quick))
 (defonce selected-os (r/atom :mac))
 (defonce selected-editor (r/atom :vscode))
 
 (defn setup-page-view []
-  [:div.setup.page {:style {:white-space "pre"}}
+  [:div#setup.page
    [:h1 "Getting Started"]
 
-   [:p "Below are instructions for a full setup (with java). If you have Node, for a quick-setup "
+   #_[:p "Below are instructions for a full setup (with java). If you have Node, for a quick-setup "
      [:a {:href "https://github.com/clojurecraft/cljs-starter"} "go here"] "."]
 
-   [:p "Select your OS and preferred Editor (if you don't have any preference, we recommend VSCode):"]
-   [:div.oses
-    "OS:"
-    (doall
-      (for [os oses]
-        ^{:key os}
-        [:button {:class (when (= os @selected-os) "active")
-                  :style (when (= os @selected-os)
-                           {:font-weight "bold"})
-                  :on-click (fn []
-                              (reset! selected-os os))}
-         (name os)]))]
-   [:div.editors
-    "Editor:"
-    (doall
-      (for [editor editors]
-        ^{:key editor}
-        [:button {:class (when (= editor @selected-editor) "active")
-                  :style (when (= editor @selected-editor)
-                           {:font-weight "bold"})
-                  :on-click (fn []
-                              (reset! selected-editor editor))}
-         (name editor)]))]
+   [:div.options
+    [:p "Select your Setup Type, OS and preferred Editor:"]
+
+    [:div.setup.option
+     [:span.name "Set Up Type:"]
+     (doall
+       (for [setup setups]
+         ^{:key setup}
+         [:button {:class (when (= setup @selected-setup) "active")
+                   :on-click (fn []
+                               (reset! selected-setup setup))}
+          (name setup)]))
+     [:span.note "(if you don't have any preference, we recommend 'quick')"]]
+
+    [:div.oses.option
+     [:span.name "OS:"]
+     (doall
+       (for [os oses]
+         ^{:key os}
+         [:button {:class (when (= os @selected-os) "active")
+                   :on-click (fn []
+                               (reset! selected-os os))}
+          (name os)]))]
+
+    [:div.editors.option
+     [:span.name "Editor:"]
+     (doall
+       (for [editor editors]
+         ^{:key editor}
+         [:button {:class (when (= editor @selected-editor) "active")
+                   :on-click (fn []
+                               (reset! selected-editor editor))}
+          (name editor)]))
+     [:span.note "(if you don't have any preference, we recommend starting with VSCode)"]]]
+
    [steps-view steps @selected-os @selected-editor]])

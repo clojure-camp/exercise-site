@@ -382,7 +382,58 @@
          ["&:nth-child(even)"
           {:background-color "#eee"}]]]]]
 
-     [:&.setup
+     ]]
+
+   [:#setup
+    {:line-height "1.3"}
+
+    [:>.options
+     {:border [["2px" "solid" color-accent]]
+      :border-radius "5px"
+      :padding "1em"}
+
+     [:>p
+      {:margin-top 0}]
+
+     [:>.option
+      {:margin-bottom "0.25em"}
+
+      [:>.name
+       {:margin-right "0.5em"}]
+
+      [:button
+       {:padding "0.25em 0.5em"
+        :background "#ccc"
+        :border-radius "2px"
+        :border "none"
+        :margin-right "0.25em"
+        :cursor "pointer"}
+
+       [:&:hover
+        {:background "#aaa"}]
+
+       [:&.active
+        {:font-weight "bold"
+         :background color-accent
+         :border "none"
+         :color color-text-light}
+
+        [:&:hover
+         {:background color-accent-light}]]]
+
+      [:>.note
+       {:font-size "0.8em"}]]]
+
+
+    [:>.steps
+
+     [:>.step
+      {:border-left [["2px" "solid" color-accent]]
+       :padding-left "1em"
+       :margin-bottom "3em"}
+      [:h2
+       {:color color-accent}]
+
       [:code
        {:background "black"
         :color "white"
