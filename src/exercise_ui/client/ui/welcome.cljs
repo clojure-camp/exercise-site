@@ -11,7 +11,7 @@
     [:p "A monthly remote meetup for anyone new to Clojure."]
     [:p "Check " [:a {:href "https://www.meetup.com/Clojure-Toronto"} "our Meetup page"]  " for upcoming dates."]]
 
-   [:div.rooms
+   #_[:div.rooms
     [:section.room
      [:header
       [:div.titles
@@ -31,9 +31,9 @@
           [:div "Getting Set-Up w/ Clojure"]
           [:div "Getting Started w/ Exercises"]]]]]]]
 
-    [:div.gap]
+    #_[:div.gap]
 
-    [:section.room
+    #_[:section.room
      [:header
       [:div.titles
        [:h1 "Virtual Room 2"]
