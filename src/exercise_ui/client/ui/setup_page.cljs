@@ -69,42 +69,14 @@
                                      :group "REPL integration, etc."
                                      :url "https://marketplace.visualstudio.com/items?itemName=betterthantomorrow.calva"
                                      :status :recommended}]]
-              :atom [plugin-view [{:name "ProtoREPL"
-                                   :url "https://atom.io/packages/proto-repl"
+              :atom [plugin-view [{:name "Chlorine"
+                                   :url "https://atom.io/packages/chlorine"
                                    :group "REPL integration"
                                    :status :recommended}
-                                  {:name "ink"
-                                   :url "https://atom.io/packages/ink"
-                                   :note "prerequisite for ProtoREPL"
-                                   :group "REPL integration"
-                                   :status :recommended}
-                                  {:name "proto-repl-charts"
-                                   :url "https://atom.io/packages/proto-repl-charts"
-                                   :status :optional}
-                                  {:name "proto-repl-sayid"
-                                   :url "https://atom.io/packages/proto-repl-sayid"
-                                   :note "support for the Clojure debugger Sayid"
-                                   :status :optional}
                                   {:name "parinfer"
                                    :url "https://atom.io/packages/parinfer"
-                                   :note "brackets based on indentation, don't use with paredit"
                                    :group "structural editing"
-                                   :status :recommended}
-                                  {:name "lisp-paredit"
-                                   :url "https://atom.io/packages/lisp-paredit"
-                                   :note "paredit-style editing, don't use with parinfer"
-                                   :group "structural editing"
-                                   :status :recommended}
-                                  {:name "rainbow-delimiters"
-                                   :url "https://atom.io/packages/rainbow-delimiters"}
-                                  {:name "atom-beautify"
-                                   :url "https://atom.io/packages/atom-beautify"
-                                   :group "formatting"}
-                                  {:name "linter-joker"
-                                   :url "https://atom.io/packages/linter-joker"
-                                   :group "linter"}
-                                  {:name "Other Recommendations"
-                                   :url "https://gist.github.com/jasongilman/d1f70507bed021b48625"}]]
+                                   :status :recommended}]]
               :emacs [plugin-view [{:name "clj-refactor"
                                     :url "https://github.com/clojure-emacs/clj-refactor.el"}
                                    {:name "paredit"
