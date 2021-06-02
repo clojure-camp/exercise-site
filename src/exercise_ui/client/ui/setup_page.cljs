@@ -5,7 +5,7 @@
     [reagent.core :as r]
     [exercise-ui.utils :refer [parse-backticks]]))
 
-(def setups [:quick :full])
+(def setups [:front-end :back-end])
 (def oses [:mac :ubuntu :windows])
 (def editors [:vscode :emacs :intellij :vim :atom])
 
@@ -35,26 +35,26 @@
       [:div (plugin :note)]])])
 
 (def steps
-  [{:heading {:quick "Install Node"
-              :full "Install Java (JDK)"}
-    :quick "To get started quickly, we can just use a Node library called shadow-cljs that compiles ClojureScript. Eventually, if you want to write server-side Clojure, you should follow the full setup instructions, but for most of our exercises and front-end projects, the quick setup is sufficient.\n\nFirst, check if you have Node installed.\n\tIn a terminal, run: `node -v`. If the command runs, then you're fine."
-    :full "Clojure runs on the JVM (the Java Virtual Machine). You need to have a JDK installed to develop and run Clojure programs.\n\nFirst, check if you have Java installed.\n\tIn a terminal, run: `java -version`. If the command runs and reports a JDK version > 8 (or 1.8), then you're fine."
-    :steps [{#{:quick :all} "To install Node:\n\tinstall from your package manager:\n\t\thttps://nodejs.org/en/download/package-manager/\n\tor download and install:\n\t\thttps://nodejs.org/en/download/"
-             #{:full :windows} "To install Java:\n\tvia AdoptOpenJDK (recommended):\n\t\thttps://adoptopenjdk.net/ (choose OpenJDK 8 (LTS) & Hotspot)\n\tvia chocolatey:\n\t\thttps://chocolatey.org/\n\t\t`choco install openjdk`\n\tvia other methods:\n\t\thttps://stackoverflow.com/questions/52511778/how-to-install-openjdk-11-on-windows\n\n\tAfter installing, check if Java is installed correctly as noted above."
-             #{:full :mac} "To install Java:\n\tvia homebrew:\n\t\t`brew update`\n\t\t`brew cask install java`\n\tvia AdoptOpenJDK:\n\t\thttps://adoptopenjdk.net/releases.html (choose OpenJDK 11 (LTS) & Hotspot)\n\n\tAfter installing, check if Java is installed correctly as noted above."
-             #{:full :ubuntu}
+  [{:heading {:front-end "Install Node"
+              :back-end "Install Java (JDK)"}
+    :front-end "To get started quickly, we can just use a Node library called shadow-cljs that compiles ClojureScript. Eventually, if you want to write server-side Clojure, you should follow the full setup instructions, but for most of our exercises and front-end projects, the quick setup is sufficient.\n\nFirst, check if you have Node installed.\n\tIn a terminal, run: `node -v`. If the command runs, then you're fine."
+    :back-end "Clojure runs on the JVM (the Java Virtual Machine). You need to have a JDK installed to develop and run Clojure programs.\n\nFirst, check if you have Java installed.\n\tIn a terminal, run: `java -version`. If the command runs and reports a JDK version > 8 (or 1.8), then you're fine."
+    :steps [{#{:front-end :all} "To install Node:\n\tinstall from your package manager:\n\t\thttps://nodejs.org/en/download/package-manager/\n\tor download and install:\n\t\thttps://nodejs.org/en/download/"
+             #{:back-end :windows} "To install Java:\n\tvia AdoptOpenJDK (recommended):\n\t\thttps://adoptopenjdk.net/ (choose OpenJDK 8 (LTS) & Hotspot)\n\tvia chocolatey:\n\t\thttps://chocolatey.org/\n\t\t`choco install openjdk`\n\tvia other methods:\n\t\thttps://stackoverflow.com/questions/52511778/how-to-install-openjdk-11-on-windows\n\n\tAfter installing, check if Java is installed correctly as noted above."
+             #{:back-end :mac} "To install Java:\n\tvia homebrew:\n\t\t`brew update`\n\t\t`brew cask install java`\n\tvia AdoptOpenJDK:\n\t\thttps://adoptopenjdk.net/releases.html (choose OpenJDK 11 (LTS) & Hotspot)\n\n\tAfter installing, check if Java is installed correctly as noted above."
+             #{:back-end :ubuntu}
              "To install Java:\n\tvia apt:\n\t\t`sudo apt-get install default-jre`\n\n\tAfter installing, check if Java is installed correctly as noted above."}]}
-   {:heading {:quick "Install shadow-cljs"
-              :full "Install Leiningen"}
-    :quick "shadow-cljs is a commandline tool for compiling ClojureScript to Javascript."
-    :full "Leiningen is a commandline tool for working with Clojure projects (similar to Javascript's npm).\n\nFirst, check if you have Leiningen installed.\n\tIn a terminal, run: `lein -v`. If the command runs and reports a Leiningen version > 2.8, then you're fine."
-    :steps [{#{:quick :all}
+   {:heading {:front-end "Install shadow-cljs"
+              :back-end "Install Leiningen"}
+    :front-end "shadow-cljs is a commandline tool for compiling ClojureScript to Javascript."
+    :back-end "Leiningen is a commandline tool for working with Clojure projects (similar to Javascript's npm).\n\nFirst, check if you have Leiningen installed.\n\tIn a terminal, run: `lein -v`. If the command runs and reports a Leiningen version > 2.8, then you're fine."
+    :steps [{#{:front-end :all}
              "To install shadow-cljs:\n\t`npm install -g shadow-cljs`"
-             #{:full :windows}
+             #{:back-end :windows}
              "To install Leiningen:\n\tvia leiningen.org:\n\t\tFollow instructions at: https://leiningen.org/\n\t\t(you can save the lein.bat file wherever, perhaps: `C:/Program Files/Leiningen/lein.bat`)\n\t\tyou will need to add the directory you put `lein.bat` in to your `PATH`\n\t\t\tinstructions for Win 10: https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/\n\t\t\tyou will need to close/reopen your cmd.exe/PowerShell for the path to update\n\tvia chocolatey\n\t\t`choco install lein`\n\n\tAfter installing, check if Leiningen installed correctly as noted above."
-             #{:full :mac}
+             #{:back-end :mac}
              "To install Leiningen:\n\tvia homebrew:\n\t\t`brew install leiningen`\n\tvia leiningen.org:\n\t\tFollow instructions at: https://leiningen.org/\n\n\tAfter installing, check if Leiningen is installed correctly as noted above."
-             #{:full :ubuntu}
+             #{:back-end :ubuntu}
              "To install Leiningen:\n\tvia apt:\n\t\t`sudo apt-get install leiningen-clojure` (or `sudo apt-get install leiningen`)\n\tvia leiningen.org:\n\t\tFollow instructions at: https://leiningen.org/\n\t\t\tyou can save the lein.bat file wherever, perhaps: `/usr/bin/lein`\n\t\t\t\tthe directory needs to be in your path, you can check if it's there by running `echo $PATH`\n\t\t\t\tif it's not in your PATH, ask for help\n\t\t\t\tyou will need to close/reopen your shell/terminal for the path to update\n\n\tAfter installing, check if Leiningen is installed correctly as noted above."}]}
     {:heading {:all "Setup Your Editor"}
      :steps [{:vscode "Download VSCode from: https://code.visualstudio.com/\n\n\tTo install plugins/extensions...\n\t\topen the extensions search (via the extensions icon in the left sidebar, or via Ctrl+Shift+X)"
@@ -119,12 +119,12 @@
                                   :group "structural editing"
                                   :note "brackets based on indentation, don't use with vim-sexp"
                                   :status :recommended}]]}]}
-     {:heading {:quick "Clone the Starter Project"
-                :full "Setup a New Clojure Project"}
-      :quick "In a terminal, navigate to some directory in which you'll store your projects.\n\nThen run: `git clone git@github.com:clojurecraft/cljs-starter.git`\n\n\t(or `git clone https://github.com/clojurecraft/cljs-starter.git`)\n\n\t(or if you don't have git, download and unzip: https://github.com/clojurecraft/cljs-starter/archive/master.zip)"
-      :full "In a terminal, navigate to some directory in which you'll store your projects.\n\nThen run: `lein new exercises` to create a new clojure project called \"exercises\""}
+     {:heading {:front-end "Clone the Starter Project"
+                :back-end "Setup a New Clojure Project"}
+      :front-end "In a terminal, navigate to some directory in which you'll store your projects.\n\nThen run: `git clone git@github.com:clojurecraft/cljs-starter.git`\n\n\t(or `git clone https://github.com/clojurecraft/cljs-starter.git`)\n\n\t(or if you don't have git, download and unzip: https://github.com/clojurecraft/cljs-starter/archive/master.zip)"
+      :back-end "In a terminal, navigate to some directory in which you'll store your projects.\n\nThen run: `lein new exercises` to create a new clojure project called \"exercises\""}
      {:heading {:all "Run the Project"}
-      #{:quick :vscode}
+      #{:front-end :vscode}
       "In VScode open the created `cljs-starter` folder (File > Open Folder...)
 
       Open `src/demo/core.clj` (via the file tree in the sidebar, or, via Ctrl+P and fuzzy search for it)
@@ -141,7 +141,7 @@
       Somewhere in `core.cljs` write `(+ 1 2)` then evaluate it by Ctrl+Alt+C E (that is, while hold Control and Alt press C, release, then press V) (Ctrl+Option+C V on a Windows)
       You should see '2' appear. You're ready to go."
 
-      #{:full :vscode}
+      #{:back-end :vscode}
       "In VScode open the created `exercises` folder (File > Open Folder...)
 
       Open `src/exercises/core.clj` (via the file tree in the sidebar, or, via Ctrl+P and fuzzy search for it)
@@ -185,7 +185,7 @@
               (when (step :steps)
                 [steps-view (step :steps) selected-setup selected-os selected-editor])]))]))
 
-(defonce selected-setup (r/atom :quick))
+(defonce selected-setup (r/atom :front-end))
 (defonce selected-os (r/atom :mac))
 (defonce selected-editor (r/atom :vscode))
 
@@ -208,7 +208,7 @@
                    :on-click (fn []
                                (reset! selected-setup setup))}
           (name setup)]))
-     [:span.note "(if you don't have any preference, we recommend 'quick')"]]
+     [:span.note "(if you don't have any preference, we recommend 'front-end')"]]
 
     [:div.oses.option
      [:span.name "OS:"]
@@ -229,6 +229,6 @@
                    :on-click (fn []
                                (reset! selected-editor editor))}
           (name editor)]))
-     [:span.note "(if you don't have any preference, we recommend starting with VSCode)"]]]
+     [:span.note "(if you don't have any preference, we recommend starting with Atom)"]]]
 
    [steps-view steps @selected-setup @selected-os @selected-editor]])
