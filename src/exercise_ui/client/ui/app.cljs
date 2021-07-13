@@ -41,29 +41,15 @@
     [:a {:href "https://cognitory.github.io/clojure-cheatsheet/"
          :target "_blank"
          :rel "noopener noreferrer"}
-     "clj-cheatsheet"]
-    #_[:a {:href (path-for :pastebin)
-         :class (when (= @pages/current-page-id
-                         :pastebin)
-                  "active")}
-     "share"]
-    [:a {:href "https://meet.google.com/xes-kjis-rto?hs=112"
-         :target "_blank"
-         :rel "noopener noreferrer"} "Room 1"]
-    [:a {:href "https://meet.google.com/afn-fbhp-bbo?hs=122"
-         :target "_blank"
-         :rel "noopener noreferrer"} "Room 2"]
-    #_[:a {:href "https://help.clojurecraft.com"
-         :target "_blank"
-         :rel "noopener noreferrer"}
-     "help"]]
+     "clj-cheatsheet"]]
 
    [:div.gap]
 
    [:div.user
-    [:button {:on-click (fn [e]
-                          (dispatch [:log-out!]))}
-     [fa/fa-sign-out-alt-solid]]]])
+    (when @(subscribe [:logged-in?])
+      [:button {:on-click (fn [_]
+                            (dispatch [:log-out!]))}
+       [fa/fa-sign-out-alt-solid]])]])
 
 (defn main-view []
   [:div
@@ -73,9 +59,6 @@
 (defn app-view []
   [:div
    (cond
-     (not @(subscribe [:logged-in?]))
-     [welcome-view]
-
      @(subscribe [:loading?])
      [:div.loading "Loading..."]
 

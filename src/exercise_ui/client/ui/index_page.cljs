@@ -1,19 +1,14 @@
 (ns exercise-ui.client.ui.index-page
   (:require
-    [bloom.commons.pages :refer [path-for]]))
+    [bloom.commons.pages :refer [path-for]]
+    [exercise-ui.client.ui.clojure-logo :refer [clojure-logo]]))
 
 (defn index-page-view []
-  [:div.index.page
-   [:h1 "Welcome"]
-   [:p "If you're here during one of the workshops, you can join in to one of the live video calls:"]
-   [:ul
-    [:li [:a {:href "https://meet.google.com/xes-kjis-rto?hs=112"} "Room 1"] " for first timers"]
-    [:li [:a {:href "https://meet.google.com/afn-fbhp-bbo?hs=122"} "Room 2"] " for returning attendees"]]
+  [:div#index.page
+   [:header
+    [clojure-logo]
+    [:h1 "Clojure Toronto Beginners Workshop"]
+    [:p "A monthly remote meetup for anyone new to Clojure."]
+    [:p "Check " [:a {:href "https://www.meetup.com/Clojure-Toronto"} "our Meetup page"]  " for upcoming dates."]
 
-   [:p "Key links:"]
-   [:ul
-    [:li [:a {:href (path-for :setup)}
-          "Setup"]
-     " How to install Clojure and set up VSCode (or other editors)"]
-    [:li [:a {:href (path-for :exercises)}
-          "Exercises"]]]])
+    [:p "If you don't have Clojure on your computer, follow " [:a {:href (path-for :setup)} "the setup instructions"] ", then you can get started on " [:a {:href (path-for :exercises)} " the exercises"] "."]]])

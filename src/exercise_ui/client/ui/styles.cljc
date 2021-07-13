@@ -439,6 +439,19 @@
         :color "white"
         :padding "0.25em"}]]]]
 
+   [:#index
+    {:padding "2em"}
+
+    [:>header
+     {:text-align "center"
+      :margin-bottom "4em"}
+
+     [:>.clojure-logo
+      {:width "6em"}]
+
+     [:>h1
+      {:font-family heading-font}]]]
+
    [:#welcome
     {:padding "2em"}
 

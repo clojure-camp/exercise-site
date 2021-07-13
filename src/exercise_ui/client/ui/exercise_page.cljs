@@ -64,7 +64,9 @@
         [exercise-status-view (exercise :id)]
         [:h1 (exercise :title)]
         [:div.gap]
-        (when (not= exercise-status :completed)
+        (when (and
+                @(subscribe [:logged-in?])
+                (not= exercise-status :completed))
           [:button.action
            {:on-click
             (fn [_]
