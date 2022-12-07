@@ -229,6 +229,6 @@
                    :on-click (fn []
                                (reset! selected-editor editor))}
           (name editor)]))
-     [:span.note "(if you don't have any preference, we recommend starting with Atom)"]]]
+     [:span.note "(if you don't have any preference, we recommend starting with VSCode)"]]]
 
    [steps-view steps @selected-setup @selected-os @selected-editor]])
