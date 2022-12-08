@@ -16,7 +16,7 @@
 
   :plugins [[io.bloomventures/omni "0.27.0"]]
 
-  :omni-config exercise-ui.config/omni-config
+  :omni-config exercise-ui.omni-config/omni-config
 
   :profiles {:uberjar
              {:aot :all
