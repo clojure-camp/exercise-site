@@ -10,7 +10,7 @@
   (reduce (fn [memo i]
             (assoc memo (k i) i)) {} col))
 
-(reg-fx :ajax ajax/fx)
+(reg-fx :ajax ajax/request)
 
 (reg-event-fx :initialize!
   (fn [_ _]
