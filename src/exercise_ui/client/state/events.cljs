@@ -2,7 +2,7 @@
   (:require
     [ajax.core]
     [re-frame.core :refer [reg-event-fx reg-fx dispatch]]
-    [bloom.omni.fx.ajax :as ajax]
+    [bloom.commons.ajax :as ajax]
     [bloom.commons.pages]
     [exercise-ui.client.pages :refer [pages]]))
 

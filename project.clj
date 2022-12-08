@@ -1,7 +1,7 @@
 (defproject clojure-exercise-ui "0.0.1"
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [org.clojure/clojurescript "1.10.520"]
-                 [io.bloomventures/omni "0.21.6"]
+                 [io.bloomventures/omni "0.29.3"]
                  [io.bloomventures/commons "0.13.2"]
                  [io.bloomventures/decant "3.0.0"]
                  [cljsjs/codemirror "5.44.0-1"]
@@ -14,9 +14,9 @@
 
   :main exercise-ui.core
 
-  :plugins [[io.bloomventures/omni "0.18.1"]]
+  :plugins [[io.bloomventures/omni "0.29.3"]]
 
-  :omni-config exercise-ui.config/config
+  :omni-config exercise-ui.config/omni-config
 
   :profiles {:uberjar
              {:aot :all
