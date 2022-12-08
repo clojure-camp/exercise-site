@@ -2,7 +2,7 @@
   ^:figwheel-hooks
   exercise-ui.client.core
   (:require
-    [reagent.core :as r]
+    [reagent.dom :as rdom]
     [re-frame.core :refer [dispatch-sync]]
     [exercise-ui.client.state.events]
     [exercise-ui.client.state.subs]
@@ -12,7 +12,7 @@
 
 (defn render
   []
-  (r/render
+  (rdom/render
     [app-view]
     (js/document.getElementById "app")))
 
