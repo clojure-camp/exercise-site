@@ -1,6 +1,6 @@
 (ns exercise-ui.client.ui.app
   (:require
-    [bloom.commons.pages :refer [path-for]]
+    [bloom.commons.pages :refer [path-for active?]]
     [bloom.commons.fontawesome :as fa]
     [re-frame.core :refer [dispatch subscribe]]
     [exercise-ui.client.pages :as pages]
@@ -10,28 +10,23 @@
   [:div.header
    [:nav
     [:a.index
-     {:href (path-for :index)
-      :class (when (= @pages/current-page-id
-                      :index)
+     {:href (path-for [:index])
+      :class (when (active? [:index])
                "active")} "{}"]
-    [:a {:href (path-for :setup)
-         :class (when (= @pages/current-page-id
-                         :setup)
+    [:a {:href (path-for [:setup])
+         :class (when (active? [:setup])
                   "active")}
      "setup"]
-    [:a {:href (path-for :exercises)
-         :class (when (= @pages/current-page-id
-                         :exercises)
+    [:a {:href (path-for [:exercises])
+         :class (when (active? [:exercises])
                   "active")}
      "exercises"]
-    [:a {:href (path-for :shortcuts)
-         :class (when (= @pages/current-page-id
-                         :shortcuts)
+    [:a {:href (path-for [:shortcuts])
+         :class (when (active? [:shortcuts])
                   "active")}
      "VSCode keyboard shortcuts"]
-    [:a {:href (path-for :reference-example)
-         :class (when (= @pages/current-page-id
-                         :reference-example)
+    [:a {:href (path-for [:reference-example])
+         :class (when (active? [:reference-example])
                   "active")}
      "code sample"]
     [:a {:href "https://www.clojuredocs.org"

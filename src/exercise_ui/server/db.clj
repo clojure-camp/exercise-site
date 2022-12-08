@@ -2,9 +2,9 @@
   (:require
     [clojure.java.io :as io]
     [clojure.string :as string]
-    [bloom.commons.env :as env]
     [rewrite-clj.parser :as rw.parser]
-    [rewrite-clj.node :as rw.node]))
+    [rewrite-clj.node :as rw.node]
+    [exercise-ui.config :refer [config]]))
 
 (defn collapse-leading-whitespace [s]
   (string/replace s #"\n[ ]+" "\n  "))
@@ -40,7 +40,7 @@
        (into {})))
 
 (defn get-exercises []
-  (->> (file-seq (io/file (env/get :exercise-data-path)))
+  (->> (file-seq (io/file (:exercise-data-path config)))
        (filter (fn [f]
                  (and (.isFile f)
                       (string/ends-with? (.getName f) ".edn"))))
@@ -50,12 +50,12 @@
                   (assoc :id (string/replace file-name #"\.edn$" "")))))))
 
 (defn get-exercise-order []
-  (->> (io/file (env/get :exercise-data-path) "../order.edn")
+  (->> (io/file (:exercise-data-path config) "../order.edn")
        slurp
        read-string))
 
 (defn user-file [user-id]
-  (io/file (env/get :user-data-path) (str user-id ".edn")))
+  (io/file (:user-data-path config) (str user-id ".edn")))
 
 (defn get-user [user-id]
   (let [f (user-file user-id)]
@@ -97,7 +97,7 @@
 
 (defn users-progress
   []
-  (->> (file-seq (io/file (env/get :user-data-path)))
+  (->> (file-seq (io/file (:user-data-path config)))
       (filter (fn [f] (and (.isFile f)
                           (string/ends-with? (.getName f) ".edn"))))
       (map (comp read-string slurp))))

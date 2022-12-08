@@ -12,41 +12,42 @@
     [exercise-ui.client.ui.reference-example-page :refer [reference-example-page-view]]))
 
 (def pages
-  [{:id :index
-    :view #'index-page-view
-    :path "/"}
+  [{:page/id :index
+    :page/view #'index-page-view
+    :page/path "/"}
 
-   {:id :exercises
-    :view #'exercises-page-view
-    :path "/exercises"}
+   {:page/id :exercises
+    :page/view #'exercises-page-view
+    :page/path "/exercises"}
 
-   {:id :exercise
-    :view (fn [data]
-            [exercise-page-view (:exercise-id data)])
-    :path "/exercises/:exercise-id"
-    :coerce {:exercise-id str}}
+   {:page/id :exercise
+    :page/view (fn [[_ {:keys [exercise-id]}]]
+                 [exercise-page-view exercise-id])
+    :page/path "/exercises/:exercise-id"
+    :page/parameters [:map
+                      [:exercise-id string?]]}
 
-   {:id :pastebin
-    :view #'pastebin-page-view
-    :path "/pastebin"}
+   {:page/id :pastebin
+    :page/view #'pastebin-page-view
+    :page/path "/pastebin"}
 
-   {:id :setup
-    :view #'setup-page-view
-    :path "/instructions/setup"}
+   {:page/id :setup
+    :page/view #'setup-page-view
+    :page/path "/instructions/setup"}
 
-   {:id :shortcuts
-    :view #'shortcuts-page-view
-    :path "/instructions/shortcuts"}
+   {:page/id :shortcuts
+    :page/view #'shortcuts-page-view
+    :page/path "/instructions/shortcuts"}
 
-   {:id :reference-example
-    :view #'reference-example-page-view
-    :path "/reference-example"}
+   {:page/id :reference-example
+    :page/view #'reference-example-page-view
+    :page/path "/reference-example"}
 
-   {:id :admin/progress
-    :view #'progress-page-view
-    :path "/b21bc121-6525-4b99-beb7-b29943ac7973"}])
+   {:page/id :admin/progress
+    :page/view #'progress-page-view
+    :page/path "/b21bc121-6525-4b99-beb7-b29943ac7973"}])
 
 (def current-page-view bloom.commons.pages/current-page-view)
 
 (def current-page-id
-  (r/cursor bloom.commons.pages/state [:page-id]))
+  (r/cursor bloom.commons.pages/current-page [:data :config :page/id]))

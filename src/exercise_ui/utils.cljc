@@ -8,7 +8,9 @@
 (defn parse-backticks
   [string]
   (->> (string/split string #"`")
-      (map-indexed (fn [i s]
-                     (if (even? i)
-                       s
-                       [:code s])))))
+       (map-indexed (fn [i s]
+                      (if (even? i)
+                        s
+                        [:code s])))))
+
+

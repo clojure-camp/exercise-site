@@ -1,15 +1,15 @@
 (ns exercise-ui.server.email
   (:require
-   [bloom.commons.env :as env]
    [bloom.omni.auth.token :as token]
-   [postal.core :as postal]))
+   [postal.core :as postal]
+   [exercise-ui.config :refer [config]]))
 
 (defn send-login-email!
   [{:keys [to login-link]}]
   (prn "Sending login link"
        (postal/send-message
-         (env/get :mail-creds)
-         {:from (:from (env/get :mail-creds))
+         (:mail-creds config)
+         {:from (:from (:mail-creds config))
           :to to
           :subject "Your Login Link"
           :body

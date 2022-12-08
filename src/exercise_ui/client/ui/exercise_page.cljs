@@ -117,4 +117,4 @@
               ^{:key id}
               [:div.exercise
                [exercise-status-view id]
-               [:a {:href (path-for :exercise {:exercise-id id})} id]])]])]])))
+               [:a {:href (path-for [:exercise {:exercise-id id}])} id]])]])]])))

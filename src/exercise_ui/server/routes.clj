@@ -1,13 +1,14 @@
 (ns exercise-ui.server.routes
   (:require
-   [bloom.commons.env :as env]
-   [bloom.omni.auth.token :as token]
-   [clojure.java.io :as io]
-   [exercise-ui.server.db :as db]
-   [exercise-ui.server.email :as email]
+    [clojure.java.io :as io]
+    [clojure.string :as string]
+    [bloom.omni.auth.token :as token]
+    [org.httpkit.client :as http]
+    [exercise-ui.config :refer [config]]
+    [exercise-ui.server.db :as db]
+    [exercise-ui.server.email :as email]
    [exercise-ui.utils :as utils]
-   [org.httpkit.client :as http]
-   [clojure.string :as string]))
+    [exercise-ui.utils :as utils]))
 
 (defonce pastebin (atom ""))
 
@@ -79,10 +80,10 @@
    [[:post "/api/request-email"]
     (fn [{{:keys [email code]} :params :as request}]
       (if (and (not (string/blank? email))
-               #_(= code (env/get :login-code)))
+               #_(= code (:login-code config)))
         (let [user-id (java.util.UUID/nameUUIDFromBytes (.getBytes email "UTF-8"))
-              secret (get-in (env/get :omni/auth) [:token :secret])
-              link (str (env/get :site-base-url)
+              secret (get-in (:omni/auth config) [:token :secret])
+              link (str (:site-base-url config)
                         "/instructions/setup"
                         "?"
                         (token/login-query-string user-id secret))]

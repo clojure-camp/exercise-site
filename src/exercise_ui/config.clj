@@ -1,11 +1,28 @@
 (ns exercise-ui.config
   (:require
-    [exercise-ui.client.ui.styles]
-    [exercise-ui.server.routes]))
+    [bloom.commons.config :as config]))
 
 (def config
-  {:omni/title "Clojure Exercises"
-   :omni/cljs {:main "exercise-ui.client.core"}
-   :omni/css {:styles "exercise-ui.client.ui.styles/app"}
-   :omni/auth {:cookie {:name "clojure-exercise-ui"}}
-   :omni/api-routes #'exercise-ui.server.routes/routes})
+  (config/read
+    "config.edn"
+    [:map
+     [:http-port integer?]
+     [:auth-token-secret string?]
+     [:auth-cookie-secret string?]
+     [:environment keyword?]
+     [:exercise-data-path string?]
+     [:user-data-path string?]
+     [:site-base-url string?]
+     [:login-code string?]
+     [:mail-creds {:optional true}
+      [:map
+       [:from string?]
+       [:user string?]
+       [:pass string?]
+       [:host string?]
+       [:ssl boolean?]
+       [:port {:optional true} integer?]]]]))
+
+
+
+

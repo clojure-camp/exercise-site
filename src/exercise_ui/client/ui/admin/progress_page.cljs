@@ -72,7 +72,7 @@
              ^{:key id}
              [:tr
               [:td.exercise
-               [:a {:href (path-for :exercise {:exercise-id id})}
+               [:a {:href (path-for [:exercise {:exercise-id id}])}
                 (exercise :title)]]
               (for [user users]
                 ^{:key (user :user-id)}

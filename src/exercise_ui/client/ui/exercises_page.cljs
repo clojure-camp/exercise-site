@@ -84,11 +84,14 @@
          [:td.status
           [exercise-status-view (exercise :id)]]
          [:td
-          [:a {:href (path-for :exercise {:exercise-id (exercise :id)})}
+          [:a {:href (path-for [:exercise {:exercise-id (exercise :id)}])}
            (exercise :title)]]
          [:td
           (into [:<>]
                 (interpose " " (map teachable-view (exercise :teaches))))]
+         [:td
+          (into [:<>]
+                (interpose " " (map teachable-view (exercise :uses))))]
          #_[:td.difficulty
           (repeat (difficulty->n (exercise :difficulty)) "★")]]))]])
 
