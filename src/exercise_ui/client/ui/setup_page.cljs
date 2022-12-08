@@ -40,8 +40,8 @@
     :front-end "To get started quickly, we can just use a Node library called shadow-cljs that compiles ClojureScript. Eventually, if you want to write server-side Clojure, you should follow the full setup instructions, but for most of our exercises and front-end projects, the quick setup is sufficient.\n\nFirst, check if you have Node installed.\n\tIn a terminal, run: `node -v`. If the command runs, then you're fine."
     :back-end "Clojure runs on the JVM (the Java Virtual Machine). You need to have a JDK installed to develop and run Clojure programs.\n\nFirst, check if you have Java installed.\n\tIn a terminal, run: `java -version`. If the command runs and reports a JDK version > 8 (or 1.8), then you're fine."
     :steps [{#{:front-end :all} "To install Node:\n\tinstall from your package manager:\n\t\thttps://nodejs.org/en/download/package-manager/\n\tor download and install:\n\t\thttps://nodejs.org/en/download/"
-             #{:back-end :windows} "To install Java:\n\tvia AdoptOpenJDK (recommended):\n\t\thttps://adoptopenjdk.net/ (choose OpenJDK 8 (LTS) & Hotspot)\n\tvia chocolatey:\n\t\thttps://chocolatey.org/\n\t\t`choco install openjdk`\n\tvia other methods:\n\t\thttps://stackoverflow.com/questions/52511778/how-to-install-openjdk-11-on-windows\n\n\tAfter installing, check if Java is installed correctly as noted above."
-             #{:back-end :mac} "To install Java:\n\tvia homebrew:\n\t\t`brew update`\n\t\t`brew cask install java`\n\tvia AdoptOpenJDK:\n\t\thttps://adoptopenjdk.net/releases.html (choose OpenJDK 11 (LTS) & Hotspot)\n\n\tAfter installing, check if Java is installed correctly as noted above."
+             #{:back-end :windows} "To install Java:\n\tvia AdoptOpenJDK (recommended):\n\t\thttps://adoptopenjdk.net/ (choose OpenJDK 8 (LTS) & Hotspot or newer)\n\tvia chocolatey:\n\t\thttps://chocolatey.org/\n\t\t`choco install openjdk`\n\tvia other methods:\n\t\thttps://stackoverflow.com/questions/52511778/how-to-install-openjdk-11-on-windows\n\n\tAfter installing, check if Java is installed correctly as noted above."
+             #{:back-end :mac} "To install Java:\n\tvia homebrew:\n\t\t`brew update`\n\t\t`brew cask install java`\n\tvia AdoptOpenJDK:\n\t\thttps://adoptopenjdk.net/releases.html (choose OpenJDK 11 (LTS) & Hotspot or newer)\n\n\tAfter installing, check if Java is installed correctly as noted above."
              #{:back-end :ubuntu}
              "To install Java:\n\tvia apt:\n\t\t`sudo apt-get install default-jre`\n\n\tAfter installing, check if Java is installed correctly as noted above."}]}
    {:heading {:front-end "Install shadow-cljs"
@@ -208,7 +208,7 @@
                    :on-click (fn []
                                (reset! selected-setup setup))}
           (name setup)]))
-     [:span.note "(if you don't have any preference, we recommend 'front-end')"]]
+     [:span.note "(if you don't have any preference, we recommend 'back-end')"]]
 
     [:div.oses.option
      [:span.name "OS:"]
