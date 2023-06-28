@@ -1,10 +1,10 @@
-(ns exercise-ui.client.ui.exercises-page
+(ns exercise-ui.client.ui.pages.exercises
   (:require
     [clojure.string :as string]
     [clojure.set :as set]
     [bloom.commons.pages :refer [path-for]]
     [re-frame.core :refer [subscribe]]
-    [exercise-ui.client.ui.teachable :refer [teachable-view]]))
+    [exercise-ui.client.ui.partials.teachable :refer [teachable-view]]))
 
 (def difficulty->n {:low 1 :mid 2 :high 3})
 

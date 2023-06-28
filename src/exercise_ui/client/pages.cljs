@@ -2,8 +2,8 @@
   (:require
     [reagent.core :as r]
     [bloom.commons.pages]
-    [exercise-ui.client.ui.exercises-page :refer [exercises-page-view]]
-    [exercise-ui.client.ui.exercise-page :refer [exercise-page-view]]))
+    [exercise-ui.client.ui.pages.exercises :refer [exercises-page-view]]
+    [exercise-ui.client.ui.pages.exercise :refer [exercise-page-view]]))
 
 (def pages
   [{:page/id :exercises

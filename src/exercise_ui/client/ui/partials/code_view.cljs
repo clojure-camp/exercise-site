@@ -1,4 +1,4 @@
-(ns exercise-ui.client.ui.code-view
+(ns exercise-ui.client.ui.partials.code-view
   (:require
    [clojure.string :as string]
    [cljsjs.codemirror.mode.clojure]

@@ -1,4 +1,4 @@
-(ns exercise-ui.client.ui.teachable)
+(ns exercise-ui.client.ui.partials.teachable)
 
 (defn docs-link
   [fn-symbol]

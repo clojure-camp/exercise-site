@@ -1,4 +1,4 @@
-(ns exercise-ui.client.ui.exercise-page
+(ns exercise-ui.client.ui.pages.exercise
   (:require
     [clojure.string :as string]
     [bloom.commons.fontawesome :as fa]
@@ -6,8 +6,8 @@
     [reagent.core :as r]
     [re-frame.core :refer [subscribe dispatch]]
     [exercise-ui.utils :refer [parse-backticks]]
-    [exercise-ui.client.ui.code-view :refer [code-view]]
-    [exercise-ui.client.ui.teachable :refer [teachable-view]]))
+    [exercise-ui.client.ui.partials.code-view :refer [code-view]]
+    [exercise-ui.client.ui.partials.teachable :refer [teachable-view]]))
 
 (defn solution-view [exercise]
   (let [open? (r/atom false)]
