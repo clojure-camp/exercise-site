@@ -4,7 +4,6 @@
     [clojure.set :as set]
     [bloom.commons.pages :refer [path-for]]
     [re-frame.core :refer [subscribe]]
-    [exercise-ui.client.ui.exercise-status :refer [exercise-status-view]]
     [exercise-ui.client.ui.teachable :refer [teachable-view]]))
 
 (def difficulty->n {:low 1 :mid 2 :high 3})
@@ -81,8 +80,6 @@
       (for [exercise exercises]
         ^{:key (exercise :id)}
         [:tr.exercise
-         [:td.status
-          [exercise-status-view (exercise :id)]]
          [:td
           [:a {:href (path-for [:exercise {:exercise-id (exercise :id)}])}
            (exercise :title)]]

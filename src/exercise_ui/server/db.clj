@@ -40,7 +40,7 @@
        (into {})))
 
 (defn get-exercises []
-  (->> (file-seq (io/file (:exercise-data-path config)))
+  (->> (file-seq (io/file (:exercise-data-path config) "./exercises/"))
        (filter (fn [f]
                  (and (.isFile f)
                       (string/ends-with? (.getName f) ".edn"))))
@@ -50,54 +50,8 @@
                   (assoc :id (string/replace file-name #"\.edn$" "")))))))
 
 (defn get-exercise-order []
-  (->> (io/file (:exercise-data-path config) "../order.edn")
+  (->> (io/file (:exercise-data-path config) "./order.edn")
        slurp
        read-string))
 
-(defn user-file [user-id]
-  (io/file (:user-data-path config) (str user-id ".edn")))
 
-(defn get-user [user-id]
-  (let [f (user-file user-id)]
-    (when-not (.exists f)
-      (spit f (pr-str {:user-id user-id
-                       :progress {}})))
-    (read-string (slurp f))))
-
-(defn -file-agent
-  [file-name]
-  (add-watch
-    (agent nil) :file-writer
-    (fn [key agent old new]
-      (spit file-name new))))
-
-(def file-agent (memoize -file-agent))
-
-(defn async-spit
-  [file-name content]
-  (send (file-agent file-name) (constantly content)))
-
-(defn set-exercise-status!
-  [user-id exercise-id status]
-  (let [now (java.util.Date.)]
-    (async-spit
-      (user-file user-id)
-      (-> (get-user user-id)
-          (assoc-in [:progress exercise-id :status] status)
-          (cond->
-            (= :started status)
-            (assoc-in [:progress exercise-id :started-at] now)
-            (= :completed status)
-            (-> (assoc-in [:progress exercise-id :completed-at] now)
-                (update-in [:progress exercise-id :started-at] (fnil identity now)))
-            (= :reviewed status)
-            (-> (assoc-in [:progress exercise-id :reviewed-at] now)
-                (update-in [:progress exercise-id :completed-at] (fnil identity now))
-                (update-in [:progress exercise-id :started-at] (fnil identity now))))))))
-
-(defn users-progress
-  []
-  (->> (file-seq (io/file (:user-data-path config)))
-      (filter (fn [f] (and (.isFile f)
-                          (string/ends-with? (.getName f) ".edn"))))
-      (map (comp read-string slurp))))

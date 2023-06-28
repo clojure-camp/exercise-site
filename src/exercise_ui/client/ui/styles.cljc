@@ -20,16 +20,6 @@
    :padding "1em"
    :overflow "auto"})
 
-(defn >status []
-  [:>.status
-   {:display "inline-block"
-    :width "1em"
-    :color color-accent}
-
-   [:&.started]
-   [:&.completed]
-   [:&.reviewed]])
-
 (defn >teachable []
   [:>.teachable
    {:white-space "nowrap"}
@@ -109,33 +99,13 @@
         :text-decoration "none"}
        {:opacity "0.7"}
 
-       [:&.index
-        {:font-family code-font
-         :font-weight "bold"}]
-
        [:&:hover
         :&.active
         {:background-color color-accent-light
          :opacity 1}]
 
        ["&[target]"
-        {:font-style "italic"}]]]
-
-     [:>.user
-      {:color color-text-light}
-
-      [:>button
-       {:background "none"
-        :border "none"
-        :color color-text-light
-        :padding "0.5em"}
-
-       [:&:hover
-        {:background-color color-accent-light
-         :cursor "pointer"}]
-
-       [:>svg
-        {:width "1em"}]]]]
+        {:font-style "italic"}]]]]
 
     [:.gap
      {:flex-grow 2}]
@@ -175,9 +145,7 @@
           [:>td
            {:padding "0.25em"}
 
-           (>teachable)
-
-           (>status)]]]]]]
+           (>teachable)]]]]]]
 
      ;; exercise
 
@@ -190,12 +158,6 @@
         :align-items "center"
         :justify-content "space-between"
         :margin "2em 0 1em"}
-
-       (>status)
-
-       [:>.status
-        {:font-size "1.5em"
-         :margin-right "0.25em"}]
 
        [:>h1
         {:margin 0}]
@@ -279,11 +241,7 @@
         {:display "inline-block"
          :margin-left "0.5em"}
 
-        [:>.exercise
-         (>status)
-         [:>.status
-          {:vertical-align "middle"
-           :margin-right "0.25em"}]]]]
+        [:>.exercise]]]
 
       [:>section.test-cases
 
@@ -326,211 +284,4 @@
          :cursor "pointer"}
 
         [:>svg
-         {:height "1.25em"}]]]]
-
-     ;; shortcuts
-
-     [:&.shortcuts
-
-      [:header
-
-       [:>h1
-        {:display "inline-block"}]
-
-       [:>a>svg
-        {:margin-left "0.5em"
-         :width "1em"}
-
-        (at-media {:print true}
-          [:&
-           {:display "none"}])]]
-
-      [:table
-       {:border-collapse "collapse"}
-
-       [:>tbody
-        [:>tr
-         ["&:nth-child(even)"
-          {:background-color "#eee"}]
-         [:>td
-          {:padding "0.5em 0.25em"}]]]]]
-
-     ;; pastebin
-
-     [:&.pastebin
-
-      [:>textarea
-       {:width "50%"
-        :height "50vh"
-        :padding "1em"
-        :color "#fff"
-        :background "#2b2b2b"}]
-
-      [:>button
-       {:display "block"}
-
-       [:>svg
-        {:width "2em"
-         :height "2em"}]]]
-
-     ;; admin progress page
-
-     [:&.admin-progress
-      [:table.user-progress
-       [:>tbody
-        [:>tr
-         ["&:nth-child(even)"
-          {:background-color "#eee"}]]]]]
-
-     ]]
-
-   [:#setup
-    {:line-height "1.3"}
-
-    [:>.options
-     {:border [["2px" "solid" color-accent]]
-      :border-radius "5px"
-      :padding "1em"}
-
-     [:>p
-      {:margin-top 0}]
-
-     [:>.option
-      {:margin-bottom "0.25em"}
-
-      [:>.name
-       {:margin-right "0.5em"}]
-
-      [:button
-       {:padding "0.25em 0.5em"
-        :background "#ccc"
-        :border-radius "2px"
-        :border "none"
-        :margin-right "0.25em"
-        :cursor "pointer"}
-
-       [:&:hover
-        {:background "#aaa"}]
-
-       [:&.active
-        {:font-weight "bold"
-         :background color-accent
-         :border "none"
-         :color color-text-light}
-
-        [:&:hover
-         {:background color-accent-light}]]]
-
-      [:>.note
-       {:font-size "0.8em"}]]]
-
-
-    [:>.steps
-
-     [:>.step
-      {:border-left [["2px" "solid" color-accent]]
-       :padding-left "1em"
-       :margin-bottom "3em"}
-      [:h2
-       {:color color-accent}]
-
-      [:code
-       {:background "black"
-        :color "white"
-        :padding "0.25em"}]]]]
-
-   [:#index
-    {:padding "2em"}
-
-    [:>header
-     {:text-align "center"
-      :margin-bottom "4em"}
-
-     [:>.clojure-logo
-      {:width "6em"}]
-
-     [:>h1
-      {:font-family heading-font}]]]
-
-   [:#welcome
-    {:padding "2em"}
-
-    [:>header
-     {:text-align "center"
-      :margin-bottom "4em"}
-
-     [:>.clojure-logo
-      {:width "6em"}]
-
-     [:>h1
-      {:font-family heading-font}]]
-
-    [:>.rooms
-     {:display "flex"
-      :flex-wrap "wrap"
-      :justify-content "center"}
-
-     [:>.gap
-      {:width "3em"
-       :flex-grow 0}]
-
-     [:>.room
-      {:flex-grow 1
-       :min-width "10em"
-       :max-width "26em"
-       :margin-bottom "2em"}
-
-      [:>header
-       {:display "flex"}
-
-       [:div.titles
-
-        [:>h1
-         {:font-family heading-font
-          :font-size "1.2em"
-          :margin 0}]
-
-        [:>h2
-         {:font-family heading-font
-          :font-size "1em"
-          :margin 0}]]
-
-       [:>a
-        {:background color-accent
-         :color color-text-light
-         :border-radius "5px"
-         :text-decoration "none"
-         :padding "0.5em 0.75em"
-         :margin-left "1em"
-         :align-self "center"}
-
-        [:&:hover
-         {:background color-accent-light}]]]
-
-      [:>.schedule
-       [:td
-        {:vertical-align "top"
-         :padding "0.5em"}]]]]
-
-    [:.log-in
-     {:display "flex"
-      :flex-direction "column"
-      :align-items "center"
-      :justify-content "center"}
-
-     [:>h1
-      {:font-family heading-font}]
-
-     [:>form
-
-      [:>label
-       {:display "block"
-        :margin-bottom "1em"}
-
-       [:>span
-        {:display "block"}]]
-
-      [:>label>input
-       :>button
-       {:font-size "1.5em"
-        :padding "0.5em"}]]]]])
+         {:height "1.25em"}]]]]]]])

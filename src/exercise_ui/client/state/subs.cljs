@@ -4,9 +4,7 @@
 
 (reg-sub :loading?
   (fn [db _]
-    (not (and
-           (or (db :user) (db :user-checked?))
-           (seq (db :exercises))))))
+    (empty? (db :exercises))))
 
 (reg-sub :exercises
   (fn [db _]
@@ -30,27 +28,3 @@
   (fn [db [_ exercise-id]]
     (get-in db [:exercises exercise-id])))
 
-(reg-sub :pastebin
-  (fn [db _]
-    (db :pastebin)))
-
-(reg-sub :logged-in?
-  (fn [db _]
-    (some? (db :user))))
-
-(reg-sub :user-id
-  (fn [db _]
-    (get-in db [:user :user-id])))
-
-(reg-sub :exercise-status
-  (fn [db [_ exercise-id]]
-    (get-in db [:user :progress exercise-id :status])))
-
-(reg-sub :example
-  (fn [db _]
-    (db :example)))
-
-(reg-sub
-  :admin/progress
-  (fn [db _]
-    (get-in db [:admin :progress])))
