@@ -118,24 +118,8 @@
 
      [:&.exercises
 
-      [:>a
-       {:display "block"}]
-
-      [:>section
-
-       [:>table.exercises
-
-        [:>tbody
-
-         [:>tr
-
-          ["&:nth-child(even)"
-           {:background-color "#eee"}]
-
-          [:>td
-           {:padding "0.25em"}
-
-           ]]]]]]
+      [">table>tbody>tr:nth-child(even)"
+       {:background-color "#f3f3f3"}]]
 
      ;; exercise
 
