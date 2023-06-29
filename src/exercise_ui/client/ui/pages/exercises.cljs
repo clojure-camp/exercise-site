@@ -1,6 +1,5 @@
 (ns exercise-ui.client.ui.pages.exercises
   (:require
-    [clojure.string :as string]
     [clojure.set :as set]
     [bloom.commons.pages :refer [path-for]]
     [re-frame.core :refer [subscribe]]
@@ -67,43 +66,38 @@
       sort-by-deps))
 
 (defn exercises-view
-  [exercises]
-  [:table.exercises
+  [heading exercises]
+  [:<>
    [:thead
+    [:tr [:th {:tw "pt-6"}]]
     [:tr
-     [:th]
-     [:th "Exercise"]
-     [:th "Concepts"]
+     [:th {:tw "p-1 text-left underline text-xl whitespace-nowrap "} heading]
+     [:th {:tw "p-1 text-left underline text-xl"} #_"Teaches"]
+     #_[:th {:tw "p-1 text-left underline text-xl"} "Uses"]
      #_[:th]]]
    [:tbody
     (doall
       (for [exercise exercises]
         ^{:key (exercise :id)}
         [:tr.exercise
-         [:td
-          [:a {:href (path-for [:exercise {:exercise-id (exercise :id)}])}
+         [:td {:tw "p-1"}
+          [:a {:tw "font-bold color-accent hover:underline"
+               :href (path-for [:exercise {:exercise-id (exercise :id)}])}
            (exercise :title)]]
-         [:td
+         [:td {:tw "p-1 opacity-25"}
           (into [:<>]
                 (interpose " " (map teachable-view (exercise :teaches))))]
-         [:td
+         #_[:td {:tw "p-1"}
           (into [:<>]
                 (interpose " " (map teachable-view (exercise :uses))))]
          #_[:td.difficulty
           (repeat (difficulty->n (exercise :difficulty)) "★")]]))]])
 
-(defn exercises-page-view [params]
+(defn exercises-page-view [_params]
   (let [grouped-exercises (group-by :category @(subscribe [:unordered-exercises]))]
     [:div.page.exercises
-     [:section
-      [:h1 "First Steps"]
-      [exercises-view @(subscribe [:ordered-exercises])]]
-     [:section
-      [:h1 "Exploring Functions"]
-      [exercises-view (sort-exercises (:learning-functions grouped-exercises))]]
-     [:section
-      [:h1 "More Practice"]
-      [exercises-view (sort-exercises (:starter grouped-exercises))]]
-     [:section
-      [:h1 "Putting Things Together"]
-      [exercises-view (sort-exercises (:synthesis grouped-exercises))]]]))
+     [:table {:tw "border-collapse"}
+      [exercises-view "First Steps" @(subscribe [:ordered-exercises])]
+      [exercises-view "Exploring Functions" (sort-exercises (:learning-functions grouped-exercises))]
+      [exercises-view "More Practice" (sort-exercises (:starter grouped-exercises))]
+      [exercises-view "Putting Things Together" (sort-exercises (:synthesis grouped-exercises))]]]))

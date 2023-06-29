@@ -22,8 +22,8 @@
    :padding "1em"
    :overflow "auto"})
 
-(defn >teachable []
-  [:>.teachable
+(defn teachable []
+  [:.teachable
    {:white-space "nowrap"}
 
    [:&.concept
@@ -52,6 +52,8 @@
      :padding "0.15em 0.2em"
      :color "white"
      :border-radius "0.2em"}]
+
+   (teachable)
 
    [:kbd.chord
     {:margin "0 0.5em"}
@@ -82,6 +84,9 @@
 
    [:.bg-accent
     {:background color-accent}]
+
+   [:.color-accent
+    {:color color-accent}]
 
    [".hover\\:bg-accent-light:hover"
     {:background color-accent-light}]
@@ -115,14 +120,6 @@
       [:>section
 
        [:>table.exercises
-        {:border-collapse "collapse"}
-
-        [:>thead
-
-         [:>tr
-
-          [:>th
-           {:text-align "left"}]]]
 
         [:>tbody
 
@@ -134,7 +131,7 @@
           [:>td
            {:padding "0.25em"}
 
-           (>teachable)]]]]]]
+           ]]]]]]
 
      ;; exercise
 
@@ -237,8 +234,6 @@
        [:>.body
         {:padding "1em"
          :background "#2b2b2b"}
-
-        (>teachable)
 
         [:>.teachable
          {:color "white"
