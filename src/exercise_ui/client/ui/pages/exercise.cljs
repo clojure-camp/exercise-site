@@ -5,55 +5,90 @@
     [bloom.commons.pages :refer [path-for]]
     [reagent.core :as r]
     [re-frame.core :refer [subscribe dispatch]]
+    [exercise-ui.client.ui.styles :as styles]
     [exercise-ui.utils :refer [parse-backticks]]
-    [exercise-ui.client.ui.partials.code-view :refer [code-view]]
+    [exercise-ui.client.ui.partials.code-view :refer [code-view format-code]]
     [exercise-ui.client.ui.partials.teachable :refer [teachable-view]]))
 
 (defn solution-view [exercise]
-  (let [open? (r/atom false)]
-    (fn []
-      [:section.solution
-       [:header {:on-click (fn []
-                             (swap! open? not))}
-        [:h2 "example solution"]
-        (if @open?
-          [fa/fa-chevron-down-solid]
-          [fa/fa-chevron-right-solid])]
-       (when @open?
-         [code-view (exercise :solution) "code"])])))
+  (r/with-let [open? (r/atom false)]
+    [:section.solution
+     [:header {:on-click (fn []
+                           (swap! open? not))}
+      [:h2 "example solution"]
+      (if @open?
+        [fa/fa-chevron-down-solid]
+        [fa/fa-chevron-right-solid])]
+     (when @open?
+       [code-view {:class "code"}
+        (exercise :solution)])]))
 
 (defn test-case-view [exercise]
-  (let [table-view? (r/atom true)]
-    (fn []
-      [:section.test-cases
-       [:header [:h2 "sample tests"]
-        [:button {:on-click (fn [_] (swap! table-view? not))}
-         (if @table-view?
-          [fa/fa-code-solid]
-          [fa/fa-table-solid])]]
+  (r/with-let [active-mode (r/atom :mode/table)]
+    [:section.test-cases
+     [:header {:tw "gap-2"}
+      [:h2 {:tw "grow"} "sample tests"]
+      (doall
+        (for [[mode icon] [[:mode/table [fa/fa-table-solid]]
+                           [:mode/rcf "RCF"]
+                           [:mode/clj "CLJ"]]]
+          ^{:key mode}
+          [:button
+           {:on-click (fn [_] (reset! active-mode mode))
+            :tw [(when (= @active-mode mode)
+                   "bg-white")]}
+           icon]))]
 
-       (if @table-view?
-         [:table {:cellpadding 0}
-          #_[:thead
-           [:tr
-            [:td "Input"]
-            [:td]
-            [:td "Output"]]]
-          [:tbody
-           (into [:<>]
-                 (for [{:keys [input output]} (exercise :test-cases)]
-                   [:tr
-                    [:td
-                     [code-view [input] "code"]]
-                    [:td
-                     [:code "=>"]]
-                    [:td
-                     [code-view [output] "code"]]]))]]
-
+     (case @active-mode
+       :mode/table
+       [:table {:cellpadding 0
+                :tw "w-full bg-#2b2b2b border-collapse"}
+        [:tbody
          (into [:<>]
                (for [{:keys [input output]} (exercise :test-cases)]
-                 [:div
-                  [code-view [(list 'is (list '= output input))] "code"]])))])))
+                 [:tr
+                  [:td
+                   [code-view {:class "code"} (pr-str input)]]
+                  [:td
+                   [:code {:style {:font-family styles/code-font
+                                   :color "white"
+                                   :font-size "0.8em"}} ":="]]
+                  [:td
+                   [code-view {:class "code"} (pr-str output)]]]))]]
+       :mode/clj
+       [code-view {:class "code"}
+        (str
+          "(ns exercises." (:id exercise) "\n"
+          "  (:require\n"
+          "    [clojure.test :refer [is testing]]))\n\n"
+          (:function-template exercise) "\n\n"
+          (string/join "\n\n"
+                       (for [{:keys [input output]} (exercise :test-cases)]
+                         (list 'is (list '= output input))))
+
+          "(clojure.test/run-tests)")]
+
+       :mode/rcf
+       [:div
+        [code-view {:class "code"
+                    :pre-formatted? true}
+         (str
+           "(ns exercises." (:id exercise) "\n"
+           "  (:require\n"
+           "    [hyperfiddle.rcf :as rcf]))\n\n"
+           "(rcf/enable!)\n\n"
+           (when (seq (:function-template exercise))
+             (str (string/join "\n\n" (:function-template exercise)) "\n\n"))
+           "(rcf/tests\n"
+           (string/join "\n\n"
+                        (for [{:keys [input output]} (exercise :test-cases)]
+                          (str "  " (format-code input) " := \n"
+                               "  "
+                               (if (string? output)
+                                 (pr-str output)
+                                 (string/replace (format-code output)
+                                                 "\n" "\n  ")))))
+           ")")]])]))
 
 (defn exercise-page-view [exercise-id]
   (when-let [exercise @(subscribe [:exercise exercise-id])]
@@ -69,8 +104,17 @@
                        (and
                          (string/starts-with? node "(")
                          (string/ends-with? node ")")))
-                 [code-view node "code" true]
+                 [code-view {:class "code"
+                             :fragment? true} node]
                  (into [:p] (parse-backticks node)))))]
+
+       (when (:function-template exercise)
+         [:section.starter-code
+          [:header
+           [:h2 "starter code"]]
+          [:div.body
+           [code-view {:class "code"}
+            (:function-template exercise)]]])
 
       (let [fns (->> (concat (map (fn [x] [x :teaches]) (exercise :teaches))
                              (map (fn [x] [x :uses]) (exercise :uses)))
@@ -84,11 +128,6 @@
                   (->> fns
                        (map (fn [[f category]] [teachable-view f (name category)]))
                        (interpose " ")))]]))
-
-      (when (seq (exercise :tests))
-        [:section.tests
-         [:header [:h2 "sample tests"]]
-         [code-view (exercise :tests) "code"]])
 
       (when (seq (exercise :test-cases))
         [test-case-view exercise])

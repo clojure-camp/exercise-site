@@ -37,7 +37,16 @@
        (partition 2)
        (map (fn [[k v]]
               [(rw.node/sexpr k) (parse-node v)]))
-       (into {})))
+       (into {})
+       ((fn [e]
+          (update e :function-template (fn [node]
+                                       (cond
+                                         (vector? node)
+                                         node
+                                         (string? node)
+                                         [node])))))))
+
+#_(parse-exercise (slurp "../clojure-camp-exercises/exercises/morse-code.edn"))
 
 (defn get-exercises []
   (->> (file-seq (io/file (:exercise-data-path config) "./exercises/"))
@@ -53,5 +62,3 @@
   (->> (io/file (:exercise-data-path config) "./order.edn")
        slurp
        read-string))
-
-

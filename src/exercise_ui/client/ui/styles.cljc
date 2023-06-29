@@ -243,18 +243,6 @@
 
         [:>.exercise]]]
 
-      [:>section.test-cases
-
-       [:>table
-        {:width "100%"
-         :background "#2b2b2b"
-         :border-collapse "collapse"}]
-
-       [:code
-        {:font-family code-font
-         :color "white"
-         :font-size "0.8em"}]]
-
       [:>section.functions
 
        [:>.body

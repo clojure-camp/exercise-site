@@ -9,5 +9,6 @@
    :omni/http-port (:http-port config)
    :omni/environment (:environment config)
    :omni/cljs {:main "exercise-ui.client.core"}
-   :omni/css {:styles "exercise-ui.client.ui.styles/app"}
+   :omni/css {:styles "exercise-ui.client.ui.styles/app"
+              :tailwind? true}
    :omni/api-routes #'exercise-ui.server.routes/routes})

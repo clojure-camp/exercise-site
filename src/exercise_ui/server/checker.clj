@@ -8,7 +8,11 @@
 (s/def ::difficulty #{:high :mid :low})
 (s/def ::instructions (s/or :simple string?
                             :complex vector?))
-(s/def ::tests (s/or :single string? :complex (s/coll-of string?)))
+(s/def ::code any?)
+(s/def ::input ::code)
+(s/def ::output ::code)
+(s/def ::test-case (s/keys :req-un [::input ::output]))
+(s/def ::test-cases (s/coll-of ::test-case))
 (s/def ::solution (s/or :single string? :complex (s/coll-of string?)))
 (s/def ::teaches (s/and set?
                         (s/coll-of (s/or :concept keyword?
@@ -21,7 +25,7 @@
 
 (s/def ::exercise
   (s/keys :req-un [::title ::category ::instructions ::uses ::difficulty]
-          :opt-un [::tests ::solution ::teaches]))
+          :opt-un [::test-cases ::solution ::teaches]))
 
 (defn print-problem
   [{:keys [pred path val]}]

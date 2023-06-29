@@ -1,9 +1,10 @@
 (defproject clojure-exercise-ui "0.0.1"
-  :dependencies [[io.bloomventures/omni "0.32.2"]
+  :dependencies [[io.bloomventures/omni "0.32.2"
+                  :exclusions [borkdude/edamame]]
                  [cljsjs/codemirror "5.44.0-1"]
                  [re-frame "1.3.0"]
-                 [rewrite-clj "1.1.45"]
-                 [zprint "0.4.16"]
+                 [rewrite-clj "1.1.47"]
+                 [zprint "1.2.7"]
                  ;; [org.clojure/clojure "1.10.0"] from omni
                  ;; [org.clojure/clojurescript "1.10.520"] from omni
                  ;; [io.bloomventures/commons "0.5.1"] from omni
