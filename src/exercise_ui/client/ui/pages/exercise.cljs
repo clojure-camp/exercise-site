@@ -41,7 +41,7 @@
 
      (case @active-mode
        :mode/table
-       [:table {:cellpadding 0
+       [:table {:cellPadding 0
                 :tw "w-full bg-#2b2b2b border-collapse"}
         [:tbody
          (into [:<>]
