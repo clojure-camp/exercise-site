@@ -81,7 +81,7 @@
         ^{:key (exercise :id)}
         [:tr.exercise
          [:td {:tw "p-1"}
-          [:a {:tw "font-bold color-accent hover:underline"
+          [:a {:tw "font-bold color-accent hover:underline visited:color-accent-extralight"
                :href (path-for [:exercise {:exercise-id (exercise :id)}])}
            (exercise :title)]]
          [:td {:tw "p-1 opacity-25"}

@@ -6,6 +6,7 @@
 
 (def color-accent clojure-camp-blue)
 (def color-accent-light "#303260")
+(def color-accent-extralight "#7d7bdf")
 (def color-text-light "#FFF")
 
 (def heading-font "Montserrat")
@@ -90,6 +91,9 @@
 
    [".hover\\:bg-accent-light:hover"
     {:background color-accent-light}]
+
+   [".visited\\:color-accent-extralight:visited"
+    {:color color-accent-extralight}]
 
    [:.text-light
     {:color color-text-light}]
