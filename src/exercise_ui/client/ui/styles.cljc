@@ -2,8 +2,10 @@
   (:require
     [garden.stylesheet :refer [at-import at-media]]))
 
-(def color-accent "#2E4057")
-(def color-accent-light "#048BA8")
+(def clojure-camp-blue "#181742")
+
+(def color-accent clojure-camp-blue)
+(def color-accent-light "#303260")
 (def color-text-light "#FFF")
 
 (def heading-font "Montserrat")
@@ -73,39 +75,26 @@
    [:.CodeMirror
     (codemirror)]
 
+   ;; tw compatibility
+
+   [:.font-header
+    {:font-family heading-font}]
+
+   [:.bg-accent
+    {:background color-accent}]
+
+   [".hover\\:bg-accent-light:hover"
+    {:background color-accent-light}]
+
+   [:.text-light
+    {:color color-text-light}]
+
+   ;; end tw compatibility
+
    [:body
     {:margin 0
      :padding 0
      :font-family body-font}
-
-    [:.header
-     {:display "flex"
-      :justify-content "space-between"
-      :align-items "center"
-      :background color-accent
-      :font-family heading-font}
-
-     (at-media {:print true}
-       [:&
-        {:display "none"}])
-
-     [:>nav
-
-      [:>a
-       {:display "inline-block"
-        :padding "0.5em"
-        :margin "0 0.25em"
-        :color color-text-light
-        :text-decoration "none"}
-       {:opacity "0.7"}
-
-       [:&:hover
-        :&.active
-        {:background-color color-accent-light
-         :opacity 1}]
-
-       ["&[target]"
-        {:font-style "italic"}]]]]
 
     [:.gap
      {:flex-grow 2}]
