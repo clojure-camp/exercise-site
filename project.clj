@@ -5,6 +5,9 @@
                  [re-frame "1.3.0"]
                  [rewrite-clj "1.1.47"]
                  [zprint "1.2.7"]
+                 ;; downgrade, to fix issue #832
+                 ;; https://github.com/babashka/sci/blob/master/CHANGELOG.md#0536-2022-11-14
+                 [org.babashka/sci "0.3.5"]
                  ;; [org.clojure/clojure "1.10.0"] from omni
                  ;; [org.clojure/clojurescript "1.10.520"] from omni
                  ;; [io.bloomventures/commons "0.5.1"] from omni
