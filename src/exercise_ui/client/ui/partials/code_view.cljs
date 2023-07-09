@@ -1,8 +1,8 @@
 (ns exercise-ui.client.ui.partials.code-view
   (:require
    [clojure.string :as string]
-   [cljsjs.codemirror.mode.clojure]
    [cljsjs.codemirror.addon.runmode.runmode-standalone]
+   [cljsjs.codemirror.mode.clojure] ;; must come after runmode-standalone
    [zprint.core :refer [zprint zprint-str]]
    [exercise-ui.client.ui.styles :as styles]))
 
