@@ -58,15 +58,16 @@
        :mode/clj
        [code-view {:class "code"}
         (str
-          "(ns exercises." (:id exercise) "\n"
-          "  (:require\n"
-          "    [clojure.test :refer [is testing]]))\n\n"
-          (:function-template exercise) "\n\n"
-          (string/join "\n\n"
-                       (for [{:keys [input output]} (exercise :test-cases)]
-                         (list 'is (list '= output input))))
+         "(ns exercises." (:id exercise) "\n"
+         "  (:require\n"
+         "    [clojure.test :refer [is testing]]))\n\n"
+         (when (seq (:function-template exercise))
+           (str (string/join "\n\n" (:function-template exercise)) "\n\n"))
+         (string/join "\n\n"
+                      (for [{:keys [input output]} (exercise :test-cases)]
+                        (list 'is (list '= output input))))
 
-          "(clojure.test/run-tests)")]
+         "(clojure.test/run-tests)")]
 
        :mode/rcf
        [:div
