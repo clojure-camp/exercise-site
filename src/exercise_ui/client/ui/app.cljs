@@ -1,8 +1,10 @@
 (ns exercise-ui.client.ui.app
   (:require
-    [bloom.commons.pages :refer [path-for ]]
-    [re-frame.core :refer [subscribe]]
-    [exercise-ui.client.pages :as pages]))
+   [bloom.commons.fontawesome :as fa]
+   [bloom.commons.pages :refer [path-for]]
+   [exercise-ui.client.i18n :as i18n]
+   [exercise-ui.client.pages :as pages]
+   [re-frame.core :refer [subscribe]]))
 
 (defonce favicon
  (let [element (.createElement js/document "link")]
@@ -11,14 +13,26 @@
    (.appendChild (.querySelector js/document "head") element)
    nil))
 
+(defn language-picker-view []
+  [:div {:tw "flex items-center gap-2"}
+   [fa/fa-language-solid {:tw "w-6 h-6 text-light"}]
+   [:select
+    {:tw "p-1"
+     :on-change (fn [e] (i18n/set-language! (-> e .-target .-value keyword)))}
+    (for [[lang-code lang-name] i18n/languages]
+      [:option {:value (name lang-code)
+                :selected (= lang-code @i18n/language)}
+       lang-name])]])
+
 (defn header-view []
-  [:div.header {:tw "font-header bg-accent"}
+  [:div.header {:tw "font-header bg-accent flex justify-between"}
    [:nav
     [:a {:tw "inline-flex items-center gap-2 p-2 text-light hover:bg-accent-light"
          :href (path-for [:exercises])}
      [:img {:src "/logomark.svg"
             :tw "w-6 h-6"}]
-     "clojure camp exercises"]]])
+     "clojure camp exercises"]]
+   [language-picker-view]])
 
 (defn main-view []
   [:div
