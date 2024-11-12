@@ -8,14 +8,15 @@
     [exercise-ui.client.ui.styles :as styles]
     [exercise-ui.utils :refer [parse-backticks]]
     [exercise-ui.client.ui.partials.code-view :refer [code-view format-code]]
-    [exercise-ui.client.ui.partials.teachable :refer [teachable-view]]))
+    [exercise-ui.client.ui.partials.teachable :refer [teachable-view]]
+    [exercise-ui.client.i18n :as i18n]))
 
 (defn solution-view [exercise]
   (r/with-let [open? (r/atom false)]
     [:section.solution
      [:header {:on-click (fn []
                            (swap! open? not))}
-      [:h2 "example solution"]
+      [:h2 (i18n/value {:en-US "example solution" :pt-BR "solução exemplo" })]
       (if @open?
         [fa/fa-chevron-down-solid]
         [fa/fa-chevron-right-solid])]
@@ -27,7 +28,7 @@
   (r/with-let [active-mode (r/atom :mode/table)]
     [:section.test-cases
      [:header {:tw "gap-2"}
-      [:h2 {:tw "grow"} "sample tests"]
+      [:h2 {:tw "grow"} (i18n/value {:en-US "sample tests" :pt-BR "testes de exemplo"})]
       (doall
         (for [[mode icon] [[:mode/table [fa/fa-table-solid]]
                            [:mode/rcf "RCF"]
@@ -95,12 +96,12 @@
   (when-let [exercise @(subscribe [:exercise exercise-id])]
     [:div.page.exercise
      [:header
-      [:h1 (exercise :title)]]
+      [:h1 (i18n/value (exercise :title))]]
 
      [:<>
       [:section.instructions
        (into [:<>]
-             (for [node (exercise :instructions)]
+             (for [node (i18n/value (exercise :instructions))]
                (if (or (not (string? node))
                        (and
                          (string/starts-with? node "(")
@@ -112,7 +113,7 @@
        (when (:function-template exercise)
          [:section.starter-code
           [:header
-           [:h2 "starter code"]]
+           [:h2 (i18n/value {:en-US "starter code" :pt-BR "código inicial"})]]
           [:div.body
            [code-view {:class "code"}
             (:function-template exercise)]]])
@@ -123,7 +124,7 @@
         (when (seq fns)
           [:section.functions
            [:header
-            [:h2 "related functions"]]
+            [:h2 (i18n/value {:en-US "related functions" :pt-BR "funções relacionadas"})]]
            [:div.body
             (into [:<>]
                   (->> fns
@@ -137,7 +138,7 @@
 
       (when (exercise :related)
         [:div.related
-         [:h2 "See also:"]
+         [:h2 (i18n/value {:en-US "See also:" :pt-BR "Veja também:"})]
          [:div.exercises
           (for [id (exercise :related)]
             ^{:key id}

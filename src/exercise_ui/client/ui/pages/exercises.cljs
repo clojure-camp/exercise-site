@@ -1,9 +1,10 @@
 (ns exercise-ui.client.ui.pages.exercises
   (:require
-    [clojure.set :as set]
-    [bloom.commons.pages :refer [path-for]]
-    [re-frame.core :refer [subscribe]]
-    [exercise-ui.client.ui.partials.teachable :refer [teachable-view]]))
+   [bloom.commons.pages :refer [path-for]]
+   [clojure.set :as set]
+   [exercise-ui.client.i18n :as i18n]
+   [exercise-ui.client.ui.partials.teachable :refer [teachable-view]]
+   [re-frame.core :refer [subscribe]]))
 
 (def difficulty->n {:low 1 :mid 2 :high 3})
 
@@ -59,7 +60,7 @@
 (defn sort-exercises
   [exercises]
   (->> exercises
-      (sort-by :title)
+      (sort-by (comp i18n/value :title))
       (sort-by (comp difficulty->n :difficulty))
       group-dependencies
       (sort-by (comp count :dependencies))
@@ -83,7 +84,7 @@
          [:td {:tw "p-1"}
           [:a {:tw "font-bold color-accent hover:underline visited:color-accent-extralight"
                :href (path-for [:exercise {:exercise-id (exercise :id)}])}
-           (exercise :title)]]
+           (i18n/value (exercise :title))]]
          [:td {:tw "p-1 opacity-25"}
           (into [:<>]
                 (interpose " " (map teachable-view (exercise :teaches))))]
@@ -97,7 +98,7 @@
   (let [grouped-exercises (group-by :category @(subscribe [:unordered-exercises]))]
     [:div.page.exercises
      [:table {:tw "border-collapse"}
-      [exercises-view "First Steps" @(subscribe [:ordered-exercises])]
-      [exercises-view "Exploring Functions" (sort-exercises (:learning-functions grouped-exercises))]
-      [exercises-view "More Practice" (sort-exercises (:starter grouped-exercises))]
-      [exercises-view "Putting Things Together" (sort-exercises (:synthesis grouped-exercises))]]]))
+      [exercises-view (i18n/value {:en-US "First Steps" :pt-BR "Primeiros Passos"}) @(subscribe [:ordered-exercises])]
+      [exercises-view (i18n/value {:en-US "Exploring Functions" :pt-BR "Explorando Funções"}) (sort-exercises (:learning-functions grouped-exercises))]
+      [exercises-view (i18n/value {:en-US "More Practice" :pt-BR "Mais Prática"}) (sort-exercises (:starter grouped-exercises))]
+      [exercises-view (i18n/value {:en-US "Putting Things Together" :pt-BR "Combinando Conceitos"}) (sort-exercises (:synthesis grouped-exercises))]]]))
