@@ -18,11 +18,13 @@
    [fa/fa-language-solid {:tw "w-6 h-6 text-light"}]
    [:select
     {:tw "p-1"
+     :value (name @i18n/language)
      :on-change (fn [e] (i18n/set-language! (-> e .-target .-value keyword)))}
-    (for [[lang-code lang-name] i18n/languages]
-      [:option {:value (name lang-code)
-                :selected (= lang-code @i18n/language)}
-       lang-name])]])
+    (doall
+     (for [[lang-code lang-name] i18n/languages]
+       ^{:key lang-code}
+       [:option {:value (name lang-code)}
+        lang-name]))]])
 
 (defn header-view []
   [:div.header {:tw "font-header bg-accent flex justify-between"}
