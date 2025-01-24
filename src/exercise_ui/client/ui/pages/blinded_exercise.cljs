@@ -26,34 +26,58 @@
      :leaves @leaves}))
 
 (defn blinded-exercise-view [exercise]
-  (r/with-let [;; assuming leaves are all unique
+  (r/with-let [regenerate (fn []
+                            (parse-blind (edn/read-string (exercise :solution))))
+               blinded-data (r/atom (regenerate))
+               ;; assuming leaves are all unique
                leaf->index (r/atom {})]
     [:section.blinded
      [:header
-      [:h2 "Blinded Exercise"]]
+      [:h2 "Blinded Exercise"]
+      [:button {:on-click (fn [_]
+                            (reset! blinded-data (regenerate)))}
+       "Regenerate"]]
      [:div.body
       (let [index->leaf (set/map-invert @leaf->index)
-            {:keys [code leaves]} (parse-blind (edn/read-string (exercise :solution)))]
+            {:keys [code leaves]} @blinded-data]
         [:<>
+         [code-view {:class "code"}
+          (str code)]
+
+         [:div {:tw "p-4 bg-gray-200"}
+          "Select the correct code snippet for each blank:"
+          [:table
+           [:tbody
+            [:tr
+             [:td]
+             (for [leaf-index (range (count leaves))]
+               [:td {:tw "text-center"} "_" leaf-index])
+             [:td]]
+            (doall
+             (for [leaf leaves
+                   :let [current-index (@leaf->index leaf)]]
+               ^{:key leaf}
+               [:tr
+                [:td
+                 [code-view {:class "code"
+                             :fragment? true}
+                  (str leaf)]]
+
+                (for [leaf-index (range (count leaves))]
+                  ^{:key leaf-index}
+                  [:td
+                   [:input {:tw "m-2"
+                            :type "radio"
+                            :checked (= current-index leaf-index)
+                            :on-click (fn []
+                                        (if (= current-index leaf-index)
+                                          ;; deselect
+                                          (swap! leaf->index dissoc leaf)
+                                          ;; select
+                                          (do
+                                            (swap! leaf->index dissoc (index->leaf leaf-index))
+                                            (swap! leaf->index assoc leaf leaf-index))))}]])]))]]]
          [code-view {:class "code"}
           (string/replace (str code) #"_(\d+)" (fn [[match index]]
                                                  (or (index->leaf (js/parseInt index))
-                                                     match)))]
-         [:table
-          [:tbody
-           (doall
-            (for [leaf leaves
-                  :let [current-index (@leaf->index leaf)]]
-              ^{:key leaf}
-              [:tr
-               [:td (str leaf)]
-               [:td [:button {:on-click (fn []
-                                          (swap! leaf->index dissoc leaf))} "x"]]
-               (for [leaf-index (range (count leaves))]
-                 ^{:key leaf-index}
-                 [:td [:button {:on-click (fn []
-                                            (swap! leaf->index dissoc (index->leaf leaf-index))
-                                            (swap! leaf->index assoc leaf leaf-index))
-                                :style {:font-weight (when (= current-index leaf-index)
-                                                       "bold")}}
-                       leaf-index]])]))]]])]]))
+                                                     match)))]])]]))

@@ -9,7 +9,7 @@
 (defn format-code [code]
   (if (nil? code)
     "nil"
-    (zprint-str code 80 {:style [:community :hiccup]
+    (zprint-str code 40 {:style [:community :hiccup]
                          :binding {:force-nl? true}
                          :parse-string? (string? code)
                          :parse-string-all? (string? code)
