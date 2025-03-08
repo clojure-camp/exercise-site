@@ -2,7 +2,7 @@
   (:require
     [clojure.string :as string]
     [bloom.commons.fontawesome :as fa]
-    [bloom.commons.pages :refer [path-for]]
+    [bloom.commons.pages :as pages]
     [reagent.core :as r]
     [re-frame.core :refer [subscribe dispatch]]
     [exercise-ui.client.ui.styles :as styles]
@@ -16,19 +16,21 @@
     [:section.solution
      [:header {:on-click (fn []
                            (swap! open? not))}
-      [:h2 (i18n/value {:en-US "example solution" :pt-BR "solução exemplo" })]
+      [:h2 (i18n/value {:en-US "example solution"
+                        :pt-BR "solução exemplo" })]
       (if @open?
         [fa/fa-chevron-down-solid]
         [fa/fa-chevron-right-solid])]
      (when @open?
        [code-view {:class "code"}
-        (exercise :solution)])]))
+        (:exercise/solution exercise)])]))
 
 (defn test-case-view [exercise]
   (r/with-let [active-mode (r/atom :mode/table)]
     [:section.test-cases
      [:header {:tw "gap-2"}
-      [:h2 {:tw "grow"} (i18n/value {:en-US "sample tests" :pt-BR "testes de exemplo"})]
+      [:h2 {:tw "grow"} (i18n/value {:en-US "sample tests"
+                                     :pt-BR "testes de exemplo"})]
       (doall
         (for [[mode icon] [[:mode/table [fa/fa-table-solid]]
                            [:mode/rcf "RCF"]
@@ -46,7 +48,7 @@
                 :tw "w-full bg-#2b2b2b border-collapse"}
         [:tbody
          (into [:<>]
-               (for [{:keys [input output]} (exercise :test-cases)]
+               (for [{:keys [input output]} (:exercise/test-cases exercise)]
                  [:tr
                   [:td
                    [code-view {:class "code"} (pr-str input)]]
@@ -59,13 +61,13 @@
        :mode/clj
        [code-view {:class "code"}
         (str
-         "(ns exercises." (:id exercise) "\n"
+         "(ns exercises." (:exercise/id exercise) "\n"
          "  (:require\n"
          "    [clojure.test :refer [is testing]]))\n\n"
-         (when (seq (:function-template exercise))
-           (str (string/join "\n\n" (:function-template exercise)) "\n\n"))
+         (when (seq (:exercise/function-template exercise))
+           (str (string/join "\n\n" (:exercise/function-template exercise)) "\n\n"))
          (string/join "\n\n"
-                      (for [{:keys [input output]} (exercise :test-cases)]
+                      (for [{:keys [input output]} (:exercise/test-cases exercise)]
                         (list 'is (list '= output input))))
 
          "(clojure.test/run-tests)")]
@@ -75,15 +77,15 @@
         [code-view {:class "code"
                     :pre-formatted? true}
          (str
-           "(ns exercises." (:id exercise) "\n"
+           "(ns exercises." (:exercise/id exercise) "\n"
            "  (:require\n"
            "    [hyperfiddle.rcf :as rcf]))\n\n"
            "(rcf/enable!)\n\n"
-           (when (seq (:function-template exercise))
-             (str (string/join "\n\n" (:function-template exercise)) "\n\n"))
+           (when (seq (:exercise/function-template exercise))
+             (str (string/join "\n\n" (:exercise/function-template exercise)) "\n\n"))
            "(rcf/tests\n"
            (string/join "\n\n"
-                        (for [{:keys [input output]} (exercise :test-cases)]
+                        (for [{:keys [input output]} (:exercise/test-cases exercise)]
                           (str "  " (format-code input) " := \n"
                                "  "
                                (if (string? output)
@@ -96,12 +98,12 @@
   (when-let [exercise @(subscribe [:exercise exercise-id])]
     [:div.page.exercise
      [:header
-      [:h1 (i18n/value (exercise :title))]]
+      [:h1 (i18n/value (:exercise/title exercise))]]
 
      [:<>
       [:section.instructions
        (into [:<>]
-             (for [node (i18n/value (exercise :instructions))]
+             (for [node (i18n/value (:exercise/instructions exercise))]
                (if (or (not (string? node))
                        (and
                          (string/starts-with? node "(")
@@ -110,37 +112,40 @@
                              :fragment? true} node]
                  (into [:p] (parse-backticks node)))))]
 
-       (when (:function-template exercise)
+       (when (:exercise/function-template exercise)
          [:section.starter-code
           [:header
-           [:h2 (i18n/value {:en-US "starter code" :pt-BR "código inicial"})]]
+           [:h2 (i18n/value {:en-US "starter code"
+                             :pt-BR "código inicial"})]]
           [:div.body
            [code-view {:class "code"}
-            (:function-template exercise)]]])
+            (:exercise/function-template exercise)]]])
 
-      (let [fns (->> (concat (map (fn [x] [x :teaches]) (exercise :teaches))
-                             (map (fn [x] [x :uses]) (exercise :uses)))
+      (let [fns (->> (concat (map (fn [x] [x :teaches]) (:exercise/teaches exercise))
+                             (map (fn [x] [x :uses]) (:exercise/uses exercise)))
                      (filter (fn [[f _]] (symbol? f))))]
         (when (seq fns)
           [:section.functions
            [:header
-            [:h2 (i18n/value {:en-US "related functions" :pt-BR "funções relacionadas"})]]
+            [:h2 (i18n/value {:en-US "related functions"
+                              :pt-BR "funções relacionadas"})]]
            [:div.body
             (into [:<>]
                   (->> fns
                        (map (fn [[f category]] [teachable-view f (name category)]))
                        (interpose " ")))]]))
 
-      (when (seq (exercise :test-cases))
+      (when (seq (:exercise/test-cases exercise))
         [test-case-view exercise])
 
       [solution-view exercise]
 
-      (when (exercise :related)
+      (when (seq (:exercise/related exercise))
         [:div.related
-         [:h2 (i18n/value {:en-US "See also:" :pt-BR "Veja também:"})]
+         [:h2 (i18n/value {:en-US "See also:"
+                           :pt-BR "Veja também:"})]
          [:div.exercises
-          (for [id (exercise :related)]
+          (for [id (:exercise/related exercise)]
             ^{:key id}
             [:div.exercise
-             [:a {:href (path-for [:exercise {:exercise-id id}])} id]])]])]]))
+             [:a {:href (pages/path-for [:exercise {:exercise-id id}])} id]])]])]]))

@@ -5,6 +5,7 @@
                  [re-frame "1.3.0"]
                  [rewrite-clj "1.1.47"]
                  [zprint "1.2.7"]
+                 [metosin/malli "0.17.0"]
                  ;; downgrade, to fix issue #832
                  ;; https://github.com/babashka/sci/blob/master/CHANGELOG.md#0536-2022-11-14
                  [org.babashka/sci "0.3.5"]
@@ -23,7 +24,9 @@
 
   :omni-config exercise-ui.omni-config/omni-config
 
-  :profiles {:uberjar
+  :profiles {:dev
+             {:source-paths ["dev-src" "src"]}
+             :uberjar
              {:aot :all
               :prep-tasks [["omni" "compile"]
                            "compile"]}})

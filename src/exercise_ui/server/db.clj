@@ -2,63 +2,26 @@
   (:require
     [clojure.java.io :as io]
     [clojure.string :as string]
-    [rewrite-clj.parser :as rw.parser]
-    [rewrite-clj.node :as rw.node]
-    [exercise-ui.config :refer [config]]))
+    [exercise-ui.config :refer [config]]
+    [exercise-ui.exercises.parse :as parse]))
 
-(defn collapse-leading-whitespace [s]
-  (string/replace s #"\n[ ]+" "\n  "))
-
-(defn parse-node [v]
-  (case (rw.node/tag v)
-    (:token :set)
-    (rw.node/sexpr v)
-    :comment
-    (rw.node/string v)
-    :list
-    (collapse-leading-whitespace (rw.node/string v))
-    :vector
-    (->> (mapv parse-node (rw.node/children v))
-         (filterv some?))
-    :map
-    (rw.node/sexpr v)
-    :multi-line
-    (collapse-leading-whitespace (rw.node/sexpr v))
-    (:whitespace :newline)
-    nil
-    v))
-
-(defn parse-exercise [s]
-  (->> s
-       rw.parser/parse-string
-       rw.node/children
-       (remove (fn [node]
-                 (#{:whitespace :newline :comment} (rw.node/tag node))))
-       (partition 2)
-       (map (fn [[k v]]
-              [(rw.node/sexpr k) (parse-node v)]))
-       (into {})
-       ((fn [e]
-          (update e :function-template (fn [node]
-                                       (cond
-                                         (vector? node)
-                                         node
-                                         (string? node)
-                                         [node])))))))
-
-#_(parse-exercise (slurp "../clojure-camp-exercises/exercises/morse-code.edn"))
-
-(defn get-exercises []
+(defn exercises-raw []
   (->> (file-seq (io/file (:exercise-data-path config) "./exercises/"))
        (filter (fn [f]
-                 (and (.isFile f)
-                      (string/ends-with? (.getName f) ".edn"))))
-       (map (juxt (memfn getName) slurp))
-       (map (fn [[file-name s]]
-              (-> (parse-exercise s)
-                  (assoc :id (string/replace file-name #"\.edn$" "")))))))
+                 (and
+                   (.isFile f)
+                   (string/ends-with? (.getName f) ".edn"))))
+       (map (fn [f]
+              (-> f
+                  slurp
+                  parse/parse-exercise
+                  (with-meta {:file-id (string/replace (.getName f) #"\.edn$" "")}))))))
 
-(defn get-exercise-order []
+(defn exercises []
+  (->> (exercises-raw)
+       (map parse/normalize-exercise)))
+
+(defn exercise-order []
   (->> (io/file (:exercise-data-path config) "./order.edn")
        slurp
        read-string))

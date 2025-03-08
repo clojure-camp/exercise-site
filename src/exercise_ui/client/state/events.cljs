@@ -15,8 +15,8 @@
 (reg-event-fx :initialize!
   (fn [_ _]
     (bloom.commons.pages/initialize! pages)
-    {:db {:exercises {}
-          :ordered-exercise-ids []}
+    {:db {:db/exercises {}
+          :db/ordered-exercise-ids []}
      :dispatch-n [[:-fetch-exercises!]]}))
 
 (reg-event-fx :-fetch-exercises!
@@ -30,5 +30,5 @@
 (reg-event-fx :-store-exercises!
   (fn [{db :db} [_ exercises order]]
     {:db (-> db
-             (assoc :exercises (key-by :id exercises))
-             (assoc :ordered-exercise-ids order))}))
+             (assoc :db/exercises (key-by :exercise/id exercises))
+             (assoc :db/ordered-exercise-ids order))}))

@@ -4,27 +4,27 @@
 
 (reg-sub :loading?
   (fn [db _]
-    (empty? (db :exercises))))
+    (empty? (db :db/exercises))))
 
 (reg-sub :exercises
   (fn [db _]
-    (vals (db :exercises))))
+    (vals (db :db/exercises))))
 
 (reg-sub :ordered-exercises
   (fn [db _]
-    (->> (db :ordered-exercise-ids)
+    (->> (db :db/ordered-exercise-ids)
          (map (fn [id]
-                (get-in db [:exercises id]))))))
+                (get-in db [:db/exercises id]))))))
 
 (reg-sub :unordered-exercises
   (fn [db _]
-    (let [ordered-ids (set (db :ordered-exercise-ids))]
-      (->> (db :exercises)
+    (let [ordered-ids (set (db :db/ordered-exercise-ids))]
+      (->> (db :db/exercises)
            vals
            (remove (fn [exercise]
-                     (contains? ordered-ids (exercise :id))))))))
+                     (contains? ordered-ids (exercise :exercise/id))))))))
 
 (reg-sub :exercise
   (fn [db [_ exercise-id]]
-    (get-in db [:exercises exercise-id])))
+    (get-in db [:db/exercises exercise-id])))
 

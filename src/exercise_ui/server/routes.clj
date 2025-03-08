@@ -17,5 +17,5 @@
    [[:get "/api/exercises"]
     (fn [_request]
       {:status 200
-       :body {:exercises (db/get-exercises)
-              :order (db/get-exercise-order)}})]])
+       :body {:exercises (db/exercises)
+              :order (db/exercise-order)}})]])
