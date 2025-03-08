@@ -104,13 +104,37 @@
       [:section.instructions
        (into [:<>]
              (for [node (i18n/value (:exercise/instructions exercise))]
-               (if (or (not (string? node))
-                       (and
-                         (string/starts-with? node "(")
-                         (string/ends-with? node ")")))
+               (cond
+                 ;; "a string" => [:p "a string"]
+                 (string? node)
+                 (into [:p] (parse-backticks node))
+
+                 ;; [:code ...] => [code-view ...]
+                 (and
+                   (seq node)
+                   (= :code (first node)))
+                 [code-view {:class "code"
+                             :fragment? true}
+                  (string/join "\n" (rest node))]
+
+                 ;; [:file ...] => [code-view ...]
+                 (and
+                   (seq node)
+                   (= :file (first node)))
+                 [code-view {:class "code"
+                             :lang "text/plain"
+                             :pre-formatted? true}
+                  (string/join "\n" (rest node))]
+
+                 ;; (... ) => [code-view ...]
+                 (and
+                   (string/starts-with? (str node) "(")
+                   (string/ends-with? (str node) ")"))
                  [code-view {:class "code"
                              :fragment? true} node]
-                 (into [:p] (parse-backticks node)))))]
+
+                 :else
+                 "UNPARSED")))]
 
        (when (:exercise/function-template exercise)
          [:section.starter-code

@@ -24,17 +24,17 @@
                                   "rcf/tests" :flow-body}})))
 
 (defn code-view
-  [{:keys [class fragment? pre-formatted?] :as opts} code]
+  [{:keys [class fragment? pre-formatted? lang] :as opts} code]
   [:div {:class (string/join " "  ["CodeMirror" "cm-s-railscasts" class])
          :ref (fn [el]
                 (when (not (nil? el))
                   (js/CodeMirror.runMode
-                    (cond
-                      pre-formatted?
-                      code
-                      (and (not fragment?) (vector? code))
-                      (string/join "\n\n" (map format-code code))
-                      :else
-                      (format-code code))
-                    "clojure"
-                    el)))}])
+                   (cond
+                     pre-formatted?
+                     code
+                     (and (not fragment?) (vector? code))
+                     (string/join "\n\n" (map format-code code))
+                     :else
+                     (format-code code))
+                   (or lang "clojure")
+                   el)))}])
