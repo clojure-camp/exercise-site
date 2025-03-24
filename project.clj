@@ -1,5 +1,5 @@
 (defproject clojure-exercise-ui "0.0.1"
-  :dependencies [[io.bloomventures/omni "0.32.2"
+  :dependencies [[io.bloomventures/omni "0.34.1"
                   :exclusions [borkdude/edamame]]
                  [cljsjs/codemirror "5.44.0-1"]
                  [re-frame "1.3.0"]
@@ -20,7 +20,7 @@
 
   :main exercise-ui.core
 
-  :plugins [[io.bloomventures/omni "0.32.2"]]
+  :plugins [[io.bloomventures/omni "0.34.1"]]
 
   :omni-config exercise-ui.omni-config/omni-config
 
