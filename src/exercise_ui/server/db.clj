@@ -10,12 +10,8 @@
        (filter (fn [f]
                  (and
                    (.isFile f)
-                   (string/ends-with? (.getName f) ".edn"))))
-       (map (fn [f]
-              (-> f
-                  slurp
-                  parse/parse-exercise
-                  (with-meta {:file-id (string/replace (.getName f) #"\.edn$" "")}))))))
+                   (string/ends-with? (.getName f) ".clj"))))
+       (map parse/parse-exercise-file)))
 
 (defn exercises []
   (->> (exercises-raw)

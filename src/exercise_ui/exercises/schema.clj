@@ -26,8 +26,9 @@
    [:test-cases {:optional true} [:vector [:map
                                            [:input Code]
                                            [:output Code]]]]
-   [:solution {:optional true} [:or Code [:vector Code]]]
-   [:teaches {:optional true} [:set [:or :keyword :symbol :string]]]])
+   [:teaches {:optional true} [:set [:or :keyword :symbol :string]]]
+   [:solution {:optional true}
+    [:vector :string]]])
 
 (def Exercise
   ;; parsed, normalized exercise
