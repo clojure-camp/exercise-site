@@ -5,6 +5,18 @@
     [clojure.string :as string]
     [com.rpl.specter :as x]))
 
+;; exercises are clj files that follow a special format:
+;;   - files are split into chunks, using a line ";; --- [a path]" as the delimiter
+;;   - the first chunk is parsed as EDN and expected to return a map
+;;   - the rest of the chunks are parsed as text, and injected into the map at the given [path]
+;;     - these additional chunks are meant for code
+;;   - in the end, the result should follow the schema defined in ./schema.clj
+;;
+;;   Design Note:
+;;     - wanted to achieve:
+;;         - easily parseable metadata
+;;         - easy to run solution code (ex. with babashka)
+
 (defn parse-exercise
   [s]
   (->> (string/split s #"\n")
