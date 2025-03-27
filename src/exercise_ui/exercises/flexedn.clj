@@ -26,7 +26,7 @@
     nil
     v))
 
-(defn parse
+(defn parse-map
   "Parse string as a super-set of edn"
   ;; edn/read-string does not support:
   ;;  - regex literals (ex #"[a-z]")
@@ -47,3 +47,21 @@
        ;; convert into a map
        (into {})))
 
+(defn parse-test-cases
+  [text]
+  (->> text
+       rw.parser/parse-string-all
+       rw.node/children
+       ;; remove top-level whitespace, newlines and comments
+       (remove (fn [node]
+                 (#{:whitespace :newline :comment} (rw.node/tag node))))
+       (map (fn [form]
+              (rw.node/sexpr form)))
+       (keep (fn [form]
+               (when (= (first form) 'is)
+                 (let [[_ output input] (second form)]
+                   {:input input
+                    :output output}))))
+       (into [])))
+
+#_(parse-test-cases "(is (= 2 (+ 1 1)))\n (is (= 6 (+ 3 2)))")
