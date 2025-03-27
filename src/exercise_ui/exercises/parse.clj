@@ -10,6 +10,7 @@
 ;;   - the first chunk is parsed as EDN and expected to return a map
 ;;   - the rest of the chunks are parsed as text, and injected into the map at the given [path]
 ;;     - these additional chunks are meant for code
+;;     - if no path, the chunk is ignored
 ;;   - in the end, the result should follow the schema defined in ./schema.clj
 ;;
 ;;   Design Note:
@@ -20,22 +21,34 @@
 (defn parse-exercise
   [s]
   (->> (string/split s #"\n")
+       ;; going from a list of lines, to a list of chunks (each with some ::path metadata)
+       ;; ["{}" ";; ---" "foo" "bar" ";; ---" "baz"]
+       ;; =>
+       ;; [["{}"] ["foo" "bar"] ["baz"]]
        (reduce (fn [memo line]
-                 (if-let [[_ path] (re-matches #"^;; --- (.+)" line)]
+                 (if-let [[_ path] (re-matches #"^;; ---(.+)" line)]
+                   ;; start new chunk
                    (->> memo
-                        (x/setval [x/END] [^{::path (edn/read-string path)} []]))
+                        (x/setval [x/END] [^{::path (edn/read-string (string/trim path))} []]))
+                   ;; add to previous chunk
                    (->> memo
                         (x/setval [x/LAST x/END] [line]))))
                [^{::path ::metadata} []])
        (map (fn [lines]
               {:chunk/path (::path (meta lines))
                :chunk/text (string/join "\n" lines)}))
+       ;; assume first chunk is a map
+       ;; assoc-in in the other ones (based on their path)
        (reduce (fn [memo {:keys [chunk/path chunk/text]}]
-                 ;; metadata parsed as edn
-                 ;; others just as text
-                 (if (= ::metadata path)
+                 (case path
+                   ;; metadata parsed as edn
+                   ::metadata
                    (-> (edn/read-string text)
                        (assoc :solution []))
+                   ;; ignore chunk with no path
+                   nil
+                   memo
+                   ;; others assoc-in as text
                    (assoc-in memo path text)))
                {})))
 
