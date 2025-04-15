@@ -18,4 +18,4 @@
   (reset! language lang))
 
 (defn value [i18n-map]
-  (get i18n-map @language i18n-map))
+  (get i18n-map @language (:en-US i18n-map)))
