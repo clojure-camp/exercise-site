@@ -134,7 +134,7 @@
                              :fragment? true} node]
 
                  :else
-                 "UNPARSED")))]
+                 node)))]
 
        (when (:exercise/function-template exercise)
          [:section.starter-code
