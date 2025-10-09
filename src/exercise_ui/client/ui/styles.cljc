@@ -197,6 +197,10 @@
        [:p
         {:line-height "1.4em"}]
 
+       [:a
+        {:text-decoration "underline"
+         :color color-accent}]
+
        ["p:last-child"
         {:margin-bottom 0}]]
 
