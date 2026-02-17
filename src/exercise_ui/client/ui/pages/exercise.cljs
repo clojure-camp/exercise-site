@@ -96,7 +96,7 @@
            ")")]])]))
 
 (def exercise-styles
-  {:exercise.style/normal "Normal"
+  {:exercise.style/normal "Word Problem"
    :exercise.style/blinded "Fill in the Blanks"})
 
 (defn normal-exercise-view [exercise]
@@ -131,7 +131,7 @@
 
 (defn exercise-page-view [exercise-id]
   (r/with-let
-   [exercise-style (r/atom :exercise.style/blinded)]
+   [exercise-style (r/atom :exercise.style/normal)]
    (when-let [exercise @(subscribe [:exercise exercise-id])]
      [:div.page.exercise
       [:header
