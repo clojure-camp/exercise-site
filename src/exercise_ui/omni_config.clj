@@ -9,6 +9,8 @@
    :omni/http-port (:http-port config)
    :omni/environment (:environment config)
    :omni/cljs {:main "exercise-ui.client.core"}
+   :omni/js-scripts [{:src "/confetti.min.js"
+                      :defer "defer"}]
    :omni/css {:styles "exercise-ui.client.ui.styles/app"
               :tailwind? true}
    :omni/api-routes #'exercise-ui.server.routes/routes})
