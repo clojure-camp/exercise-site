@@ -97,7 +97,7 @@
 
 (def exercise-styles
   {:exercise.style/normal "Normal"
-   :exercise.style/blinded "Blinded"})
+   :exercise.style/blinded "Fill in the Blanks"})
 
 (defn normal-exercise-view [exercise]
   [:<>
@@ -110,20 +110,21 @@
        [code-view {:class "code"}
         (:exercise/function-template exercise)]]])
 
-   (let [fns (->> (concat (map (fn [x] [x :teaches]) (exercise :teaches))
-                          (map (fn [x] [x :uses]) (exercise :uses)))
+   (let [fns (->> (concat (map (fn [x] [x :teaches]) (:exercise/teaches exercise))
+                          (map (fn [x] [x :uses]) (:exercise/uses exercise)))
                   (filter (fn [[f _]] (symbol? f))))]
      (when (seq fns)
        [:section.functions
         [:header
-         [:h2 (i18n/value {:en-US "related functions" :pt-BR "funções relacionadas"})]]
+         [:h2 (i18n/value {:en-US "related functions"
+                           :pt-BR "funções relacionadas"})]]
         [:div.body
          (into [:<>]
                (->> fns
                     (map (fn [[f category]] [teachable-view f (name category)]))
                     (interpose " ")))]]))
 
-   (when (seq (exercise :test-cases))
+   (when (seq (:exercise/test-cases exercise))
      [test-case-view exercise])
 
    [solution-view exercise]])
@@ -187,24 +188,6 @@
          [normal-exercise-view exercise]
          :exercise.style/blinded
          [blinded/blinded-exercise-view exercise])
-       (let [fns (->> (concat (map (fn [x] [x :teaches]) (:exercise/teaches exercise))
-                              (map (fn [x] [x :uses]) (:exercise/uses exercise)))
-                      (filter (fn [[f _]] (symbol? f))))]
-         (when (seq fns)
-           [:section.functions
-            [:header
-             [:h2 (i18n/value {:en-US "related functions"
-                               :pt-BR "funções relacionadas"})]]
-            [:div.body
-             (into [:<>]
-                   (->> fns
-                        (map (fn [[f category]] [teachable-view f (name category)]))
-                        (interpose " ")))]]))
-
-       (when (seq (:exercise/test-cases exercise))
-         [test-case-view exercise])
-
-       [solution-view exercise]
 
        (when (seq (:exercise/related exercise))
          [:div.related
