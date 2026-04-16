@@ -13,18 +13,21 @@
     [exercise-ui.client.i18n :as i18n]))
 
 (defn solution-view [exercise]
-  (r/with-let [open? (r/atom false)]
-    [:section.solution
-     [:header {:on-click (fn []
-                           (swap! open? not))}
-      [:h2 (i18n/value {:en-US "example solution"
-                        :pt-BR "solução exemplo" })]
-      (if @open?
-        [fa/fa-chevron-down-solid]
-        [fa/fa-chevron-right-solid])]
-     (when @open?
-       [code-view {:class "code"}
-        (:exercise/solution exercise)])]))
+  (r/with-let
+   [open? (r/atom false)]
+   [:section.solution
+    [:header {:on-click (fn []
+                          (swap! open? not))}
+     [:h2 (i18n/value {:en-US "example solution(s)"
+                       :pt-BR "solução exemplo" })]
+     (if @open?
+       [fa/fa-chevron-down-solid]
+       [fa/fa-chevron-right-solid])]
+    (when @open?
+      [:div {:tw "space-y-2"}
+       (for [solution (:exercise/solution exercise)]
+         [code-view {:class "code"}
+          solution])])]))
 
 (defn test-case-view [exercise]
   (r/with-let [active-mode (r/atom :mode/table)]
