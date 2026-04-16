@@ -113,19 +113,26 @@
        [code-view {:class "code"}
         (:exercise/function-template exercise)]]])
 
-   (let [fns (->> (concat (map (fn [x] [x :teaches]) (:exercise/teaches exercise))
-                          (map (fn [x] [x :uses]) (:exercise/uses exercise)))
-                  (filter (fn [[f _]] (symbol? f))))]
-     (when (seq fns)
-       [:section.functions
-        [:header
-         [:h2 (i18n/value {:en-US "related functions"
-                           :pt-BR "funções relacionadas"})]]
-        [:div.body
-         (into [:<>]
-               (->> fns
-                    (map (fn [[f category]] [teachable-view f (name category)]))
-                    (interpose " ")))]]))
+   (let [{:keys [fns concepts]}
+         (->> (concat (map (fn [x] [x :teaches]) (:exercise/teaches exercise))
+                      (map (fn [x] [x :uses]) (:exercise/uses exercise)))
+              (group-by (fn [[f _]]
+                          (if (symbol? f)
+                            :fns
+                            :concepts))))]
+     (for [[values title] [[fns (i18n/value {:en-US "related functions"
+                                             :pt-BR "funções relacionadas"})]
+                           [concepts (i18n/value {:en-US "related concepts"
+                                                  :pt-BR "conceitos relacionadas"})]]]
+       (when (seq values)
+         [:section.functions
+          [:header
+           [:h2 title]]
+          [:div.body
+           (into [:<>]
+                 (->> values
+                      (map (fn [[f category]] [teachable-view f (name category)]))
+                      (interpose " ")))]])))
 
    (when (seq (:exercise/test-cases exercise))
      [test-case-view exercise])
