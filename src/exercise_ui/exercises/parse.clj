@@ -45,7 +45,10 @@
                  (case path
                    ;; metadata parsed as edn
                    ::metadata
-                   (-> (edn/read-string text)
+                   (-> (try
+                         (edn/read-string text)
+                         (catch Exception _e
+                           {}))
                        (assoc :solution []))
                    ;; parse test-cases
                    test-cases
