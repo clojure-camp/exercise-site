@@ -6,7 +6,7 @@
    [bloom.commons.fontawesome :as fa]
    [reagent.core :as r]
    [exercise-ui.client.blind :as blind]
-   [exercise-ui.client.ui.partials.code-view :refer [code-view]]))
+   [exercise-ui.client.ui.partials.code-view :refer [code-view blinded-code-view]]))
 
 (defn stateful-blinded-exercise-view
   [exercise]
@@ -46,11 +46,13 @@
             index-guess->index-hole (set/map-invert @index-hole->index-guess)]
         [:<>
          [:div.two-columns {:tw "flex bg-#2b2b2b"}
-          [:div {:tw "w-1/2"}
+          [blinded-code-view
+           @blinded-data @index-hole->index-guess]
+          #_[:div {:tw "w-1/2"}
            [code-view {:class "code"
                        :pre-formatted? true}
             (str ";; start\n" code)]]
-          [:div {:tw "w-1/2"}
+          #_[:div {:tw "w-1/2"}
            [code-view {:class "code"
                        :pre-formatted? true}
             (str ";; preview\n"
@@ -64,22 +66,23 @@
              [:td]
              (for [hole-index (sort (map :hole/index shuffled-holes))]
                ^{:key hole-index}
-               [:td {:tw "text-center"} "_" hole-index])
+               [:td {:tw "text-center"} hole-index])
              [:td]]
             (doall
-             (for [{:hole/keys [index string]} shuffled-holes]
-               ^{:key index}
+             (for [{:hole/keys [index string]} shuffled-holes
+                   :let [guess-index index]]
+               ^{:key guess-index}
                [:tr
                 [:td ;; for debugging
-                   #_index]
+                    #_guess-index]
                 [:td
                  [code-view {:class "code"
                              :fragment? true}
                   string]]
                 (doall
-                 (for [guess-index (sort (map :hole/index shuffled-holes))
-                       :let [selected? (= guess-index (get @index-hole->index-guess index))]]
-                   ^{:key guess-index}
+                 (for [hole-index (sort (map :hole/index shuffled-holes))
+                       :let [selected? (= guess-index (get @index-hole->index-guess hole-index))]]
+                   ^{:key hole-index}
                    [:td
                     [:input {:tw "m-2"
                              :type "radio"
@@ -89,11 +92,11 @@
                                          (reset! result nil)
                                          (if selected?
                                            ;; deselect
-                                           (swap! index-hole->index-guess dissoc index)
+                                           (swap! index-hole->index-guess dissoc hole-index)
                                            ;; select
                                            (do
                                              (swap! index-hole->index-guess dissoc (index-guess->index-hole guess-index))
-                                             (swap! index-hole->index-guess assoc index guess-index))))}]]))]))]]
+                                             (swap! index-hole->index-guess assoc hole-index guess-index))))}]]))]))]]
           [:div {:tw "flex gap-2 items-center"}
            [:button {:tw ["p-2 bg-blue-500 text-white"
                           "disabled:bg-gray-400 disabled:cursor-not-allowed disabled:line-through"]

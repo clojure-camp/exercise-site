@@ -3,6 +3,7 @@
    [clojure.string :as string]
    [cljsjs.codemirror.addon.runmode.runmode-standalone]
    [cljsjs.codemirror.mode.clojure] ;; must come after runmode-standalone
+   [reagent.core :as r]
    [zprint.core :refer [zprint zprint-str]]
    [exercise-ui.client.ui.styles :as styles]))
 
@@ -22,6 +23,52 @@
                                   "when" :arg1-force-nl
                                   "fn" :binding
                                   "rcf/tests" :flow-body}})))
+
+(defn blinded-code-view
+  "Renders :blind/code with hole tokens (_N) replaced by numbered badges.
+   When hole->guess contains an entry for a hole, the chosen value is appended after the badge."
+  [{:blind/keys [code shuffled-holes]} hole->guess]
+  (r/with-let [el-ref (atom nil)]
+    (let [guess-index->string (zipmap (map :hole/index shuffled-holes)
+                                      (map :hole/string shuffled-holes))
+          fill! (fn [el]
+                  (when el
+                    (set! (.-innerHTML el) "")
+                    (js/CodeMirror.runMode
+                     code
+                     "clojure"
+                     (fn [text style]
+                       (if-let [[_ n] (re-matches #"_(\d+)" text)]
+                         (let [hole-index (js/parseInt n)
+                               hole-el (.createElement js/document "span")
+                               badge (.createElement js/document "span")]
+                           (set! (.-className hole-el) "cm-hole")
+                           (set! (.-className badge) "cm-hole-badge")
+                           (set! (.-textContent badge) n)
+                           (.appendChild hole-el badge)
+                           (when-let [guess-str (some-> (get hole->guess hole-index)
+                                                        guess-index->string)]
+                             (let [guess-el (.createElement js/document "span")]
+                               (set! (.-className guess-el) "cm-hole-guess")
+                               (js/CodeMirror.runMode guess-str "clojure" guess-el)
+                               (.appendChild hole-el guess-el)))
+                           (.appendChild el hole-el))
+                         (let [span (.createElement js/document "span")]
+                           (set! (.-className span) (if style (str "cm-" style) ""))
+                           (set! (.-textContent span) text)
+                           (.appendChild el span)))))))]
+      (fill! @el-ref)
+      [:<>
+       [:style
+        ".CodeMirror .cm-hole { border-radius: 4px; background: black; padding: 0.25em;}"
+        ".CodeMirror .cm-hole-badge { border-radius: 4px; background: white;  color: black; padding: 0 0.25em; }"
+        ".CodeMirror .cm-hole-guess { margin: 0 0.25em; }"
+        ".CodeMirror .cm-hole-badge:only-child { margin-right: 3em; }"
+        ".CodeMirror .cm-hole-badge:not(:only-child) { margin-right: 0.25em; }"]
+       [:div {:class "CodeMirror cm-s-railscasts code"
+              :ref (fn [el]
+                     (reset! el-ref el)
+                     (fill! el))}]])))
 
 (defn code-view
   [{:keys [class fragment? pre-formatted? lang] :as opts} code]
