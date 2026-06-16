@@ -11,10 +11,8 @@
 (defn stateful-blinded-exercise-view
   [exercise]
   (r/with-let [regenerate (fn []
-                            (blind/parse (edn/read-string
-                                          (str
-                                           "[" (first (:exercise/solution exercise))
-                                           "]"))))
+                            (blind/parse
+                             (first (:exercise/solution exercise))))
                blinded-data (r/atom (regenerate))
                index-hole->index-guess (r/atom {})
                result (r/atom nil)
@@ -44,29 +42,19 @@
                 :title "Regenerate"}
        [fa/fa-recycle-solid {:tw "w-1em h-1em"}]]]
      [:div.body
-      (let [{:keys [code holes shuffled-holes hole-indexes]} @blinded-data
+      (let [{:blind/keys [code shuffled-holes]} @blinded-data
             index-guess->index-hole (set/map-invert @index-hole->index-guess)]
         [:<>
          [:div.two-columns {:tw "flex bg-#2b2b2b"}
           [:div {:tw "w-1/2"}
-           [code-view {:class "code"}
-            (vec (cons ";; start" code))]]
+           [code-view {:class "code"
+                       :pre-formatted? true}
+            (str ";; start\n" code)]]
           [:div {:tw "w-1/2"}
-           [code-view {:class "code"}
-            (vec (cons ";; preview"
-                       (->> code
-                            (map (fn [c]
-                                   (string/replace (str c)
-                                                   #"_(\d+)"
-                                                   (fn [[match index]]
-                                                     (or (->> holes
-                                                              (filter (fn [hole]
-                                                                        (= (::blind/index (meta hole))
-                                                                           (index-guess->index-hole (js/parseInt index)))))
-                                                              first)
-                                                         match)))))
-                            (map edn/read-string))))]]]
-
+           [code-view {:class "code"
+                       :pre-formatted? true}
+            (str ";; preview\n"
+                 (blind/preview @blinded-data @index-hole->index-guess))]]]
          [:div {:tw "p-4 bg-gray-200 space-y-2"}
           [:span "Select the correct code snippet for each blank:"]
           [:table
@@ -74,25 +62,23 @@
             [:tr
              [:td]
              [:td]
-             (for [hole-index (sort hole-indexes)]
+             (for [hole-index (sort (map :hole/index shuffled-holes))]
                ^{:key hole-index}
                [:td {:tw "text-center"} "_" hole-index])
              [:td]]
             (doall
-             (for [hole shuffled-holes
-                   :let [current-index (::blind/index (meta hole))]]
-               ^{:key current-index}
+             (for [{:hole/keys [index string]} shuffled-holes]
+               ^{:key index}
                [:tr
                 [:td ;; for debugging
-                   #_current-index]
+                   #_index]
                 [:td
                  [code-view {:class "code"
                              :fragment? true}
-                  (str hole)]]
-
+                  string]]
                 (doall
-                 (for [guess-index (sort hole-indexes)
-                       :let [selected? (= guess-index (@index-hole->index-guess current-index))]]
+                 (for [guess-index (sort (map :hole/index shuffled-holes))
+                       :let [selected? (= guess-index (get @index-hole->index-guess index))]]
                    ^{:key guess-index}
                    [:td
                     [:input {:tw "m-2"
@@ -103,16 +89,16 @@
                                          (reset! result nil)
                                          (if selected?
                                            ;; deselect
-                                           (swap! index-hole->index-guess dissoc current-index)
+                                           (swap! index-hole->index-guess dissoc index)
                                            ;; select
                                            (do
                                              (swap! index-hole->index-guess dissoc (index-guess->index-hole guess-index))
-                                             (swap! index-hole->index-guess assoc current-index guess-index))))}]]))]))]]
+                                             (swap! index-hole->index-guess assoc index guess-index))))}]]))]))]]
           [:div {:tw "flex gap-2 items-center"}
            [:button {:tw ["p-2 bg-blue-500 text-white"
                           "disabled:bg-gray-400 disabled:cursor-not-allowed disabled:line-through"]
                      :disabled (not= (count @index-hole->index-guess)
-                                     (count holes))
+                                     (count shuffled-holes))
                      :on-click (fn []
                                  (check!))}
             "Check"]
@@ -126,4 +112,3 @@
   [exercise]
   (when (seq (:exercise/solution exercise))
     [stateful-blinded-exercise-view exercise]))
-
