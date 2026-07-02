@@ -240,6 +240,7 @@
           {:color "#CCC"}]]]]
 
       [:>section.solution
+       :>section.blinded
 
        [:>header
         {:display "flex"

@@ -83,7 +83,9 @@
                                              (and (= mode ::symbols)
                                                   (= :token tag)
                                                   (rw.z/sexpr-able? zloc)
-                                                  (symbol? (rw.z/sexpr zloc)))
+                                                  (symbol? (rw.z/sexpr zloc))
+                                                  (not (contains? #{'defn 'def 'require}
+                                                                  (rw.z/sexpr zloc))))
                                              (mark-candidate! *candidate-holes zloc)
 
                                              :else
