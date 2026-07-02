@@ -26,8 +26,13 @@
 
 (defn blinded-code-view
   "Renders :blind/code with hole tokens (_N) replaced by numbered badges.
-   When hole->guess contains an entry for a hole, the chosen value is appended after the badge."
-  [{:blind/keys [code shuffled-holes]} hole->guess]
+   When hole->guess contains an entry for a hole, the chosen value is appended after the badge.
+
+   handlers (optional) enables drag-and-drop:
+     :on-hole-drop        (fn [hole-index]) called when a fragment is dropped on a hole
+     :on-guess-drag-start (fn [guess-index]) called when a placed fragment starts being dragged
+     :on-guess-drag-end   (fn []) called when a placed-fragment drag ends"
+  [{:blind/keys [code shuffled-holes]} hole->guess {:keys [on-hole-drop on-guess-drag-start on-guess-drag-end]}]
   (r/with-let [el-ref (atom nil)]
     (let [guess-index->string (zipmap (map :hole/index shuffled-holes)
                                       (map :hole/string shuffled-holes))
@@ -35,7 +40,7 @@
                   (when el
                     (set! (.-innerHTML el) "")
                     (js/CodeMirror.runMode
-                     code
+                     (string/trim code)
                      "clojure"
                      (fn [text style]
                        (if-let [[_ n] (re-matches #"_(\d+)" text)]
@@ -46,11 +51,37 @@
                            (set! (.-className badge) "cm-hole-badge")
                            (set! (.-textContent badge) n)
                            (.appendChild hole-el badge)
+                           ;; drop target
+                           (set! (.-ondragover hole-el)
+                                 (fn [e]
+                                   (.preventDefault e)
+                                   (.add (.-classList hole-el) "drag-over")))
+                           (set! (.-ondragleave hole-el)
+                                 (fn [_]
+                                   (.remove (.-classList hole-el) "drag-over")))
+                           (set! (.-ondrop hole-el)
+                                 (fn [e]
+                                   (.preventDefault e)
+                                   (.remove (.-classList hole-el) "drag-over")
+                                   (when on-hole-drop
+                                     (on-hole-drop hole-index))))
                            (when-let [guess-str (some-> (get hole->guess hole-index)
                                                         guess-index->string)]
-                             (let [guess-el (.createElement js/document "span")]
+                             (let [guess-index (get hole->guess hole-index)
+                                   guess-el (.createElement js/document "span")]
                                (set! (.-className guess-el) "cm-hole-guess")
                                (js/CodeMirror.runMode guess-str "clojure" guess-el)
+                               ;; placed fragments stay draggable
+                               (set! (.-draggable guess-el) true)
+                               (set! (.-ondragstart guess-el)
+                                     (fn [e]
+                                       (.setData (.-dataTransfer e) "text/plain" (str guess-index))
+                                       (when on-guess-drag-start
+                                         (on-guess-drag-start guess-index))))
+                               (set! (.-ondragend guess-el)
+                                     (fn [_]
+                                       (when on-guess-drag-end
+                                         (on-guess-drag-end))))
                                (.appendChild hole-el guess-el)))
                            (.appendChild el hole-el))
                          (let [span (.createElement js/document "span")]
@@ -61,8 +92,9 @@
       [:<>
        [:style
         ".CodeMirror .cm-hole { border-radius: 4px; background: black; padding: 0.25em;}"
-        ".CodeMirror .cm-hole-badge { border-radius: 4px; background: white;  color: black; padding: 0 0.25em; }"
-        ".CodeMirror .cm-hole-guess { margin: 0 0.25em; }"
+        ".CodeMirror .cm-hole.drag-over { outline: 2px dashed white; }"
+        ".CodeMirror .cm-hole-badge { border-radius: 4px; background: white;  color: black; padding: 0 0.25em; pointer-events: none; }"
+        ".CodeMirror .cm-hole-guess { margin: 0 0.25em; cursor: grab; }"
         ".CodeMirror .cm-hole-badge:only-child { margin-right: 3em; }"
         ".CodeMirror .cm-hole-badge:not(:only-child) { margin-right: 0.25em; }"]
        [:div {:class "CodeMirror cm-s-railscasts code"

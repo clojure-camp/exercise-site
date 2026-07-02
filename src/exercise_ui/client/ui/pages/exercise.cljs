@@ -13,6 +13,22 @@
     [exercise-ui.client.ui.partials.teachable :refer [teachable-view]]
     [exercise-ui.client.i18n :as i18n]))
 
+(defn place-guess
+  "Places guess-index into target-hole-index within the hole->guess map m.
+   - if the guess was already placed in another hole, it is moved out of it
+   - if the target hole already held a guess:
+       - swap it back into the guess's old hole (when the guess came from a hole)
+       - otherwise leave it unset (when the guess came from the tray)"
+  [m guess-index target-hole-index]
+  (let [source-hole (get (set/map-invert m) guess-index)
+        displaced-guess (get m target-hole-index)
+        m' (-> m
+               (dissoc source-hole)
+               (assoc target-hole-index guess-index))]
+    (if (and source-hole displaced-guess)
+      (assoc m' source-hole displaced-guess)
+      m')))
+
 (defn blinded-exercise-view
   [exercise]
   (r/with-let [open? (r/atom false)
@@ -22,6 +38,17 @@
                blinded-data (r/atom (regenerate))
                index-hole->index-guess (r/atom {})
                result (r/atom nil)
+               ;; drag-and-drop state
+               dragged-guess (r/atom nil)
+               on-guess-drag-start (fn [guess-index]
+                                     (reset! dragged-guess guess-index))
+               on-guess-drag-end (fn []
+                                   ;; dropped outside of a hole => keep the previous state
+                                   (reset! dragged-guess nil))
+               on-hole-drop (fn [hole-index]
+                              (when @dragged-guess
+                                (reset! result nil)
+                                (swap! index-hole->index-guess place-guess @dragged-guess hole-index)))
                reinitialize! (fn []
                                (reset! blinded-data (regenerate))
                                (reset! index-hole->index-guess {})
@@ -61,9 +88,12 @@
           [:<>
            [:div.two-columns {:tw "flex bg-#2b2b2b"}
             [blinded-code-view
-             @blinded-data @index-hole->index-guess]]
+             @blinded-data @index-hole->index-guess
+             {:on-hole-drop on-hole-drop
+              :on-guess-drag-start on-guess-drag-start
+              :on-guess-drag-end on-guess-drag-end}]]
            [:div {:tw "p-4 bg-gray-200 space-y-2"}
-            [:span "Select the correct code snippet for each blank:"]
+            [:span "Drag'n'drop each fragment below to the appropriate spot (or use the grid below):"]
             [:table
              [:tbody
               [:tr
@@ -81,9 +111,17 @@
                   [:td ;; for debugging
                    #_guess-index]
                   [:td
-                   [code-view {:class "code"
-                               :fragment? true}
-                    string]]
+                   [:div.fragment {:draggable true
+                                   :tw "flex items-center gap-1 cursor-grab"
+                                   :on-drag-start (fn [e]
+                                                    (.setData (.. e -dataTransfer) "text/plain" (str guess-index))
+                                                    (on-guess-drag-start guess-index))
+                                   :on-drag-end (fn [_]
+                                                  (on-guess-drag-end))}
+                    [fa/fa-grip-vertical-solid {:tw "text-gray-400 shrink-0 w-2 h-2"}]
+                    [code-view {:class "code fragment"
+                                :fragment? true}
+                     string]]]
                   (doall
                    (for [hole-index (sort (map :hole/index shuffled-holes))
                          :let [selected? (= guess-index (get @index-hole->index-guess hole-index))]]

@@ -13,16 +13,6 @@
 (def body-font "Arial")
 (def code-font "Source Code Pro, monospace")
 
-(defn codemirror []
-  {:white-space "pre"
-   :height "inherit"
-   :font-family code-font
-   :font-size "0.8em"
-   :width "100%"
-   :box-sizing "border-box"
-   :padding "1em"
-   :overflow "auto"})
-
 (defn teachable []
   [:.teachable
    {:white-space "nowrap"}
@@ -76,7 +66,17 @@
       :padding "0 0.15em"}]]
 
    [:.CodeMirror
-    (codemirror)]
+    {:white-space "pre"
+     :height "inherit"
+     :font-family code-font
+     :font-size "0.8em"
+     :width "100%"
+     :box-sizing "border-box"
+     :padding "1em"
+     :overflow "auto"}
+
+    [:&.fragment
+     {:padding "0.25em 0.5em"}]]
 
    ;; tw compatibility
 
